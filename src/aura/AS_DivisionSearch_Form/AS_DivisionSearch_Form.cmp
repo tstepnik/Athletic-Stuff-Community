@@ -1,0 +1,56 @@
+<aura:component controller="AS_DivisionSearch_FormController" implements="flexipage:availableForAllPageTypes"
+                access="global">
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="parentId" type="String"/>
+
+    <aura:attribute name="accountName" type="String"/>
+    <aura:attribute name="country" type="String"/>
+    <aura:attribute name="rating" type="String"/>
+    <aura:attribute name="city" type="String"/>
+    <aura:attribute name="active" type="String"/>
+
+    <aura:registerEvent name="searchEvent" type="c:AS_DivisionSearch_SearchEvent"/>
+    <aura:handler event="c:AS_DivisionSearch_RefreshTableEvent" action="{!c.search}"/>
+    <ltng:require styles="{!$Resource.noheader}"/>
+
+    <lightning:notificationsLibrary aura:id="notification"/>
+
+    <lightning:card iconName="standard:account" title="Search Form">
+        <c:Spinner aura:id="spinner"/>
+        <lightning:layout multipleRows="true">
+
+            <lightning:layoutItem size="6" class="slds-p-horizontal_medium slds-p-vertical_medium">
+            <lightning:input aura:id="field" label="Name" value="{!v.accountName}" class="slds-large-size_1-of-1"/>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" class="slds-p-horizontal_medium slds-p-vertical_medium">
+            <lightning:input aura:id="field" label="Country" value="{!v.country}" class="slds-large-size_1-of-1"/>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" class="slds-p-horizontal_medium slds-p-vertical_medium">
+                <lightning:select value="{!v.active}" label="Active">
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                </lightning:select>
+            </lightning:layoutItem>
+
+
+            <lightning:layoutItem size="6" class="slds-p-horizontal_medium slds-p-vertical_medium">
+                <lightning:input aura:id="field" label="City" value="{!v.city}" class="slds-large-size_1-of-1"/>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="6" class="slds-p-horizontal_medium slds-p-vertical_medium">
+                <lightning:select value="{!v.rating}" label="Rating">
+                    <option value=""></option>
+                    <option value="Hot">Hot</option>
+                    <option value="Cold">Cold</option>
+                    <option value="Warm">Warm</option>
+                </lightning:select>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="12" class="slds-p-horizontal_medium slds-p-vertical_medium slds-text-align_right">
+                <lightning:button aura:id="clear" type="reset" variant="neutral" label="Clear" onclick="{!c.clear}" />
+                <lightning:button aura:id="submit" type="submit" variant="brand" label="Search Account" onclick="{!c.search}" />
+            </lightning:layoutItem>
+
+        </lightning:layout>
+    </lightning:card>
+</aura:component>

@@ -1,0 +1,8 @@
+<!--
+ - Created by BRITENET on 23.10.2020.
+ -->
+
+<aura:event type="APPLICATION" description="AS_SelectedShopOnList">
+    <aura:attribute type="String" name="accountId"/>
+
+</aura:event>

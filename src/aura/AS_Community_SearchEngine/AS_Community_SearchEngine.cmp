@@ -1,0 +1,31 @@
+<aura:component description="AS_Community_SearchEngine" controller="AS_Community_SearchEngineController"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                 force:appHostable,
+                 force:hasRecordId
+">
+<!--    <aura:attribute name="productName" type="String" />-->
+<!--    <aura:attribute name="searchProduct" type="Aura.Action" />-->
+
+    <div class="slds-card">
+        <ligh
+<!--        <div class="topnav">-->
+<!--            <div class="search-container">-->
+<!--                <form class="slds-form&#45;&#45;inline">-->
+<!--                    <lightning:input class="myinpt" type="text" placeholder="Search..." name="search" value="{!v.productName}" />-->
+<!--                    <lightning:buttonIcon iconName="utility:search" onclick="{!v.searchProduct}" class="mybtn"/>-->
+<!--                </form>-->
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+                {!v.recordId}
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</aura:component>

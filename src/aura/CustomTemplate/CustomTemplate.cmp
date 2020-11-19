@@ -7,6 +7,13 @@
     <div>
         <lightning:layout multipleRows="true">
             <Lightning:layoutItem size='8'>
+                <div class="">
+                    <!-- Search Publisher component -->
+                    {!v.search}
+
+                </div>
+            </Lightning:layoutItem>
+            <Lightning:layoutItem size='8'>
                 <div class="searchRegion">
                     <!-- Search Publisher component -->
                     {!v.search}
@@ -25,7 +32,7 @@
             <Lightning:layoutItem size="2">
                 <div class="newHeader">
             {!v.actions}
-        </div>
+    </div>
             </Lightning:layoutItem>
 
             <Lightning:layoutItem size="12">

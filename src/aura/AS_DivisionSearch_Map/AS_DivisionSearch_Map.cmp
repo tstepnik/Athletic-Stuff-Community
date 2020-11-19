@@ -1,0 +1,19 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+        <!-- attributes -->
+        <aura:attribute name="mapMarkers" type="Object"/>
+        <aura:attribute name="zoomLevel" type="Integer"/>
+        <aura:attribute name="markersTitle" type="String" />
+        <aura:attribute name="selectedMarkerValue" type="String" default="France1" />
+
+        <!-- handlers-->
+        <aura:handler event="c:AS_DivisionSearch_SearchEvent" action="{!c.displayAllAccounts}"/>
+        <aura:handler event="c:AS_DivisionSearch_SelectAccountEvent" action="{!c.showChosenRecord}"/>
+
+        <!-- the map component -->
+        <lightning:map
+                mapMarkers="{! v.mapMarkers }"
+                markersTitle="{!v.markersTitle}"
+                zoomLevel="{!v.zoomLevel}"
+                listView="hidden"
+        />
+</aura:component>

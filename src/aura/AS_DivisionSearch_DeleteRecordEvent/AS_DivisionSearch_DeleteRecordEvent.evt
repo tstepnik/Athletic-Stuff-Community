@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="AS_DivisionSearch_DeleteRecordEvent">
+    <aura:attribute type="String" name="recordId"/>
+</aura:event>

@@ -1,0 +1,9 @@
+<aura:component access="global" description="Spinner">
+    <aura:attribute name="spinnerVisible" type="Boolean"/>
+    <aura:method name="showSpinner" action="{!c.showSpinner}"/>
+    <aura:method name="hideSpinner" action="{!c.hideSpinner}"/>
+
+    <aura:if isTrue="{!v.spinnerVisible}">
+        <lightning:spinner/>
+    </aura:if>
+</aura:component>

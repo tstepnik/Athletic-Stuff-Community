@@ -1,0 +1,34 @@
+<!--
+ - Created by tomas on 19.11.2020.
+ -->
+
+<aura:component
+        implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                 force:appHostable,
+                 force:hasRecordId"
+>
+    <lightning:carousel disableAutoScroll="true">
+        <lightning:carouselImage
+                src="path/to/carousel-01.jpg"
+                header="First card"
+                description="First card description"
+                alternativeText="This is a card"
+                href="https://www.example.com">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+                src="path/to/carousel-02.jpg"
+                header="Second card"
+                description="Second card description"
+                alternativeText="This is a card"
+                href="https://www.example.com">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+                src="path/to/carousel-03.jpg"
+                header="Third card"
+                description="Third card description"
+                alternativeText="This is a card"
+                href="https://www.example.com">
+        </lightning:carouselImage>
+    </lightning:carousel>
+</aura:component>

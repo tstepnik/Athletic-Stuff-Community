@@ -31,6 +31,10 @@ global class AS_GoogleAuthProvider implements Auth.RegistrationHandler {
 
 
 
+
+
+
+
     private User createUser(Auth.UserData data, Contact contact, Boolean isCommunity) {
         User user = new User();
         Profile profile;

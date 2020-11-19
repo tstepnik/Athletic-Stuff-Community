@@ -1,0 +1,2 @@
+<aura:event type="APPLICATION" description="AS_DivisionSearch_RefreshTableEvent">
+</aura:event>
