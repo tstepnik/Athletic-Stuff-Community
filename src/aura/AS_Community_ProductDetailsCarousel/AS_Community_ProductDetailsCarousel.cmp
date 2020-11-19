@@ -8,29 +8,27 @@
                  force:appHostable,
                  force:hasRecordId"
 >
+<!--    <meta http-equiv="Content-Security-Policy"-->
+<!--          content="-->
+<!--      worker-src blob:;-->
+<!--      child-src blob: gap:;-->
+<!--      img-src 'self' blob: data:;-->
+<!--      default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:"/>-->
     <lightning:carousel disableAutoScroll="true">
-        <lightning:carouselImage
-                src=""
-                header="First card"
-                description="First card description"
-                alternativeText="This is a card"
-                href="https://www.example.com">
-        </lightning:carouselImage>
-        <lightning:carouselImage
-                src="path/to/carousel-02.jpg"
-                header="Second card"
-                description="Second card description"
-                alternativeText="This is a card"
-                href="https://www.example.com">
-        </lightning:carouselImage>
-        <lightning:carouselImage
-                src="path/to/carousel-03.jpg"
-                header="Third card"
-                description="Third card description"
-                alternativeText="This is a card"
-                href="https://www.example.com">
-        </lightning:carouselImage>
+
+<!--        src="/sfc/servlet.shepherd/version/download/0687R00000FWkGsQAL"-->
+
+            <lightning:carouselImage
+                    src="https://images.squarespace-cdn.com/content/5d53774433625c0001cda502/1565751640043-L2EWSD0S6NLRF6DTEQPI/Untitled+design+%282%29.png?content-type=image%2Fpng"
+                    header="First card"
+                    description="First card description"
+                    alternativeText="This is a card"
+                    href="https://www.example.com">
+            </lightning:carouselImage>
+
+
     </lightning:carousel>
+<!--    <img src="https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/0687R00000FWkGsQAL"/>-->
 </aura:component>
 
 

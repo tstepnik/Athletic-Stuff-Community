@@ -90,6 +90,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="CSUtils" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="CSUtilsTest" />
@@ -324,9 +325,11 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_Utils" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_UtilsRESTService" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="Message" />
@@ -345,6 +348,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="PicklistUtil" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="RandomGenerator" />
@@ -456,6 +460,14 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="AS_Community_SearchEngineController" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_ProductViewController" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Utils" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
