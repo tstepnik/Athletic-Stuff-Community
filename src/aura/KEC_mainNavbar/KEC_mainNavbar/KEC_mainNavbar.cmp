@@ -1,0 +1,102 @@
+<aura:component description="KEC_mainNavbar"
+                implements="flexipage:availableForAllPageTypes, forceCommunity:availableForAllPageTypes, force:appHostable" controller="KEC_CartController">
+
+    <aura:attribute name="cartItemsValue" type="Integer" />
+    <aura:attribute name="totalPrice" type="Integer" />
+    <aura:attribute name="cartItems" type="List" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:handler event="c:KEC_refreshCartBadge" action="{!c.onInit}" />
+
+    <div class="slds-context-bar">
+        <div class="slds-context-bar__primary">
+            <div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
+                <div class="slds-context-bar__icon-action">
+                </div>
+                <span class="slds-context-bar__label-action slds-context-bar__app-name">
+        <span class="slds-truncate">{!$Label.c.KEC_AppName}</span>
+      </span>
+            </div>
+        </div>
+        <nav class="slds-context-bar__secondary" role="navigation">
+            <ul class="slds-grid">
+                <li class="slds-context-bar__item slds-is-active">
+                    <a class="slds-context-bar__label-action">
+                        <span class="slds-truncate mynavitem" onclick="{!c.toHome}">{!$Label.c.KEC_Home}</span>
+                    </a>
+                </li>
+                <li class="slds-context-bar__item">
+                    <a class="slds-context-bar__label-action">
+                        <span class="slds-truncate mynavitem" onclick="{!c.toSearch}">{!$Label.c.KEC_Products}</span>
+                    </a>
+                </li>
+                <li class="slds-context-bar__item">
+                    <a class="slds-context-bar__label-action">
+                        <span class="slds-truncate mynavitem" onclick="{!c.toLoyaltyProgram}">{!$Label.c.KEC_LoyaltyProgram}</span>
+                    </a>
+                </li>
+                <li class="slds-context-bar__item lasttextitem">
+                    <a class="slds-context-bar__label-action">
+                        <span class="slds-truncate mynavitem" onclick="{!c.toOrders}">{!$Label.c.KEC_YourOrders}</span>
+                    </a>
+                </li>
+                <li class="slds-context-bar__item">
+                    <a class="slds-context-bar__label-action">
+                        <span class="slds-truncate" onclick="{!c.toBasket}" onmouseover="{!c.openPop}" onmouseout="{!c.closePop}">
+                            <lightning:icon iconName="utility:cart"/>
+                            <lightning:badge label="{!v.cartItemsValue}" />
+                            <section aura:id="pop" class="slds-popover slds-nubbin_top-right slds-hide" role="dialog" aria-labelledby="dialog-heading-id-1" aria-describedby="dialog-body-id-6">
+                            <header class="slds-popover__header slds-p-vertical_medium">
+                                <h2 id="dialog-heading-id-1" class="slds-text-heading_medium">{!$Label.c.KEC_Basket}</h2>
+                            </header>
+                            <div class="slds-popover__body" id="dialog-body-id-6">
+                                <aura:if isTrue="{!v.cartItems.length != 0}">
+                                    <table>
+                                    <aura:iteration items="{!v.cartItems}" var="item">
+                                        <tr>
+                                            <td>
+                                                <img src="{!item.product.Product2.ImgPath__c}" width="50" height="100"/>
+                                            </td>
+                                            <td>
+                                                <span class="productname">{!item.product.Product2.Name}</span><br/>
+                                                <span class="mylabel">{!$Label.c.KEC_ColorLabel + ' '}</span><span class="mydesc">{!item.color}</span><br/>
+                                                <span class="mylabel">{!$Label.c.KEC_SizeLabel + ' '}</span><span class="mydesc">{!item.size}</span><br/>
+                                                <span class="mylabel">{!$Label.c.KEC_QuantityLabel + ' '}</span><span class="mydesc">{!item.quantity}</span>
+                                            </td>
+                                            <td class="totalprice">
+                                                <aura:if isTrue="{!or(item.product.Product2.BestPrice__c == null, item.product.Product2.BestPrice__c == item.product.UnitPrice)}">
+                                                    <span>{!item.quantity * item.product.UnitPrice}{!$Label.c.KEC_PricePostfix}</span><br/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!and(item.product.Product2.BestPrice__c != null, greaterthan(item.product.UnitPrice, item.product.Product2.BestPrice__c))}">
+                                                    <span>{!item.quantity * item.product.Product2.BestPrice__c}{!$Label.c.KEC_PricePostfix}</span><br/>
+                                                </aura:if>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>
+                                    </table>
+                                    <span class="summary">{!$Label.c.KEC_TotalPriceLabel + ' ' + v.totalPrice + $Label.c.KEC_PricePostfix}</span><br/>
+                                    <lightning:button label="{!$Label.c.KEC_GoToBasket}" class="basketbtn" onclick="{!c.toBasket}"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.cartItems.length == 0}">
+                                    <span>{!$Label.c.KEC_EmptyCart}</span>
+                                </aura:if>
+                            </div>
+                            <footer class="slds-popover__footer">
+                            </footer>
+                        </section>
+                        </span>
+                    </a>
+                </li>
+                <li class="slds-context-bar__item">
+                    <a class="slds-context-bar__label-action">
+                        <span class="slds-truncate" onclick="{!c.toFavorites}">
+                            <lightning:icon iconName="utility:favorite"/>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <c:KEC_toastHandler aura:id="toastCmp" />
+    <c:KEC_redirectionHandler aura:id="redirectCmp" />
+</aura:component>

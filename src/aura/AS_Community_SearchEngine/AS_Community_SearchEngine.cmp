@@ -8,7 +8,7 @@
 <!--    <aura:attribute name="searchProduct" type="Aura.Action" />-->
 
     <div class="slds-card">
-        <ligh
+
 <!--        <div class="topnav">-->
 <!--            <div class="search-container">-->
 <!--                <form class="slds-form&#45;&#45;inline">-->
