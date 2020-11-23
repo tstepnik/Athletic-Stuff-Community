@@ -1,0 +1,22 @@
+/**
+ * Created by tomas on 20.11.2020.
+ */
+.THIS {
+    height: 50%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.THIS .carousel-image img {
+    width: 100%;
+    max-height: 25rem;
+}
+
+.THIS .slds-carousel__content {
+    display: none;
+}
+
+.THIS .slds-carousel__autoplay {
+    display: none;
+}

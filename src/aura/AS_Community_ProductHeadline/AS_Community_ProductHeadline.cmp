@@ -1,0 +1,17 @@
+<!--
+ - Created by tomas on 20.11.2020.
+ -->
+
+<aura:component description="AS_Community_ProductHeadline"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                 force:appHostable,
+                 force:hasRecordId"
+                controller="AS_Community_AddToBasketController"
+>
+
+    <!-- Base variant: Makes a button look like a link -->
+    <div class="buttons">
+    <lightning:button variant="brand" label="Buy product" title="Buy product" onclick="{! c.handleClick }" />
+    </div>
+</aura:component>

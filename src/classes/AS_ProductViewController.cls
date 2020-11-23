@@ -2,6 +2,7 @@
 public with sharing class AS_ProductViewController {
 
 
+    @auraEnabled
     public static List<documentContentWrapper> getProductPictures(String productId) {
         try {
             System.debug(productId);

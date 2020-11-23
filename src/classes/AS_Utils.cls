@@ -4,8 +4,7 @@
 
 public with sharing class AS_Utils {
 
-    public static AS_GoogleAuth__c authSetting() {
+    public  static AS_GoogleAuth__c authSetting() {
         return AS_GoogleAuth__c.getInstance();
     }
-
 }

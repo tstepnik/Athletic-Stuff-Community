@@ -1,0 +1,60 @@
+/**
+ * Created by tomas on 21.11.2020.
+ */
+.THIS {
+    display: flex;
+    justify-content: space-between;
+    background-color: #2b9a9b;
+    color: white;
+    padding: 0.9rem 0rem;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.THIS .feature {
+    width: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.THIS .benefito-image{
+     width: 17%;
+     height: auto;
+ }
+
+.THIS .benefito-image img {
+    width: 100%;
+    height: auto;
+    color: white;
+}
+
+
+.THIS .shield img{
+    height: 85%;
+}
+
+.THIS .benefito-text {
+    margin-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.THIS .shield-text {
+   justify-content: start;
+}
+
+
+.THIS .text-title p {
+    font-size: 1rem !important;
+    font-weight: bold;
+
+}
+
+
+.THIS .text-description p {
+    font-size: 0.8rem !important;
+}
+

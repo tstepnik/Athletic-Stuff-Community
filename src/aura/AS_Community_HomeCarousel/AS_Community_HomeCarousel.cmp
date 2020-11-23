@@ -1,0 +1,37 @@
+<!--
+ - Created by tomas on 20.11.2020.
+ -->
+
+<aura:component
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                 force:appHostable,
+                 force:hasRecordId">
+
+    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
+        <lightning:carouselImage
+                class="carousel-image"
+                src = "https://athletic-stuff-dev-ed--c.visualforce.com/resource/1605865723000/weekendWarrios"
+                header = "First Card"
+                description = "First card description."
+                alternativeText = "First card accessible description."
+                href = "https://www.google.com">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+                class="carousel-image"
+                src = "https://athletic-stuff-dev-ed--c.visualforce.com/resource/1605866361000/tryoutnew"
+                header = "Second Card"
+                description = "Second card description."
+                alternativeText = "Second card accessible description."
+                href = "https://www.google.com">
+        </lightning:carouselImage>
+        <lightning:carouselImage
+                class="carousel-image"
+                src = "https://athletic-stuff-dev-ed--c.visualforce.com/resource/1605866408000/swim"
+                header = "Third Card"
+                description = "Third card description."
+                alternativeText = "Third card accessible description."
+                href = "https://www.google.com">
+        </lightning:carouselImage>
+    </lightning:carousel>
+</aura:component>

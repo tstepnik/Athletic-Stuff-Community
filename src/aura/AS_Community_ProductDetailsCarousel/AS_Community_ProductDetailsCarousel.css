@@ -1,0 +1,22 @@
+.THIS .slds-carousel__content {
+    display: none;
+}
+
+.THIS .slds-carousel__autoplay {
+    display: none;
+}
+
+.THIS .prd-carousel .slds-size_6-of-12 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.THIS .carousel-div {
+    width: 100%;
+    height: 100%;
+}
+
+.THIS .prd-carousel .cAS_Community_ProductDetailsCarousel {
+    display: flex !important;
+    justify-content: center !important;
+}

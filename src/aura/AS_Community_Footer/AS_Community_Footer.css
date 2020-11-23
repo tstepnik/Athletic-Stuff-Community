@@ -1,0 +1,212 @@
+.THIS {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.THIS .container {
+    width: 100%;
+    height: 100%;
+}
+
+.THIS .footer-part1 {
+
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 2px -2px gray;
+
+}
+
+.THIS .part1 {
+    padding: 0.9rem 0rem;
+    margin-top: 3rem;
+    width: 80%;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+}
+
+.THIS .feature {
+    width: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.THIS .benefito-image {
+    width: 20%;
+    height: auto;
+}
+
+.THIS .benefito-image img {
+    width: 70%;
+    height: auto;
+    color: white;
+}
+
+.THIS .benefito-text {
+    margin-left: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.THIS .shield-text {
+    justify-content: start;
+}
+
+.THIS .text-title p {
+    font-size: 0.9rem !important;
+    font-weight: bold;
+
+}
+
+.THIS .text-description p {
+    font-size: 0.8rem !important;
+}
+
+
+.THIS .footer-part2 {
+    margin-top: 6rem;
+    width: 100%;
+    background-color: #3d3d3d;
+    color: white;
+    height: 100%;
+    min-height: 15rem;
+}
+
+.THIS .part2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+
+.THIS .column {
+
+    margin-top: 3rem;
+    margin-right: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.THIS .col1 {
+    margin-left: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.THIS .col2 {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.THIS .col2 p{
+    width: 100%;
+}
+.THIS .col3 {
+    margin-right: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.THIS .col3 h1{
+
+    margin-left: 0.5rem;
+}
+
+
+.THIS .icons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.THIS .icons a{
+
+    margin: 0 0.5rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+.THIS .icons a img{
+    width: 70%;
+    transition: all .5s;
+
+}
+.THIS .icons a img:hover,
+.THIS .icons a img:focus{
+    transform: scale(1.2);
+}
+
+.THIS .icons  img:after{
+    transform: scale(1);
+    transition: all .5s;
+}
+
+
+.THIS .col1 h1 {
+    margin-left: 0.5rem;
+font-size: 1rem;
+}
+
+.THIS .payment-icons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.THIS .payment-icon{
+    margin: 0.7rem 0.5rem 0;
+
+    background-color: white;
+    border-radius: 0.2rem;
+    height: 2.5rem;
+    width: 3.3rem;
+    padding: 0.3rem 0.3rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+.THIS .payment-icon img{
+    margin: 0;
+    padding: 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

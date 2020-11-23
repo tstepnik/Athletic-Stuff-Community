@@ -1,0 +1,52 @@
+/**
+ * Created by tomas on 20.11.2020.
+ */
+.THIS .mainContentArea {
+    background-color: #f6f7f7;
+    width: 100% ;
+    margin-left: auto ;
+    margin-right: auto ;
+
+}
+.THIS .profileMenuRegion span {
+    color: black;
+}
+
+.THIS .profileMenuRegion .login-link span {
+    color: black;
+}
+
+.THIS .main-menu {
+    height: 4rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.THIS .search-engine-special-offers {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    display: flex;
+    width: 100%;
+}
+
+.THIS .searchRegion .search-field{
+    height: 5px;
+}
+
+.THIS .search-button {
+    display: none;
+}
+
+.THIS .forceCommunitySearchBox .result-container {
+    width: auto;
+    min-width: 100%;
+    max-width: 50rem;
+}
+
+.THIS .searchRegion .forceCommunitySearchBox .search-field {
+    padding: 0 1rem 0 .75rem;
+    height: 32px;
+    border: 1px solid #d4d4d4;
+}

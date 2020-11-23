@@ -1,0 +1,60 @@
+<aura:component description="AS_Community_catchOpportunity"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes">
+
+    <div class="container">
+        <div class="customer-section">
+        <div class="section-bacground sec1">
+        </div>
+        <div class="section-desc">
+            <h1>Woman ❯</h1>
+            <p>leggings</p>
+            <p>sweatshirts</p>
+            <p>winter jackets</p>
+            <p>winter shoes</p>
+            <p>sweats</p>
+            <p>polars</p>
+        </div>
+    </div>
+        <div class="customer-section">
+            <div class="section-bacground sec2">
+            </div>
+            <div class="section-desc">
+                <h1>Man ❯</h1>
+                <p>men's winter boots</p>
+                <p>men's sweatpants</p>
+                <p>winter jackets</p>
+                <p>men's fleece</p>
+                <p>thermoactive underwear</p>
+                <p>sox</p>
+            </div>
+        </div>
+        <div class="customer-section">
+            <div class="section-bacground sec3">
+            </div>
+            <div class="section-desc">
+                <h1>Child ❯</h1>
+                <p>children's winter boots</p>
+                <p>children's sweatpants</p>
+                <p>winter jackets</p>
+                <p>children's fleece</p>
+                <p>baby shoes</p>
+                <p>caps</p>
+            </div>
+        </div>
+        <div class="customer-section">
+            <div class="section-bacground sec4">
+            </div>
+            <div class="section-desc">
+                <h1>Accessories ❯</h1>
+                <p>exercise tape</p>
+                <p>Exercise mats</p>
+                <p>exercise balls</p>
+                <p>skipping rope</p>
+                <p>winter caps</p>
+                <p>shawls</p>
+                <p>gloves</p>
+            </div>
+        </div>
+    </div>
+</aura:component>

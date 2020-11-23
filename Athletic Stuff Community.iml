@@ -259,30 +259,39 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRESTHandler" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRESTResponseWrapper" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRESTService" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRESTServiceHelper" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRESTServiceMock" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRESTWebServiceResponse" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRestController" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRestControllerTest" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRestMultiMock" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalTriggerHandler" />
@@ -468,6 +477,14 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="AS_Utils" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_AddToBasketController" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_AddProductToCache" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -798,10 +815,6 @@
                             <option name="name" value="AS_SelectedShopOnList" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="CustomTemplate" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="DataImportTab" />
                           </MetadataEntry>
                           <MetadataEntry>
@@ -845,6 +858,46 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="AS_Community_Basket" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_Theme" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_HomeCarousel" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_ProductDetails" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_ProductHeadline" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_BasketProductList" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="TestComponentLayout" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_gliderTrack" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_catchOpportunity" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_ProductsForEveryone" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_Footer" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

@@ -1,0 +1,50 @@
+<!--
+ - Created by tomas on 21.11.2020.
+ -->
+
+<aura:component description="AS_Community_gliderTrack"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes">
+
+    <div class="glider-track">
+        <div class="feature">
+            <div class="benefito-image">
+                <img src="{!$Resource.AS_CommunityTracker_Delivery}"/>
+            </div>
+            <div class="benefito-text">
+                <div class="text-title"><p class="p-text-title">Fast Delivery</p></div>
+                <div class="text-description"><p class="p-text-desc">With 24 hour</p></div>
+            </div>
+        </div>
+        <div class="feature">
+            <div class="benefito-image">
+                <img src="{!$Resource.AS_CommunityTracker_Car}"/>
+            </div>
+            <div class="benefito-text">
+                <div class="text-title"><p class="p-text-title">Click and Collect</p></div>
+                <div class="text-description"><p class="p-text-desc">Take order from car</p></div>
+            </div>
+        </div>
+        <div class="feature">
+            <div class="benefito-image">
+                <img src="{!$Resource.AS_CommunityTracker_headphones}"/>
+            </div>
+            <div class="benefito-text">
+                <div class="text-title"><p class="p-text-title">Order by phone</p></div>
+                <div class="text-description"><p class="p-text-desc">Call to our specialist</p></div>
+            </div>
+        </div>
+        <div class="feature shield">
+            <div class="benefito-image">
+                <img src="{!$Resource.AS_CommunityTracker_CovidShield}"/>
+            </div>
+            <div class="benefito-text shield-text">
+                <div class="text-title"><p class="p-text-title">Ready for Covid</p></div>
+                <div class="text-description"><p class="p-text-desc">We obey WHO recommendation</p></div>
+            </div>
+        </div>
+
+    </div>
+
+
+</aura:component>

@@ -1,0 +1,116 @@
+.THIS {
+
+    width: 90%;
+    height: 100%;
+    display: flex;
+    padding: 0.6rem;
+    height: 25rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.THIS .container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.THIS .min-container{
+    position: relative;
+    width: 33%;
+    margin: 0.6rem;
+    overflow: hidden;
+}
+
+.THIS .opportunity {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: flex-end;
+}
+
+.THIS .opp1 {
+    height: 100%;
+    background:linear-gradient(to bottom,
+    rgba(0,0,0,0) 75%,
+    rgb(96, 0, 12)),
+    url("https://athletic-stuff-dev-ed--c.visualforce.com/resource/1606046107000/AS_Community_CatchOpportunity_pic1");
+    background-size: cover;
+    overflow: hidden;
+    transition: all .5s;
+
+}
+
+.THIS .opp2 {
+    height: 100%;
+    background:linear-gradient(
+            to bottom,
+            rgba(0,0,0,0) 75%,
+            rgb(96, 0, 12)),
+    url("https://athletic-stuff-dev-ed--c.visualforce.com/resource/1606050272000/AS_Community_CatchOpportunity_pic3");
+    background-size: cover;
+    overflow: hidden;
+    transition: all .5s;
+
+}
+
+.THIS .opp3 {
+    height: 100%;
+    background:linear-gradient(to bottom,
+    rgba(0,0,0,0) 75%,
+    rgb(96, 0, 12)),
+    url("https://athletic-stuff-dev-ed--c.visualforce.com/resource/1606050255000/AS_Community_CatchOpportunity_pic2");
+
+    background-size: cover;
+    overflow: hidden;
+    transition: all .5s;
+}
+
+.THIS .opp1:hover,
+.THIS .opp1:focus,
+.THIS .opp2:hover,
+.THIS.opp2:focus,
+.THIS .opp3:hover,
+.THIS .opp3:focus{
+    transform: scale(1.2);
+
+}
+.THIS .opp1:after,
+
+.THIS .opp2:after,
+
+.THIS .opp3:after {
+    transform: scale(1);
+    transition: all .5s;
+
+}
+
+.THIS .opportunity_txt-btn{
+    position: absolute;
+    color: white;
+    top: 75%;
+    left: 0%;
+    display: flex;
+    flex-direction: column;
+}
+
+.THIS .opportunity_txt-btn p {
+    margin-left: 1.1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.THIS .opportunity-button {
+    max-width: 5rem;
+    color:white;
+    background: initial;
+    border: 1px solid white;
+    margin: 0.2rem 1rem 1rem;
+}
+
+.THIS .opportunity-button:hover,
+.THIS .opportunity-button:focus{
+    border: 2px solid #2b9a9b;
+}

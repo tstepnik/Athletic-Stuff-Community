@@ -1,0 +1,80 @@
+<aura:component description="AS_Community_gliderTrack"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes">
+
+    <div class="container">
+        <div class="footer-part1">
+            <div class="part1">
+                <div class="feature">
+                    <div class="benefito-image">
+                        <img src="{!$Resource.AS_Community_FooterTracker_pic1}"/>
+                    </div>
+                    <div class="benefito-text">
+                        <div class="text-title"><p class="p-text-title">Order and take in Athletic Stuff</p></div>
+                        <div class="text-description"><p class="p-text-desc">With free delivery and collection even for
+                            1 hour.</p></div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="benefito-image">
+                        <img src="{!$Resource.AS_Community_FooterTracker_pic2}"/>
+                    </div>
+                    <div class="benefito-text">
+                        <div class="text-title"><p class="p-text-title">Free shipping</p></div>
+                        <div class="text-description"><p class="p-text-desc">from 99$</p></div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="benefito-image">
+                        <img src="{!$Resource.AS_Community_FooterTracker_pic3}"/>
+                    </div>
+                    <div class="benefito-text">
+                        <div class="text-title"><p class="p-text-title">Free return</p></div>
+                        <div class="text-description"><p class="p-text-desc">For 30 days since purchase</p></div>
+                    </div>
+                </div>
+                <div class="feature shield">
+                    <div class="benefito-image">
+                        <img src="{!$Resource.AS_Community_FooterTracker_pic4}"/>
+                    </div>
+                    <div class="benefito-text shield-text">
+                        <div class="text-title"><p class="p-text-title">Save forms of delivery</p></div>
+                        <div class="text-description"><p class="p-text-desc">parcel lockers, pick up points,
+                            carriers</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-part2">
+
+            <div class="part2">
+                <div class="column col1">
+                    <h1>Safe payments</h1>
+                    <div class="payment-icons">
+                        <div class="payment-icon"><img src="{!$Resource.AS_CommunityFooter_Payment_Blik}"/></div>
+                        <div class="payment-icon"><img src="{!$Resource.AS_CommunityFooter_Payment_Przelewy24}"/></div>
+                        <div class="payment-icon"><img src="{!$Resource.AS_CommunityFooter_Payment_Visa}"/></div>
+                        <div class="payment-icon"><img src="{!$Resource.AS_CommunityFooter_Payment_MasterCard}"/></div>
+                        <div class="payment-icon"><img src="{!$Resource.AS_CommunityFooter_Payment_Ca_Raty}"/></div>
+                    </div>
+                </div>
+                <div class="column col2">
+                <h1>Contact</h1>
+                    <div class="phone">
+                        <p>Phone: 886 002 443</p>
+                        <p>Email: contact@athleticStuff.com</p>
+                    </div>
+                </div>
+                <div class="column col3">
+                <h1>Find us on</h1>
+                    <div class="icons">
+                        <a href="http://fb.com" target="_blank"><img src="{!$Resource.AS_Community_Footer_WhiteFB}"/></a>
+                        <a href="http://instagram.com" target="_blank"><img src="{!$Resource.AS_Community_Footer_WhiteInstagram}"/></a>
+                        <a href="http://youtube.com" target="_blank"><img src="{!$Resource.AS_Community_Footer_WhiteYT}"/></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</aura:component>

@@ -1,0 +1,50 @@
+<aura:component description="AS_Community_catchOpportunity"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes">
+
+    <div class="container">
+        <div class="min-container">
+            <div class="opportunity opp1">
+            </div>
+            <div class="opportunity_txt-btn">
+                <p>Winter shoes</p>
+                <lightning:button
+                        class="opportunity-button"
+                        variant="brand-outline"
+                        label="Buy"
+                        title="Buy"/>
+            </div>
+
+        </div>
+
+
+        <div class="min-container">
+            <div class="opportunity opp2">
+            </div>
+            <div class="opportunity_txt-btn">
+                <p>Trousers</p>
+                <lightning:button
+                        class="opportunity-button"
+                        variant="brand-outline"
+                        label="Buy"
+                        title="Buy"/>
+            </div>
+
+        </div>
+
+
+        <div class="min-container">
+            <div class="opportunity opp3">
+            </div>
+            <div class="opportunity_txt-btn">
+            <p>Running kicks</p>
+                <lightning:button
+                        class="opportunity-button"
+                        variant="brand-outline"
+                        label="Buy"
+                        title="Buy"/>
+            </div>
+
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,108 @@
+.THIS {
+    width: 80%;
+    display: flex;
+    padding: 0.6rem;
+    height: 35rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.THIS .section-title{
+    display: block;
+    max-height: 1rem;
+}
+
+.THIS .container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.THIS .customer-section {
+    position: relative;
+    width: 25%;
+    margin: 0.6rem;
+    overflow: hidden;
+}
+
+.THIS .section-bacground {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: flex-end;
+    background-size: cover !important;
+    overflow: hidden;
+    transition: all .5s;
+}
+
+.THIS .section-desc h1:hover,
+.THIS .section-desc h1:focus{
+    color: #5db7f9;
+    cursor: pointer;
+}
+
+.THIS .sec1 {
+    background: url("https://athletic-stuff-dev-ed--c.visualforce.com/resource/1606061582000/AS_Community_ProductsForEveryone_Woman");
+}
+
+.THIS .sec2 {
+    background: url("https://athletic-stuff-dev-ed--c.visualforce.com/resource/1606061608000/AS_Community_ProductsForEveryone_Man");
+}
+
+.THIS .sec3 {
+    background: url("https://athletic-stuff-dev-ed--c.visualforce.com/resource/1606061633000/AS_Community_ProductsForEveryone_Child");
+}
+
+.THIS .sec4 {
+    background: url("https://athletic-stuff-dev-ed--c.visualforce.com/resource/1606061680000/AS_Community_ProductsForEveryone_Accessories");
+}
+
+
+.THIS .sec1:hover,
+.THIS .sec1:focus,
+.THIS .sec2:hover,
+.THIS .sec2:focus,
+.THIS .sec3:hover,
+.THIS .sec3:focus,
+.THIS .sec4:hover,
+.THIS .sec4:focus {
+    transform: scale(1.2);
+
+}
+
+
+.THIS .sec1:after,
+.THIS .sec2:after,
+.THIS .sec3:after,
+.THIS .sec4:after {
+    transform: scale(1);
+    transition: all .5s;
+}
+
+.THIS .section-desc {
+    position: absolute;
+    top: 45%;
+    left: 10%;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 50%;
+    background-color: white;
+    opacity: 0.85;
+}
+
+.THIS .section-desc h1 {
+    margin-left: 2rem;
+    margin-top: 1rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: black;
+}
+
+.THIS .section-desc p {
+    margin-left: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+}

@@ -1,3 +1,0 @@
-<aura:event type="APPLICATION" description="AS_DivisionSearch_EditRecordEvent">
-    <aura:attribute name="record" type="Object"/>
-</aura:event>
