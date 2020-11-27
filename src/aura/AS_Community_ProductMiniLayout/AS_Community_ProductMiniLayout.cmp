@@ -11,21 +11,21 @@ controller="AS_ProductViewController">
     <aura:attribute name="mainPicture" type="Object"/>
     <aura:attribute name="pictureUrl" type="String"/>
 
-    <force:recordData aura:id="recordLoader"
-                      recordId="{!v.product.Id}"
-                      fields="[Name,Id,mainPictureId__c]"
-                      targetFields="{!v.product}"
-                      targetError="{!v.recordLoadError}"
-    />
+<!--    <force:recordData aura:id="recordLoader"-->
+<!--                      recordId="{!v.product.productId}"-->
+<!--                      fields="[Name,Id,mainPictureId__c]"-->
+<!--                      targetFields="{!v.product}"-->
+<!--                      targetError="{!v.recordLoadError}"-->
+<!--    />-->
 
     <lightning:layout>
     <ui:button class="product-mini-container" press="{!c.redirect}">
 <!--        <div class="product-mini-background" style="{!'background-image:url(\''+v.product.mainPictureId__c+''}">-->
-        <div class="product-mini-background" style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">
+        <div class="product-mini-background" style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId+'\')'}">
         </div>
         <div class="product-mini-desc">
-        <p class="product-name">{!v.product.Name}</p>
-            <p class="product-price">Price: 40$</p>
+        <p class="product-name">{!v.product.productName}</p>
+            <p class="product-price">Price: {!v.product.price}</p>
         </div>
     </ui:button>
     </lightning:layout>

@@ -9,29 +9,31 @@
                 flexipage:availableForRecordHome,
                  force:hasRecordId"
 >
-        <aura:attribute name="product" type="Object"/>
-        <aura:attribute name="pictures" type="List"/>
-        <aura:attribute name="recordLoadError" type="String"/>
-        <aura:handler name="init" value="{!this}" action="{!c.init}"/>
-        <force:recordData recordId="{!v.recordId}"
-                          fields="Name, Description"
-                          targetFields="{!v.product}"
-                          targetError="{!v.recordLoadError}"
-        />
+    <aura:attribute name="product" type="Object"/>
+    <aura:attribute name="pictures" type="List"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <force:recordData recordId="{!v.recordId}"
+                      fields="Name, Description"
+                      targetFields="{!v.product}"
+                      targetError="{!v.recordLoadError}"
+    />
     <div class="carousel-div">
         <lightning:layout multipleRows="true" class="prd-carousel">
             <lightning:layoutItem size="6">
                 <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false" scrollDuration="3">
                     <aura:iteration items="{!v.pictures}" var="picture">
-<!--                        src = "{!'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/' + picture.documentId}">-->
-<!--                        src = "{!'/sfc/servlet.shepherd/version/download/' + picture.documentId}">-->
+                        <!--                        src = "{!'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/' + picture.documentId}">-->
+                        <!--                        src = "{!'/sfc/servlet.shepherd/version/download/' + picture.documentId}">-->
+                        <!--                        src = "{!'/athletic-stuff-developer-edition.eu45.force.com/sfc/servlet.shepherd/document/download/' + picture.documentId}">-->
 
                         <lightning:carouselImage
-                                src = "{!'/athletic-stuff-developer-edition.eu45.force.com/sfc/servlet.shepherd/document/download/' + picture.documentId}">
+                                src="{!'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/' + picture.documentId}">
+
                         </lightning:carouselImage>
                     </aura:iteration>
                 </lightning:carousel>
             </lightning:layoutItem>
         </lightning:layout>
     </div>
-    </aura:component>
+</aura:component>

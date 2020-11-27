@@ -1,12 +1,51 @@
-/**
- * Created by tomas on 23.11.2020.
- */
-
 public with sharing class AS_Community_Service {
+
+    public static List<ProductInfoWrapper> productInfoWrappers(Product2 product) {
+        List<Product2> products = new List<Product2>();
+        List<String> productIds = new List<String>();
+        List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
+        Map<String, String> productPrices = new Map<String, String>();
+        List<AS_Community_Service.ProductInfoWrapper> infoWrappers = new List<AS_Community_Service.ProductInfoWrapper>();
+
+        products = getProducts(product);
+        for (Product2 p : products) {
+            productIds.add(p.Id);
+        }
+
+        pricebookEntries = [
+                SELECT
+                        Id,
+                        IsActive,
+                        UnitPrice,
+                        Product2Id
+                FROM PricebookEntry
+                WHERE Product2Id IN :productIds
+                AND IsActive = true
+        ];
+
+        for (PricebookEntry p : pricebookEntries) {
+            productPrices.put(p.Product2Id, String.valueOf(p.UnitPrice));
+        }
+
+        for (Product2 p : products) {
+            String mainPictureId = p.mainPictureId__c;
+            String productName = p.Name;
+            String price = productPrices.get(p.Id);
+            if (price != null) {
+                ProductInfoWrapper wrapper = new ProductInfoWrapper(p.Id, mainPictureId, productName, price);
+                infoWrappers.add(wrapper);
+            }
+        }
+
+        return infoWrappers;
+
+    }
 
     public static List<Product2> getProducts(Product2 product) {
         List<Product2> products = new List<Product2>();
         String query = queryBuilder(product);
+        System.debug('QUERY:');
+        System.debug(query);
         System.debug(query);
         products = Database.query(query);
         return products;
@@ -35,12 +74,16 @@ public with sharing class AS_Community_Service {
                 'mainPictureId__c'
         };
 
+
         String searchedFields = searchedFields(searchedParameters);
         String condition = providedConditions(productMap, providedParameters, 'OR');
         String query = 'SELECT ';
         query += searchedFields;
         query += ' FROM Product2';
-        query += ' WHERE ' + condition;
+        Boolean noInput = productMap.get('Name') == null;
+        if (!noInput) {
+            query += ' WHERE ' + condition;
+        }
 
         return query;
     }
@@ -103,7 +146,7 @@ public with sharing class AS_Community_Service {
         }
     }
 
-    private static List<ContentDocumentLink> getContentDocumentLinkIds(String productId){
+    private static List<ContentDocumentLink> getContentDocumentLinkIds(String productId) {
         return [
                 SELECT ContentDocument.LatestPublishedVersionId
                 FROM ContentDocumentLink
@@ -111,7 +154,7 @@ public with sharing class AS_Community_Service {
                 LIMIT 10
         ];
     }
-    private static List<DocumentContentWrapper> wrapContentDocumentLinks(List<ContentDocumentLink> contentDocumentLinks){
+    private static List<DocumentContentWrapper> wrapContentDocumentLinks(List<ContentDocumentLink> contentDocumentLinks) {
         List<DocumentContentWrapper> documentContentWrappers = new List<DocumentContentWrapper>();
         for (ContentDocumentLink contentDocumentLink : contentDocumentLinks) {
             documentContentWrappers.add(new DocumentContentWrapper(contentDocumentLink.ContentDocument.LatestPublishedVersionId));
@@ -128,4 +171,32 @@ public with sharing class AS_Community_Service {
         }
     }
 
+    public class ProductInfoWrapper {
+        @auraEnabled
+        public String productId { get; set; }
+        @auraEnabled
+        public String mainPictureId { get; set; }
+        @auraEnabled
+        public String productName { get; set; }
+        @auraEnabled
+        public String price { get; set; }
+
+        ProductInfoWrapper(String productId, String mainPicId, String productName, String price) {
+            this.productId = productId;
+            this.mainPictureId = mainPicId;
+            this.productName = productName;
+            this.price = price;
+        }
+    }
+
+    public static String getProductPrice(String productId) {
+        Decimal price = [
+                SELECT
+                        UnitPrice
+                FROM PricebookEntry
+                WHERE Product2Id = :productId
+        ][0].UnitPrice;
+
+        return String.valueOf(price);
+    }
 }

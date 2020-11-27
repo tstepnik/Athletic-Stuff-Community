@@ -3,12 +3,11 @@
  -->
 
 <aura:component description="AS_Community_ProductSearchList"
-                controller="AS_Community_SearchEngine"
                 implements="flexipage:availableForAllPageTypes,
                 forceCommunity:availableForAllPageTypes,
                 flexipage:availableForRecordHome,
                  force:appHostable">
-<aura:attribute name="products" type="Product2[]"/>
+<aura:attribute name="products" type="Object[]"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 <!--    <aura:handler name="change" value="{!v.products}" action="{!c.doInit}"/>-->
@@ -23,7 +22,7 @@
                 </aura:iteration>
                 <aura:set attribute="else">
                     <lightning:layoutItem class="slds-align_absolute-center" flexibility="auto" padding="around-small">
-                        <ui:outputText value="No cars found"/>
+                        <ui:outputText value="No products found"/>
                     </lightning:layoutItem>
                 </aura:set>
             </aura:if>

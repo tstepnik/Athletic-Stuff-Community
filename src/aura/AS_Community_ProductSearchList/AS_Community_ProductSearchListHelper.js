@@ -1,6 +1,6 @@
 ({
     loadProducts: function (component, event, helper) {
-        let sessionKey = 'products';
+        let sessionKey = 'productWrappers';
         let sessionJson = sessionStorage.getItem(sessionKey);
         let products = JSON.parse(sessionJson);
         component.set('v.products', products);

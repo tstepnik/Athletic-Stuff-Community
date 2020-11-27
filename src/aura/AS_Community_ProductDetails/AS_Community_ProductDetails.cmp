@@ -6,11 +6,13 @@
                  force:appHostable,
                  force:hasRecordId">
     <aura:attribute name="product" type="Object"/>
+    <aura:attribute name="price" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
 
 
     <force:recordData aura:id="recordLoader"
                       recordId="{!v.recordId}"
-                      fields="Name,Description,Family"
+                      fields="Id,Name,Description,Family"
                       targetFields="{!v.product}"
                       targetError="{!v.recordLoadError}"
     />
@@ -27,11 +29,10 @@
             <span></span>
             <span></span>
         </div>
-<!--            <div> - 5 stars</div>-->
         </div>
         <div class="price">
             <p class="price-word">Price: </p>
-            <p class="price-number">35$</p>
+            <p class="price-number">{!v.price} $</p>
         </div>
         <h1 class="description-title">Description</h1>
         <p class="description">{!v.product.Description}</p>
