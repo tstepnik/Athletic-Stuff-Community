@@ -1,0 +1,11 @@
+<!--
+ - Created by BRITENET on 15.01.2020.
+ -->
+
+<aura:component description="KEC_toastHandler">
+    <aura:method name="toast" action="{!c.fireToast}">
+        <aura:attribute name="title" type="String"/>
+        <aura:attribute name="type" type="String" />
+        <aura:attribute name="message" type="String" />
+    </aura:method>
+</aura:component>

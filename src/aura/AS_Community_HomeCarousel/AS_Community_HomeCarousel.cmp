@@ -11,7 +11,7 @@
     <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
         <lightning:carouselImage
                 class="carousel-image"
-                src = "https://athletic-stuff-dev-ed--c.visualforce.com/resource/1605865723000/weekendWarrios"
+                src = "/resource/1605865723000/weekendWarrios"
                 header = "First Card"
                 description = "First card description."
                 alternativeText = "First card accessible description."
@@ -19,7 +19,7 @@
         </lightning:carouselImage>
         <lightning:carouselImage
                 class="carousel-image"
-                src = "https://athletic-stuff-dev-ed--c.visualforce.com/resource/1605866361000/tryoutnew"
+                src = "/resource/1605866361000/tryoutnew"
                 header = "Second Card"
                 description = "Second card description."
                 alternativeText = "Second card accessible description."
@@ -27,7 +27,7 @@
         </lightning:carouselImage>
         <lightning:carouselImage
                 class="carousel-image"
-                src = "https://athletic-stuff-dev-ed--c.visualforce.com/resource/1605866408000/swim"
+                src = "/resource/1605866408000/swim"
                 header = "Third Card"
                 description = "Third card description."
                 alternativeText = "Third card accessible description."
@@ -35,3 +35,5 @@
         </lightning:carouselImage>
     </lightning:carousel>
 </aura:component>
+
+<!--https://athletic-stuff-dev-ed&#45;&#45;c.visualforce.com-->

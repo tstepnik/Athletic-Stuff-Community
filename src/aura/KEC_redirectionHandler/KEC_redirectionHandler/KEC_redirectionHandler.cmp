@@ -1,0 +1,9 @@
+<!--
+ - Created by BRITENET on 16.01.2020.
+ -->
+
+<aura:component description="KEC_redirectionHandler">
+    <aura:method name="redirectToSite" action="{!c.onRedirect}">
+        <aura:attribute name="urlAddress" type="String"/>
+    </aura:method>
+</aura:component>

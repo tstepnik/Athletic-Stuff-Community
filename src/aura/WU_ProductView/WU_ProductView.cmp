@@ -1,0 +1,118 @@
+<aura:component description="WU_ProductView" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes"
+                controller="WU_ProductViewController">
+    <aura:attribute name="product" type="Object"/>
+    <aura:attribute name="sizes" type="List"/>
+    <aura:attribute name="response" type="Object"/>
+    <aura:attribute name="errorMessage" type="String"/>
+    <aura:attribute name="price" type="Object"/>
+    <aura:attribute name="stars" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Name, Description, Color__c, Family, RecordType.Name, Product_Size__c, Brand__c, ProductCode"
+                      targetFields="{!v.product}"
+                      targetError="{!v.errorMessage}"
+                      recordUpdated="{!c.handleRecords}"
+    />
+    <aura:if isTrue="{!v.errorMessage.length > 0}">
+        <div class="slds-p-horizontal_small">
+            <div class="slds-text-body_regular slds-m-vertical_medium slds-align_absolute-center">
+                        {!v.errorMessage}
+                </div>
+        </div>
+        <aura:set attribute="else">
+            <lightning:layout multipleRows="true">
+                <lightning:layoutItem size="1"/>
+                <lightning:layoutItem size="5">
+                    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false" scrollDuration="2">
+                        <aura:iteration items="{!v.response.pictures}" var="picture">
+                            <lightning:carouselImage
+                                    src="{!'/sfc/servlet.shepherd/version/download/' + picture.pictureId}"> 
+                            </lightning:carouselImage>
+                        </aura:iteration>
+                    </lightning:carousel>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6">
+                    <div class="product-details">
+                        <div class="product-brand">Brand: <a href="#">{!v.product.Brand__c}</a></div>
+                        <h1>{!v.product.Name}</h1>
+                        <div class="product-code">Product no.{!v.product.ProductCode}</div>
+                        <div class="product-details-panel">
+                            <div class="rating">
+                                <div class="product-rating slds-button-group-row">
+                                    <aura:iteration items="{!v.stars}" var="star">
+                                        <aura:if isTrue="{!star}">
+                                            <span></span>
+                                            <aura:set  attribute="else">
+                                                <span class="empty-star"></span>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:iteration>
+                                </div>
+                            </div>
+                            <div class="product-info">User avarage opinion: <span>{!v.response.rating}</span></div>
+                            <div class="product-info">
+                                Color: <span>{!v.product.Color__c}</span>
+                            </div>
+                            <div class="product-info">
+                                Type: <span>{!v.product.RecordType.Name}</span>
+                            </div>
+                            <div class="product-buy">
+                                <div class="product-size">
+                                    <p>SIZE:</p>
+                                    <aura:iteration items="{!v.sizes}" var="size">
+                                        <lightning:button label="{!size}"/>
+                                    </aura:iteration>
+                                </div>
+                                <div class="product-prize">
+                                    <lightning:formattedNumber value="{!v.response.productPrice}" style="currency" currencyCode="USD"/>
+                                </div>
+                            </div>
+                            <div class="product-add-to-basket">
+                                <lightning:button label="ADD TO BASKET"/><!-- change to price-->
+                            </div>
+                        </div>
+                        <div class="product-additional-info">
+                            <div>
+                                <div>
+                                    <img src="/resource/WU_FastShipping/" alt="24 hour icon"/>
+                                </div>
+                                <p>Fast Shipping</p>
+                            </div>
+                            <br/>
+                            <div>
+                                <div>
+                                    <img src="/resource/WU_returnTime/" alt="30 days icon"/>
+                                </div>
+                                <p>30 days for return products</p>
+                            </div>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout >
+                    <lightning:tabset class="tabset-margin-bottom" selectedTabId="collection">
+                        <lightning:tab label="Description" id="description">
+                            <lightning:layout>
+                                <lightning:layoutItem size="1"/>
+                                <lightning:layoutItem size="10">
+                                        {!v.product.Description}
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="1"/>
+                            </lightning:layout>
+                        </lightning:tab>
+                        <lightning:tab label="Complete collection" id="collection">
+                            When i will do search form there will be more stuffs to buy
+                        </lightning:tab>
+                        <lightning:tab label="Customer Reviews" id="reviews">
+                            <c:WU_CustomerReviewsShow productId="{!v.recordId}"/>
+                        </lightning:tab>
+                        <lightning:tab label="Add review" id="addReview">
+                            <c:WU_CustomerReviewsAdd recordId="{!v.recordId}"/>
+                        </lightning:tab>
+                    </lightning:tabset>
+            </lightning:layout>
+        </aura:set>
+    </aura:if>
+
+</aura:component>

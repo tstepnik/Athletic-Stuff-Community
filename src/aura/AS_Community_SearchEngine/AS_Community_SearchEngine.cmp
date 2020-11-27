@@ -1,13 +1,21 @@
 <aura:component description="AS_Community_SearchEngine"
-                implements="flexipage:availableForAllPageTypes, forceCommunity:availableForAllPageTypes, force:appHostable"
+                implements="flexipage:availableForAllPageTypes,
+                 forceCommunity:availableForAllPageTypes,
+                  force:appHostable"
+                controller="AS_Community_SearchEngineController"
 >
+    <aura:registerEvent name="searchEvent" type="c:AS_DivisionSearch_SearchEvent"/>
+    <aura:attribute name="inputText" type="String"/>
     <div class="slds-card">
         <div class="topnav">
             <div class="search-container">
+
                 <form class="slds-form--inline">
-                    <lightning:input class="myinpt" type="text" placeholder="Type name or product code" name="search"/>
-                    <lightning:buttonIcon iconName="utility:search"  class="mybtn"/>
+                    <lightning:input class="myinpt" type="text" placeholder="Type..." name="search" value="{!v.inputText}"/>
+                    <lightning:button iconName="utility:search"  class="mybtn" onclick="{!c.redirect}"/>
                 </form>
+
+
             </div>
         </div>
     </div>

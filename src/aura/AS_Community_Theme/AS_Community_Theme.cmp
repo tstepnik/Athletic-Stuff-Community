@@ -9,38 +9,36 @@
     <div class="container">
         <lightning:layout multipleRows="true" class="containerrr">
 
-            <div class="main-menu sticky">
-                <Lightning:layoutItem size="5">
-                    <div class="navigation">
+            <div class="main-menu-container">
+                <div class="main-menu sticky">
+                    <Lightning:layoutItem size="9">
+                        <div class="navigation">
 
                             {!v.menu}
                     </div>
-                </Lightning:layoutItem>
-                <Lightning:layoutItem size="4">
-                    <div class="searchRegion">
+                    </Lightning:layoutItem>
+                    <!--                <Lightning:layoutItem size="4">-->
+                    <!--                    <div class="searchRegion">-->
 
-                            {!v.search}
-                    </div>
-                </Lightning:layoutItem>
+                    <!--                            {!v.search}-->
+                    <!--                    </div>-->
+                    <!--                </Lightning:layoutItem>-->
+                    <Lightning:layoutItem size="1">
+                        <div class="profileMenuRegion">
 
-                <Lightning:layoutItem size="1">
-                    <div class="profileMenuRegion">
+                                {!v.basket}
 
-                            {!v.basket}
+                        </div>
+                    </Lightning:layoutItem>
+                    <Lightning:layoutItem size="2">
+                        <div class="profileMenuRegion profileIcon">
 
-                    </div>
-                </Lightning:layoutItem>
+                                {!v.profileMenu}
 
-
-                <Lightning:layoutItem size="2">
-                    <div class="profileMenuRegion profileIcon">
-
-                            {!v.profileMenu}
-
-                    </div>
-                </Lightning:layoutItem>
+                        </div>
+                    </Lightning:layoutItem>
+                </div>
             </div>
-
             <Lightning:layoutItem size="12">
                 <div class="navigation">
                         {!v.headline}

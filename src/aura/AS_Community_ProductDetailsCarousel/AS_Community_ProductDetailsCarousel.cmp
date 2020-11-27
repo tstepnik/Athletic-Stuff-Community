@@ -7,7 +7,6 @@
         implements="flexipage:availableForAllPageTypes,
                 forceCommunity:availableForAllPageTypes,
                 flexipage:availableForRecordHome,
-                 force:appHostable,
                  force:hasRecordId"
 >
         <aura:attribute name="product" type="Object"/>
@@ -24,8 +23,11 @@
             <lightning:layoutItem size="6">
                 <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false" scrollDuration="3">
                     <aura:iteration items="{!v.pictures}" var="picture">
+<!--                        src = "{!'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/' + picture.documentId}">-->
+<!--                        src = "{!'/sfc/servlet.shepherd/version/download/' + picture.documentId}">-->
+
                         <lightning:carouselImage
-                                src = "{!'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/' + picture.documentId}">
+                                src = "{!'/athletic-stuff-developer-edition.eu45.force.com/sfc/servlet.shepherd/document/download/' + picture.documentId}">
                         </lightning:carouselImage>
                     </aura:iteration>
                 </lightning:carousel>

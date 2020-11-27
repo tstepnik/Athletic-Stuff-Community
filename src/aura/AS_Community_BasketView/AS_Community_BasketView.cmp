@@ -1,0 +1,58 @@
+<!--
+ - Created by tomas on 26.11.2020.
+ -->
+
+<aura:component description="AS_Community_BasketView"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                flexipage:availableForRecordHome,
+                 force:appHostable"
+                controller="AS_Community_BasketListController"
+>
+
+    <aura:attribute name="opportunityProducts" type="Object[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <lightning:notificationsLibrary aura:id="notification"/>
+    <lightning:layout horizontalAlign="center" verticalAlign="center">
+
+        <div class='bView-container'>
+
+            <div class="bView-header">
+                <p class="title">Cart</p>
+            </div>
+
+            <div class="bView-product-list">
+
+
+
+                <aura:if isTrue="{!1 > 0}">
+                                        <aura:iteration items="{!v.opportunityProducts}" end="{!v.opportunityProducts.lenght}" var="product">
+                    <c:AS_Community_BasketItem opportunityProduct = "{!product}" />
+                                        </aura:iteration>
+
+                    <aura:set attribute="else">
+                        <lightning:layoutItem class="slds-align_absolute-center" flexibility="auto" padding="around-small">
+                            <ui:outputText value="Basket is empty"/>
+                        </lightning:layoutItem>
+                    </aura:set>
+                </aura:if>
+
+
+            </div>
+
+            <div class="buttons-and-sum">
+                <div class="b-and-s-ctn">
+                    <div class="buttons">
+                        <button class="btn1">Buy</button>
+                    </div>
+                    <div class="sum">
+                        <p>Sum:</p>
+                        <p>1345</p>
+                        <p>$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </lightning:layout>
+</aura:component>

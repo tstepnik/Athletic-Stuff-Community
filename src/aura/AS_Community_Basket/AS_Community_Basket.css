@@ -1,11 +1,25 @@
 /**
  * Created by tomas on 20.11.2020.
  */
-.THIS .ul-bakset {
+
+.THIS  {
+
+    float: right;
+}
+
+.THIS .ul-basket {
+    float: right;
+}
+
+.THIS li {
     float: right;
 }
 
 
 .THIS .slds-context-bar__item{
     float: right;
+}
+
+.THIS .ul-basket a {
+
 }

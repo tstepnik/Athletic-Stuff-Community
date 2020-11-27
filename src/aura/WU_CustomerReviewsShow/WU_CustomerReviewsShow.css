@@ -1,0 +1,23 @@
+.THIS.slds-feed {
+    min-height: 250px;
+    max-height: 500px;
+    max-width: 100%;
+}
+.THIS .slds-post{
+    background: #f0f0f0;
+    padding: 20px 20px 0 20px;
+    box-shadow: #c3c3c3 4px 2px 4px 3px;
+    margin: 4px 10px;
+}
+.THIS .slds-feed__item{
+    padding: 0;
+}
+.THIS .slds-button_neutral{
+    box-shadow: none;
+}
+.THIS .slds-button_neutral:active, .THIS .slds-button--neutral:active{
+    background: transparent;
+}
+.THIS.current-page{
+    background-color: rgb(57, 58, 59);
+}

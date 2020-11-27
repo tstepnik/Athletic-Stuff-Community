@@ -20,15 +20,14 @@
         <nav class="main-nav" role="navigation">
             <div class="nav-tabs">
                 <ul>
-                    <li><a><span>Home</span></a></li>
+                    <li><a href="/as"><span>Home</span></a></li>
                     <li><a><span>Complaints</span></a></li>
                     <li><a><span>Orders</span></a></li>
                 </ul>
+                <c:AS_Community_SearchEngine/>
             </div>
-
         </nav>
     </div>
-
 </aura:component>
 
 

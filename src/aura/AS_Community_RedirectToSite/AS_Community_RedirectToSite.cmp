@@ -1,0 +1,9 @@
+<!--
+ - Created by tomas on 23.11.2020.
+ -->
+
+<aura:component description="AS_Community_RedirectToSite">
+    <aura:method name="redirectToSite" action="{!c.onRedirect}">
+        <aura:attribute name="urlAddress" type="String"/>
+    </aura:method>
+</aura:component>

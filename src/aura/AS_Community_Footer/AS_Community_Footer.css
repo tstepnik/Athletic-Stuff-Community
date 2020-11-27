@@ -140,6 +140,7 @@
 
 .THIS .icons a img{
     width: 70%;
+    min-width: 5rem;
     transition: all .5s;
 
 }

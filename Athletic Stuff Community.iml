@@ -190,15 +190,18 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_ContractOverlappingHandler" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_ContractOverlappingHandlerTest" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_ContractTriggerHandler" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_Contract_Service" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_DoctorBuilder" />
@@ -217,12 +220,14 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_DoctorSOAPService" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_DoctorTriggerHandler" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_DoctorWebService" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_DoctorWebServiceMock" />
@@ -241,6 +246,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_Doctor_Service" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_ExternalServiceConnetionException" />
@@ -256,6 +262,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalCalloutTriggerHandler" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalRESTHandler" />
@@ -295,6 +302,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalTriggerHandler" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_Hospital_Extension" />
@@ -304,6 +312,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_Hospital_Service" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_InvalidCredentialsException" />
@@ -433,6 +442,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="TriggerHandler" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="ViewShareSurveyComponentController" />
@@ -484,7 +494,19 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="AS_Community_AddProductToCache" />
+                            <option name="name" value="AS_Community_SearchEngine" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_Service" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_ContentDocumentLink_TriggerHandler" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_BasketListController" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
@@ -682,15 +704,22 @@
                         <list>
                           <MetadataEntry>
                             <option name="name" value="MH_ContractTrigger" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_DoctorTrigger" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalTrigger" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="SurveyQuestionResponse" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_ContentDocumentLinkTrigger" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>
                       </option>
@@ -877,10 +906,6 @@
                             <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
-                            <option name="name" value="AS_Community_BasketProductList" />
-                            <option name="selected" value="true" />
-                          </MetadataEntry>
-                          <MetadataEntry>
                             <option name="name" value="TestComponentLayout" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
@@ -898,6 +923,30 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="AS_Community_Footer" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_RedirectToSite" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_ProductMiniLayout" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_ProductSearchList" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_SearchEvent" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_BasketItem" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_Community_BasketView" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

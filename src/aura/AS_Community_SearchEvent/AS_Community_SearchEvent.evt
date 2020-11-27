@@ -1,0 +1,7 @@
+<!--
+ - Created by tomas on 23.11.2020.
+ -->
+
+<aura:event type="APPLICATION" description="AS_Community_SearchEvent">
+    <aura:attribute type="Object[]" name="products"/>
+</aura:event>

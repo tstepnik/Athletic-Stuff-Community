@@ -1,0 +1,61 @@
+<aura:component description="WU_CustomerReviewsShow" controller="WU_ProductReviewController"
+                implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="productReview" type="Product_Review__c"/>
+    <aura:attribute name="response" type="Object"/>
+    <aura:attribute name="productId" type="String"/>
+    <aura:attribute name="currentPage" type="Integer"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:if isTrue="{!empty(v.response.reviews)}">
+        There is no Reviews. Be the first one!
+        <aura:set attribute="else">
+            <lightning:layout>
+            <div class="slds-container_center slds-grid_pull-padded-medium" style="margin-bottom: 20px;">
+                    <lightning:button onclick="{!c.onGetFirstPageReviews}" label="Go To first page"/>
+                <aura:if isTrue="{!v.response.previousPage}">
+                    <lightning:button onclick="{!c.onGetPreviousPage}"
+                                      label="{!'Previous page: ' + v.response.previousPage}"/>
+                </aura:if>
+                <lightning:button label="{!v.response.currentPage}" class="current-page"/>
+                <aura:if isTrue="{!v.response.nextPage}">
+                    <lightning:button onclick="{!c.onGetNextPage}" label="{!'Next page: ' + v.response.nextPage}"/>
+                </aura:if>
+                of
+                <lightning:button label="{!v.response.allPages}"/>
+            </div>
+            </lightning:layout>
+            <ul class="slds-feed__list">
+                <aura:iteration items="{!v.response.reviews}" var="review">
+                    <li class="slds-feed__item">
+                        <article class="slds-post">
+                            <header class="slds-post__header slds-media">
+                                <div class="slds-media__figure">
+                                    <a href="javascript:void(0);" class="slds-avatar slds-avatar_circle">
+                                        <img alt="{!review.createdByName}" src="{!review.createdBySmallPhotoUrl}"
+                                             title="{!review.createdByName}"/>
+                                    </a>
+                                </div>
+                                <div class="slds-media__body">
+                                    <div>
+                                        <p>
+                                            <a href="javascript:void(0);" title="{!review.createdByName}"
+                                               data-userid="{!review.createdById}"
+                                               onclick="{!c.onUserInfoClick}">{!review.createdByName}</a>
+                                            <aura:if isTrue="{!review.createdByCompanyName}">
+                                                — {!review.commentDate}</aura:if>
+                                        </p>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="slds-post__content slds-text-longform">
+                                <p>{!review.name}</p>
+                                <lightning:formattedRichText value="{!review.comment}"/>
+                                <div class="slds-form-element__label slds-no-flex">Rating</div>
+                                <c:WU_RatingFiveStars value="{!review.rating}" readonly="true"/>
+                            </div>
+                        </article>
+                    </li>
+                </aura:iteration>
+            </ul>
+        </aura:set>
+    </aura:if>
+</aura:component>

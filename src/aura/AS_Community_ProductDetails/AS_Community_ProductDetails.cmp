@@ -6,7 +6,7 @@
                  force:appHostable,
                  force:hasRecordId">
     <aura:attribute name="product" type="Object"/>
-    <aura:attribute name="recordLoadError" type="String"/>
+
 
     <force:recordData aura:id="recordLoader"
                       recordId="{!v.recordId}"
@@ -27,7 +27,8 @@
             <span></span>
             <span></span>
         </div>
-            <div> - 5 stars</div></div>
+<!--            <div> - 5 stars</div>-->
+        </div>
         <div class="price">
             <p class="price-word">Price: </p>
             <p class="price-number">35$</p>

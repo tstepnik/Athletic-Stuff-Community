@@ -1,0 +1,32 @@
+<!--
+ - Created by tomas on 23.11.2020.
+ -->
+
+<aura:component description="AS_Community_ProductSearchList"
+                controller="AS_Community_SearchEngine"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                flexipage:availableForRecordHome,
+                 force:appHostable">
+<aura:attribute name="products" type="Product2[]"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+<!--    <aura:handler name="change" value="{!v.products}" action="{!c.doInit}"/>-->
+
+    <div class='slds-m-around_medium listContainer'>
+        <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
+            <aura:if isTrue="{!v.products.length > 0}">
+                <aura:iteration items="{!v.products}" end="{!v.products.lenght}" var="product">
+                    <lightning:layoutItem flexibility="auto"  class="slds-m-around_xx-large" >
+                        <c:AS_Community_ProductMiniLayout product="{!product}"/>
+                    </lightning:layoutItem>
+                </aura:iteration>
+                <aura:set attribute="else">
+                    <lightning:layoutItem class="slds-align_absolute-center" flexibility="auto" padding="around-small">
+                        <ui:outputText value="No cars found"/>
+                    </lightning:layoutItem>
+                </aura:set>
+            </aura:if>
+        </lightning:layout>
+    </div>
+</aura:component>

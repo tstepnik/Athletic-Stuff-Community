@@ -1,0 +1,114 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global"
+                controller="AS_DivisionSearch_DetailsController">
+
+    <aura:attribute name="isRecordEdited" type="Boolean"/>
+    <aura:attribute name="isRecordClicked" type="Boolean"/>
+    <aura:attribute name="showConfirmDialog" type="Boolean"/>
+    <aura:attribute name="wrapperIsNotNull" type="Boolean"/>
+    <aura:attribute name="accountIdd" type="String"/>
+    <aura:attribute name="wrapper" type="Object"/>
+    <aura:handler event="c:AS_DivisionSearch_SelectAccountEvent" action="{!c.handler}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent name="accountSelectEvent" type="c:AS_DivisionSearch_RefreshTableEvent" />
+
+    <aura:registerEvent name="deleteRecordEvent" type="c:AS_DivisionSearch_DeleteRecordEvent" />
+<!--    <aura:registerEvent name="editRecordEvent" type="c:AS_DivisionSearch_EditRecordEvent" />-->
+    <lightning:notificationsLibrary aura:id="notification"/>
+
+
+    <aura:if isTrue="{!v.showConfirmDialog}">
+        <!--Modal Box Start-->
+        <div role="dialog" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <!--Modal Box Header Start-->
+                <header class="slds-modal__header">
+                    <h1 class="slds-text-heading--medium">Confirmation</h1>
+                </header>
+                <!--Modal Box Header End-->
+
+                <!--Modal Box Content Start-->
+                <div class="slds-modal__content slds-p-around--medium">
+                    <center><b>Are you sure you want to delete {!v.wrapper.name} ?</b></center>
+                </div>
+                <!--Modal Box Content End-->
+
+                <!--Modal Box Button Start-->
+                <footer class="slds-modal__footer">
+                    <lightning:button name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+                    <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleConfirmDialogYes}'/>
+                </footer>
+                <!--Modal Box Button End-->
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+
+    <aura:if isTrue="{!and(!v.isRecordEdited,v.wrapperIsNotNull)}">
+        <lightning:card title="Details" iconName="standard:individual">
+            <lightning:recordViewForm recordId="{!v.wrapper.recordId}" objectApiName="Account">
+                <lightning:layout multipleRows="true">
+                    <aura:if isTrue="{!v.isRecordClicked}">
+                        <lightning:layoutItem size="12"
+                                              class="slds-p-horizontal_medium slds-p-vertical_medium slds-text-align_right">
+                            <lightning:button
+                                    variant="neutral"
+                                    type="submit"
+                                    label="Edit"
+                                    name="Edit"
+                                    onclick="{!c.showEditForm}"/>
+                            <lightning:button
+                                    variant="brand"
+                                    type="submit"
+                                    label="Delete"
+                                    name="Delete"
+                                    onclick="{!c.handleConfirmDialog}"/>
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <lightning:layoutItem size="5" class="slds-p-horizontal_medium slds-p-vertical_medium">
+                        <lightning:outputField fieldName="Name"/>
+                        <lightning:outputField fieldName="BillingCountry"/>
+                        <lightning:outputField fieldName="BillingCity"/>
+                        <lightning:outputField fieldName="BillingStreet"/>
+                        <lightning:outputField fieldName="RecordTypeId"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="5" class="slds-p-horizontal_medium slds-p-vertical_medium">
+                        <lightning:outputField fieldName="OwnerId"/>
+                        <lightning:outputField fieldName="NumberOfEmployees"/>
+                        <lightning:outputField fieldName="Phone"/>
+                        <lightning:outputField fieldName="Rating"/>
+                        <lightning:outputField fieldName="Industry"/>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </lightning:recordViewForm>
+        </lightning:card>
+    </aura:if>
+    <aura:if isTrue="{!and(v.isRecordEdited,v.wrapperIsNotNull)}">
+        <lightning:card title="Details" iconName="standard:individual">
+            <lightning:recordEditForm recordId="{!v.wrapper.recordId}" objectApiName="Account"
+                                      onsuccess="{!c.saveEdit}">
+                <lightning:layout multipleRows="true">
+
+
+                    <lightning:layoutItem size="6" class="slds-p-horizontal_medium slds-p-vertical_medium">
+                        <lightning:inputField fieldName="Name" aura:id="wrapperName" value="{!v.wrapper.name}"/>
+                        <lightning:inputField fieldName="BillingCountry" aura:id="wrapperCountry" value="{!v.wrapper.country}"/>
+                        <lightning:inputField fieldName="BillingCity" aura:id="wrapperCity" value="{!v.wrapper.city}"/>
+                        <lightning:inputField fieldName="BillingStreet" aura:id="wrapperStreet"/>
+                        <lightning:inputField fieldName="RecordTypeId" aura:id="wrapperRecordTypeId"/>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" class="slds-p-horizontal_medium slds-p-vertical_medium">
+                        <lightning:inputField fieldName="OwnerId" aura:id="wrapperOwnerId"/>
+                        <lightning:inputField fieldName="NumberOfEmployees" aura:id="wrapperNumberOfEmployees"/>
+                        <lightning:inputField fieldName="Phone" aura:id="wrapperPhone"/>
+                        <lightning:inputField fieldName="Rating" aura:id="wrapperRating" value="{!v.wrapper.rating}"/>
+                        <lightning:inputField fieldName="Industry" aura:id="wrapperIndustry"/>
+                        <lightning:inputField fieldName="Active__c" aura:id="wrapperActive" value="{!v.wrapper.active}"/>
+                    </lightning:layoutItem>
+                    <lightning:button class="slds-m-top_small" variant="brand" label="Save" type="submit" name="Save"/>
+                    <lightning:button class="slds-m-top_small" variant="neutral" label="Cancel"
+                                      onclick="{!c.hideEditForm}"/>
+                </lightning:layout>
+            </lightning:recordEditForm>
+        </lightning:card>
+    </aura:if>
+</aura:component>
