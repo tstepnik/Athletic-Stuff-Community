@@ -21,6 +21,8 @@ public with sharing class AS_Community_Service {
                 FROM PricebookEntry
                 WHERE Product2Id IN :productIds
                 AND IsActive = true
+                LIMIT 16
+                OFFSET 0
         ];
 
         for (PricebookEntry p : pricebookEntries) {

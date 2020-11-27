@@ -1,13 +1,7 @@
-/**
- * Created by tomas on 24.11.2020.
- */
 
 .THIS {
     margin-top: 10rem;
-}
-
-.THIS .slds-m-around_medium .cAS_Community_ProductSearchList {
-    width: 80%;
+    width: 66%;
     margin-left: auto;
     margin-right: auto;
 }
