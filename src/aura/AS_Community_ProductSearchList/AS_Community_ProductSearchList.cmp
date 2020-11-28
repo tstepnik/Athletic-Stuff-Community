@@ -7,17 +7,17 @@
                 forceCommunity:availableForAllPageTypes,
                 flexipage:availableForRecordHome,
                  force:appHostable">
-<aura:attribute name="products" type="Object[]"/>
+    <aura:attribute name="products" type="Object[]"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-<!--    <aura:handler name="change" value="{!v.products}" action="{!c.doInit}"/>-->
+    <!--    <aura:handler name="change" value="{!v.products}" action="{!c.doInit}"/>-->
 
     <div class='slds-m-around_medium listContainer'>
         <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
 
             <aura:if isTrue="{!v.products.length > 0}">
                 <aura:iteration items="{!v.products}" end="{!v.products.lenght}" var="product">
-                    <lightning:layoutItem flexibility="auto"  class="slds-m-around_xx-large" >
+                    <lightning:layoutItem flexibility="auto" class="slds-m-around_xx-large">
                         <c:AS_Community_ProductMiniLayout product="{!product}"/>
                     </lightning:layoutItem>
                 </aura:iteration>
@@ -27,6 +27,37 @@
                     </lightning:layoutItem>
                 </aura:set>
             </aura:if>
+        </lightning:layout>
+        <lightning:layout class="pagination-lightningLayout">
+
+
+            <div class="pagination">
+                <div class="products-number">
+                    <p>61 - 120 z 6000 ofert</p>
+                </div>
+                <div class="change-page-section">
+                    <div class="previous-page">
+                        <p class="arrow">❮</p>
+                        <p class="changePageWord">PREVIOUS</p>
+                    </div>
+                    <div class="page-numbers">
+                        <p class="page-lp">1</p>
+                        <p class="page-lp">2</p>
+                        <p class="page-lp">3</p>
+                        <p class="page-lp">4</p>
+                        <p class="page-lp">5</p>
+                        <p >z</p>
+                        <p class="readonly">100</p>
+                    </div>
+                    <div class="next-page">
+                        <p class="changePageWord">NEXT</p>
+                        <p class="arrow">❯</p>
+                    </div>
+
+                </div>
+            </div>
+
+
 
         </lightning:layout>
     </div>

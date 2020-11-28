@@ -25,7 +25,7 @@ controller="AS_ProductViewController">
         </div>
         <div class="product-mini-desc">
         <p class="product-name">{!v.product.productName}</p>
-            <p class="product-price">Price: {!v.product.price}</p>
+            <p class="product-price">Price: {!v.product.price} $</p>
         </div>
     </ui:button>
     </lightning:layout>

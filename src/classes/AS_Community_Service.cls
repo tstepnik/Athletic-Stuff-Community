@@ -1,33 +1,29 @@
 public with sharing class AS_Community_Service {
 
     public static List<ProductInfoWrapper> productInfoWrappers(Product2 product) {
-        List<Product2> products = new List<Product2>();
-        List<String> productIds = new List<String>();
-        List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
+
+        List<Product2> products = getProducts(product);
+
+        List<PricebookEntry> pricebookEntries = getPbEntries(16, 0, products);
+
+        Map<String, String> productPrices = getProductPricesMap(pricebookEntries);
+
+        return getProductInfoWrappers(products, productPrices);
+
+    }
+
+    private static Map<String, String> getProductPricesMap(List<PricebookEntry> pbEntries) {
         Map<String, String> productPrices = new Map<String, String>();
-        List<AS_Community_Service.ProductInfoWrapper> infoWrappers = new List<AS_Community_Service.ProductInfoWrapper>();
 
-        products = getProducts(product);
-        for (Product2 p : products) {
-            productIds.add(p.Id);
-        }
-
-        pricebookEntries = [
-                SELECT
-                        Id,
-                        IsActive,
-                        UnitPrice,
-                        Product2Id
-                FROM PricebookEntry
-                WHERE Product2Id IN :productIds
-                AND IsActive = true
-                LIMIT 16
-                OFFSET 0
-        ];
-
-        for (PricebookEntry p : pricebookEntries) {
+        for (PricebookEntry p : pbEntries) {
             productPrices.put(p.Product2Id, String.valueOf(p.UnitPrice));
         }
+
+        return productPrices;
+    }
+
+    public static List<ProductInfoWrapper> getProductInfoWrappers(List<Product2> products, Map<String, String> productPrices) {
+        List<ProductInfoWrapper> infoWrappers = new List<ProductInfoWrapper>();
 
         for (Product2 p : products) {
             String mainPictureId = p.mainPictureId__c;
@@ -40,35 +36,57 @@ public with sharing class AS_Community_Service {
         }
 
         return infoWrappers;
-
     }
+
+    public static List<PricebookEntry> getPbEntries(Integer queryLimit, Integer offset, List<Product2> products) {
+        List<String> productIds = new List<String>();
+        productIds = extractFromObjList('Id', products);
+        List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
+        pricebookEntries = [
+                SELECT
+                        Id,
+                        IsActive,
+                        UnitPrice,
+                        Product2Id
+                FROM PricebookEntry
+                WHERE Product2Id IN :productIds
+                AND IsActive = true
+                LIMIT :queryLimit
+                OFFSET :offset
+        ];
+        return pricebookEntries;
+    }
+
 
     public static List<Product2> getProducts(Product2 product) {
         List<Product2> products = new List<Product2>();
         String query = queryBuilder(product);
-        System.debug('QUERY:');
-        System.debug(query);
-        System.debug(query);
         products = Database.query(query);
         return products;
     }
 
-    private static String queryBuilder(Product2 product) {
-        String jsonProduct = JSON.serialize(product);
-        Map<String, Object> productMap = (Map<String, Object>) JSON.deserializeUntyped(jsonProduct);
 
-        /**
-        * You set query parameters only in this place
-        */
+    public static List<String> extractFromObjList(String extractedField, List<SObject> objList) {
+        List<String> extractedFieldList = new List<String>();
+
+        for (SObject obj : objList) {
+            extractedFieldList.add(String.valueOf(obj.get(extractedField)));
+        }
+        return extractedFieldList;
+    }
+
+
+    private static String queryBuilder(Product2 product) {
+
+        String phrase = product.Name;
+        AS_QueryBuilder queryBuilder = new AS_QueryBuilder();
+
         List<String> providedParameters = new List<String>{
                 'Name',
                 'Family'
         };
 
-        /**
-* Only in this list put field which you are expected to use form object
-*/
-        List<String> searchedParameters = new List<String>{
+        List<String> selectedFields = new List<String>{
                 'Name',
                 'Id',
                 'Family',
@@ -76,66 +94,10 @@ public with sharing class AS_Community_Service {
                 'mainPictureId__c'
         };
 
+        queryBuilder.readyQuery_returnIfFieldsContainPhrase(selectedFields, 'Product2', phrase, providedParameters, 'OR');
 
-        String searchedFields = searchedFields(searchedParameters);
-        String condition = providedConditions(productMap, providedParameters, 'OR');
-        String query = 'SELECT ';
-        query += searchedFields;
-        query += ' FROM Product2';
-        Boolean noInput = productMap.get('Name') == null;
-        if (!noInput) {
-            query += ' WHERE ' + condition;
-        }
+        return queryBuilder.returnQuery();
 
-        return query;
-    }
-
-    private static String searchedFields(List<String> fields) {
-        String searchedFields = '';
-        Boolean firsTime = true;
-        for (String field : fields) {
-            if (firsTime) {
-                searchedFields += field;
-                firsTime = false;
-            } else {
-                searchedFields += ',' + field;
-            }
-        }
-        return searchedFields;
-    }
-
-    //todo handle case when each field is null
-    private static String providedConditions(Map<String, Object> fieldsMap, List<String> conditions, String andOr) {
-        String query = '';
-        if (andOr != 'OR' && andOr != 'AND') {
-            andOr = ' OR ';
-        } else {
-            andOr = ' ' + andOr + ' ';
-        }
-
-
-        Boolean firstQuery = true;
-
-        for (String key : conditions) {
-            if (fieldsMap.containsKey(key) && key != null) {
-                if (!firstQuery) {
-                    if (key == 'id') {
-                        query += andOr + key + ' = \'' + fieldsMap.get(key) + '\'';
-
-                    } else {
-                        query += andOr + key + ' LIKE \'' + fieldsMap.get(key) + '%\'';
-                    }
-                } else {
-                    if (key == 'id') {
-                        query += key + ' = \'' + fieldsMap.get(key) + '\'';
-                    } else {
-                        query += key + ' LIKE \'' + fieldsMap.get(key) + '%\'';
-                    }
-                    firstQuery = false;
-                }
-            }
-        }
-        return query;
     }
 
     public static List<documentContentWrapper> getProductPictures(String productId) {
