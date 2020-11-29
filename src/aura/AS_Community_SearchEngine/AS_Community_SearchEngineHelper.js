@@ -4,7 +4,7 @@
         let inputText = component.get('v.inputText');
         const action = component.get('c.searchProducts');
         action.setParams({inpTxt: inputText});
-console.log('input text: ' + inputText);
+        console.log('input text: ' + inputText);
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "SUCCESS") {

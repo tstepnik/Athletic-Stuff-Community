@@ -4,9 +4,15 @@ public with sharing class AS_Community_Service {
 
         List<Product2> products = getProducts(product);
 
-        List<PricebookEntry> pricebookEntries = getPbEntries(16, 0, products);
+        List<PricebookEntry> pricebookEntries = getPbEntries(products);
 
         Map<String, String> productPrices = getProductPricesMap(pricebookEntries);
+        String q = '\n';
+
+        for(String k : productPrices.keySet()){
+            q += k + ' ' + productPrices.get(k) + '\n';
+        }
+        System.debug(q);
 
         return getProductInfoWrappers(products, productPrices);
 
@@ -28,17 +34,17 @@ public with sharing class AS_Community_Service {
         for (Product2 p : products) {
             String mainPictureId = p.mainPictureId__c;
             String productName = p.Name;
+            //todo here was if prevent null prices
             String price = productPrices.get(p.Id);
-            if (price != null) {
                 ProductInfoWrapper wrapper = new ProductInfoWrapper(p.Id, mainPictureId, productName, price);
                 infoWrappers.add(wrapper);
-            }
+
         }
 
         return infoWrappers;
     }
 
-    public static List<PricebookEntry> getPbEntries(Integer queryLimit, Integer offset, List<Product2> products) {
+    public static List<PricebookEntry> getPbEntries(List<Product2> products) {
         List<String> productIds = new List<String>();
         productIds = extractFromObjList('Id', products);
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
@@ -51,8 +57,8 @@ public with sharing class AS_Community_Service {
                 FROM PricebookEntry
                 WHERE Product2Id IN :productIds
                 AND IsActive = true
-                LIMIT :queryLimit
-                OFFSET :offset
+                AND Pricebook2.Name LIKE 'Standard Price Book'
+                AND UnitPrice != NULL
         ];
         return pricebookEntries;
     }
