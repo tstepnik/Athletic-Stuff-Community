@@ -1,108 +1,84 @@
 public with sharing class AS_Community_Service {
 
-    public static List<ProductInfoWrapper> productInfoWrappers(Product2 product) {
+    public static FirstQueryInfo getFirstQueryInfo(String searchPhrase, Integer queryLimit, Integer offset) {
 
-        List<Product2> products = getProducts(product);
+        List<ProductInfoWrapper> wrappers = productInfoWrappers(searchPhrase, queryLimit, offset);
+        Integer numberOfProducts = countProducts(searchPhrase);
 
-        List<PricebookEntry> pricebookEntries = getPbEntries(products);
+        return new FirstQueryInfo(wrappers, numberOfProducts,queryLimit,searchPhrase,offset);
+    }
 
-        Map<String, String> productPrices = getProductPricesMap(pricebookEntries);
-        String q = '\n';
+    public static List<ProductInfoWrapper> productInfoWrappers(String phrase, Integer queryLimit, Integer offset) {
 
-        for(String k : productPrices.keySet()){
-            q += k + ' ' + productPrices.get(k) + '\n';
-        }
-        System.debug(q);
+        List<PricebookEntry> productsInfo = new List<PricebookEntry>();
 
-        return getProductInfoWrappers(products, productPrices);
+        productsInfo = Database.query(pricebookEntryQuery(phrase, queryLimit, offset));
+        System.debug(pricebookEntryQuery(phrase, queryLimit, offset));
+
+        return convertToInfoWrappers(productsInfo);
 
     }
 
-    private static Map<String, String> getProductPricesMap(List<PricebookEntry> pbEntries) {
-        Map<String, String> productPrices = new Map<String, String>();
+    private static List<ProductInfoWrapper> convertToInfoWrappers(List<PricebookEntry> pbEntries) {
+
+        List<ProductInfoWrapper> wrappers = new List<ProductInfoWrapper>();
 
         for (PricebookEntry p : pbEntries) {
-            productPrices.put(p.Product2Id, String.valueOf(p.UnitPrice));
+            ProductInfoWrapper wrapper = new ProductInfoWrapper(p.Product2Id, p.Product2.mainPictureId__c, p.Product2.Name, String.valueOf(p.UnitPrice));
+            wrappers.add(wrapper);
         }
 
-        return productPrices;
-    }
-
-    public static List<ProductInfoWrapper> getProductInfoWrappers(List<Product2> products, Map<String, String> productPrices) {
-        List<ProductInfoWrapper> infoWrappers = new List<ProductInfoWrapper>();
-
-        for (Product2 p : products) {
-            String mainPictureId = p.mainPictureId__c;
-            String productName = p.Name;
-            //todo here was if prevent null prices
-            String price = productPrices.get(p.Id);
-                ProductInfoWrapper wrapper = new ProductInfoWrapper(p.Id, mainPictureId, productName, price);
-                infoWrappers.add(wrapper);
-
-        }
-
-        return infoWrappers;
-    }
-
-    public static List<PricebookEntry> getPbEntries(List<Product2> products) {
-        List<String> productIds = new List<String>();
-        productIds = extractFromObjList('Id', products);
-        List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
-        pricebookEntries = [
-                SELECT
-                        Id,
-                        IsActive,
-                        UnitPrice,
-                        Product2Id
-                FROM PricebookEntry
-                WHERE Product2Id IN :productIds
-                AND IsActive = true
-                AND Pricebook2.Name LIKE 'Standard Price Book'
-                AND UnitPrice != NULL
-        ];
-        return pricebookEntries;
+        return wrappers;
     }
 
 
-    public static List<Product2> getProducts(Product2 product) {
-        List<Product2> products = new List<Product2>();
-        String query = queryBuilder(product);
-        products = Database.query(query);
-        return products;
-    }
+    private static String pricebookEntryQuery(String phrase, Integer queryLimit, Integer offset) {
 
-
-    public static List<String> extractFromObjList(String extractedField, List<SObject> objList) {
-        List<String> extractedFieldList = new List<String>();
-
-        for (SObject obj : objList) {
-            extractedFieldList.add(String.valueOf(obj.get(extractedField)));
-        }
-        return extractedFieldList;
-    }
-
-
-    private static String queryBuilder(Product2 product) {
-
-        String phrase = product.Name;
         AS_QueryBuilder queryBuilder = new AS_QueryBuilder();
 
         List<String> providedParameters = new List<String>{
-                'Name',
-                'Family'
+                'Product2.Name',
+                'Product2.Family'
         };
 
         List<String> selectedFields = new List<String>{
-                'Name',
                 'Id',
-                'Family',
-                'Description',
-                'mainPictureId__c'
+                'UnitPrice',
+                'Product2Id',
+                'Product2.Name',
+                'Product2.Family',
+                'Product2.Description',
+                'Product2.mainPictureId__c'
         };
 
-        queryBuilder.readyQuery_returnIfFieldsContainPhrase(selectedFields, 'Product2', phrase, providedParameters, 'OR');
-
+        queryBuilder.readyQuery_PricebookEntry_standardPB_returnIfFieldsContainPhrase_andIsActive
+                (selectedFields, 'PricebookEntry', phrase, providedParameters, 'OR');
+        queryBuilder.addLimit(queryLimit);
+        queryBuilder.addOffset(offset);
+        System.debug('QUERY:');
+        queryBuilder.printQuery();
         return queryBuilder.returnQuery();
+
+    }
+
+    public static Integer countProducts(String phrase) {
+
+        AS_QueryBuilder queryBuilder = new AS_QueryBuilder();
+
+        List<String> providedParameters = new List<String>{
+                'Product2.Name',
+                'Product2.Family'
+        };
+
+        List<String> selectedFields = new List<String>{
+                'count()'
+        };
+
+        queryBuilder.readyQuery_PricebookEntry_standardPB_returnIfFieldsContainPhrase_andIsActive
+                (selectedFields, 'PricebookEntry', phrase, providedParameters, 'OR');
+
+        String query = queryBuilder.returnQuery();
+        return Database.countQuery(query);
 
     }
 
@@ -156,6 +132,30 @@ public with sharing class AS_Community_Service {
             this.mainPictureId = mainPicId;
             this.productName = productName;
             this.price = price;
+        }
+    }
+
+    public class FirstQueryInfo {
+        @auraEnabled
+        public List<ProductInfoWrapper> wrappers { get; set; }
+        @auraEnabled
+        public Integer numberOfProducts { get; set; }
+
+        @auraEnabled
+        public Integer queryLimit { get; set; }
+
+        @auraEnabled
+        public String queryPhrase { get; set; }
+
+        @auraEnabled
+        public Integer offset { get; set; }
+
+        public FirstQueryInfo(List<ProductInfoWrapper> wrappers, Integer numberOfProducts, Integer queryLimit, String queryPhrase, Integer offset) {
+            this.wrappers = wrappers;
+            this.numberOfProducts = numberOfProducts;
+            this.queryLimit = queryLimit;
+            this.queryPhrase = queryPhrase;
+            this.offset = offset;
         }
     }
 

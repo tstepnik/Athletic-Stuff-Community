@@ -6,8 +6,22 @@
                 implements="flexipage:availableForAllPageTypes,
                 forceCommunity:availableForAllPageTypes,
                 flexipage:availableForRecordHome,
-                 force:appHostable">
+                 force:appHostable"
+controller="AS_Community_SearchEngineController">
+
     <aura:attribute name="products" type="Object[]"/>
+    <aura:attribute name="recordsNumber" type="String"/>
+    <aura:attribute name="offset" type="Integer"/>
+    <aura:attribute name="recordsOnPage_start" type="String"/>
+    <aura:attribute name="recordsOnPage_end" type="String"/>
+
+    <aura:attribute name="numberOfPages" type="String"/>
+    <aura:attribute name="pageNumber" type="String"/>
+    <aura:attribute name="pn_first" type="String"/>
+    <aura:attribute name="pn_second" type="String"/>
+    <aura:attribute name="pn_third" type="String"/>
+    <aura:attribute name="pn_fourth" type="String"/>
+    <aura:attribute name="pn_fifth" type="String"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <!--    <aura:handler name="change" value="{!v.products}" action="{!c.doInit}"/>-->
@@ -33,10 +47,10 @@
 
             <div class="pagination">
                 <div class="products-number">
-                    <p>61 - 120 z 6000 ofert</p>
+                    <p>{!v.recordsOnPage_start} - {!v.recordsOnPage_end} z {!v.recordsNumber} ofert</p>
                 </div>
                 <div class="change-page-section">
-                    <div class="previous-page">
+                    <div class="previous-page" onclick="{!c.pressPreviousButton}" aura:id="previousPage-id">
                         <p class="arrow">❮</p>
                         <p class="changePageWord">PREVIOUS</p>
                     </div>
@@ -47,9 +61,9 @@
                         <p class="page-lp">4</p>
                         <p class="page-lp">5</p>
                         <p >z</p>
-                        <p class="readonly">100</p>
+                        <p class="readonly">{!v.numberOfPages}</p>
                     </div>
-                    <div class="next-page">
+                    <div class="next-page" onclick="{!c.pressNextButton}" aura:id="nextPage-id">
                         <p class="changePageWord">NEXT</p>
                         <p class="arrow">❯</p>
                     </div>

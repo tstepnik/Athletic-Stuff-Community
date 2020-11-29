@@ -2,9 +2,8 @@
 
     searchOperations: function (component, event, helper) {
         let inputText = component.get('v.inputText');
-        const action = component.get('c.searchProducts');
+        const action = component.get('c.getFirstQueryInfo');
         action.setParams({inpTxt: inputText});
-        console.log('input text: ' + inputText);
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "SUCCESS") {
@@ -26,5 +25,6 @@
             "url": "/global-search/t"
         });
         eUrl.fire();
-    }
+    },
+
 })

@@ -82,3 +82,11 @@
     margin: 0 1rem;
     font-size: 1.5rem;
 }
+
+.THIS .hideElement{
+    display: none;
+}
+
+.THIS .showElement {
+    display: flex;
+}
