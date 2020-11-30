@@ -9,8 +9,15 @@
     <div class="container">
         <lightning:layout multipleRows="true" class="containerrr">
 
+
+
+
             <div class="main-menu-container">
+
                 <div class="main-menu sticky">
+
+
+
                     <Lightning:layoutItem size="9">
                         <div class="navigation">
 
@@ -30,6 +37,8 @@
 
                         </div>
                     </Lightning:layoutItem>
+
+
                     <Lightning:layoutItem size="2">
                         <div class="profileMenuRegion profileIcon">
 
@@ -39,6 +48,7 @@
                     </Lightning:layoutItem>
                 </div>
             </div>
+
             <Lightning:layoutItem size="12">
                 <div class="navigation">
                         {!v.headline}

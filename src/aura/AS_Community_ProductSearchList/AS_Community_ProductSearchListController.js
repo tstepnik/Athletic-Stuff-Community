@@ -12,6 +12,11 @@
     },
     pressNextButton: function(component,event,helper){
         helper.pressNextButton(component,event,helper);
+    },
+
+    choosePage: function (component,event,helper) {
+        console.log('WCHODZI DO GET ICON CONTROLLER');
+        helper.choosePage(component,event);
     }
 
 

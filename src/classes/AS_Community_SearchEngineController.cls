@@ -5,7 +5,7 @@ public with sharing class AS_Community_SearchEngineController {
 
         System.debug('PHRASE:');
         System.debug(inpTxt);
-        return AS_Community_Service.productInfoWrappers(inpTxt,16,offset);
+        return AS_Community_Service.productInfoWrappers(inpTxt,3,offset);
     }
 
 
@@ -15,10 +15,9 @@ public with sharing class AS_Community_SearchEngineController {
         return AS_Community_Service.countProducts(inpTxt);
     }
 
-
     @AuraEnabled
     public static AS_Community_Service.FirstQueryInfo getFirstQueryInfo(String inpTxt){
-        return AS_Community_Service.getFirstQueryInfo(inpTxt,16,0);
+        return AS_Community_Service.getFirstQueryInfo(inpTxt,3,0);
 
     }
 }

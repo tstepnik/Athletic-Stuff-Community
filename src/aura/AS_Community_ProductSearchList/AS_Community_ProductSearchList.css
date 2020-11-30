@@ -90,3 +90,7 @@
 .THIS .showElement {
     display: flex;
 }
+
+.THIS .colorElement {
+    color: orange;
+}

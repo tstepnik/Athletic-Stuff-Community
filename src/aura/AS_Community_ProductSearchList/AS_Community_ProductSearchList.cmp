@@ -12,8 +12,12 @@ controller="AS_Community_SearchEngineController">
     <aura:attribute name="products" type="Object[]"/>
     <aura:attribute name="recordsNumber" type="String"/>
     <aura:attribute name="offset" type="Integer"/>
+    <aura:attribute name="offsetSize" type="Integer"/>
     <aura:attribute name="recordsOnPage_start" type="String"/>
     <aura:attribute name="recordsOnPage_end" type="String"/>
+
+    <aura:attribute name="clickedNumber-value" type="String"/>
+    <aura:attribute name="clickedNumber-auraId" type="String"/>
 
     <aura:attribute name="numberOfPages" type="String"/>
     <aura:attribute name="pageNumber" type="String"/>
@@ -55,11 +59,11 @@ controller="AS_Community_SearchEngineController">
                         <p class="changePageWord">PREVIOUS</p>
                     </div>
                     <div class="page-numbers">
-                        <p class="page-lp">1</p>
-                        <p class="page-lp">2</p>
-                        <p class="page-lp">3</p>
-                        <p class="page-lp">4</p>
-                        <p class="page-lp">5</p>
+                        <p class="page-lp" aura:id="pn-m1" id="{!v.pn_first + ' pn-m1'}" onclick="{!c.choosePage}">{!v.pn_first}</p>
+                        <p class="page-lp" aura:id="pn-m2" id="{!v.pn_second + ' pn-m2'}" onclick="{!c.choosePage}">{!v.pn_second}</p>
+                        <p class="page-lp" aura:id="pn-m3" id="{!v.pn_third + ' pn-m3'}" onclick="{!c.choosePage}">{!v.pn_third}</p>
+                        <p class="page-lp" aura:id="pn-m4" id="{!v.pn_fourth + ' pn-m4'}" onclick="{!c.choosePage}">{!v.pn_fourth}</p>
+                        <p class="page-lp" aura:id="pn-m5" id="{!v.pn_fifth + ' pn-m5'}" onclick="{!c.choosePage}">{!v.pn_fifth}</p>
                         <p >z</p>
                         <p class="readonly">{!v.numberOfPages}</p>
                     </div>
@@ -70,8 +74,6 @@ controller="AS_Community_SearchEngineController">
 
                 </div>
             </div>
-
-
 
         </lightning:layout>
     </div>

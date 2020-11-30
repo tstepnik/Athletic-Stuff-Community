@@ -3,6 +3,7 @@ public with sharing class AS_Community_Service {
     public static FirstQueryInfo getFirstQueryInfo(String searchPhrase, Integer queryLimit, Integer offset) {
 
         List<ProductInfoWrapper> wrappers = productInfoWrappers(searchPhrase, queryLimit, offset);
+
         Integer numberOfProducts = countProducts(searchPhrase);
 
         return new FirstQueryInfo(wrappers, numberOfProducts,queryLimit,searchPhrase,offset);
@@ -13,6 +14,7 @@ public with sharing class AS_Community_Service {
         List<PricebookEntry> productsInfo = new List<PricebookEntry>();
 
         productsInfo = Database.query(pricebookEntryQuery(phrase, queryLimit, offset));
+
         System.debug(pricebookEntryQuery(phrase, queryLimit, offset));
 
         return convertToInfoWrappers(productsInfo);

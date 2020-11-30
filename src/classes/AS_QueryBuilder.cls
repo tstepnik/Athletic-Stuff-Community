@@ -42,6 +42,8 @@ public with sharing class AS_QueryBuilder {
         query = 'SELECT ';
     }
 
+
+
     public String whereCondition_returnIf_FieldsContainPhrase(String phrase, List<String> fields, String andOr) {
         String query = '';
 
@@ -127,7 +129,7 @@ public with sharing class AS_QueryBuilder {
 
     //todo need Test
     public void void_whereCondition_returnIf_CertainFields_Contain_CertainPhrases(Map<String, Object> fieldsMap, List<String> conditions, String andOr) {
-
+        Map<String, String> map = new Map<String, String>();
         andOr = checkAndOr(andOr);
 
         Boolean firstQuery = true;
@@ -263,4 +265,6 @@ public with sharing class AS_QueryBuilder {
             query += ' ) ';
         }
     }
+
+
 }
