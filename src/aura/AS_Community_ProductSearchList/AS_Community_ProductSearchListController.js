@@ -1,6 +1,3 @@
-/**
- * Created by tomas on 23.11.2020.
- */
 ({
 
     doInit: function (component, event, helper) {
@@ -15,9 +12,6 @@
     },
 
     choosePage: function (component,event,helper) {
-        console.log('WCHODZI DO GET ICON CONTROLLER');
         helper.choosePage(component,event);
     }
-
-
 })

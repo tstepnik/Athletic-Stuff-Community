@@ -47,6 +47,7 @@
                         </div>
                     </Lightning:layoutItem>
                 </div>
+                <div class="mainMenu-margin"></div>
             </div>
 
             <Lightning:layoutItem size="12">

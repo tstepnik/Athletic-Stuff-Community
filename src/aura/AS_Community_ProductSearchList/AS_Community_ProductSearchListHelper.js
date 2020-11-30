@@ -5,7 +5,8 @@
         let sessionJson = sessionStorage.getItem(sessionKey);
         let firstQueryInfo = JSON.parse(sessionJson);
         component.set('v.products', firstQueryInfo.wrappers);
-        component.set('v.pageNumber', 1);
+        component.set('v.clickedNumber-value', 1);
+        component.set('v.clickedNumber-auraId', 'pn-m1');
         component.set('v.offset', 0);
         let numberOfRecords = firstQueryInfo.numberOfProducts;
         component.set('v.recordsNumber', numberOfRecords);
@@ -25,17 +26,104 @@
         this.colorElement(component, 'pn-m1');
     },
 
-    setRange: function (component, numberOfRecords, offset, limit) {
-        let rangeStart = offset;
-        component.set('v.recordsOnPage_start', rangeStart);
-        let rangeEnd;
-        if ((limit + offset) > numberOfRecords) {
-            rangeEnd = numberOfRecords;
-        } else {
-            rangeEnd = limit + offset;
-        }
-        component.set('v.recordsOnPage_end', rangeEnd);
+    pressPreviousButton: function (component) {
+        let clickedNbValue = component.get('v.clickedNumber-value');
+        let clickedNbAuraId = component.get('v.clickedNumber-auraId');
 
+        if (clickedNbAuraId === 'pn-m1' && clickedNbValue > 1) {
+            this.decreaseButtons(component);
+        }
+        let pageNumber = component.get('v.clickedNumber-value');
+        component.set('v.clickedNumber-value', pageNumber - 1);
+        this.showNextPage(component);
+        if (1 >= (pageNumber - 1)) {
+            this.hidePreviousPage(component);
+            this.showNextPage(component);
+        }
+
+        let offset = component.get('v.offset');
+        let offsetSize = component.get('v.offsetSize');
+        component.set('v.offset', offset - offsetSize);
+        this.changeData(component, offset - offsetSize);
+    },
+
+    pressNextButton: function (component, event, helper) {
+        console.log('1');
+
+        let clickedNbValue = component.get('v.clickedNumber-value');
+        let clickedNbAuraId = component.get('v.clickedNumber-auraId');
+
+        console.log(clickedNbValue);
+        console.log(clickedNbAuraId);
+        console.log('/////////');
+        let oldAIdNumber = clickedNbAuraId.substring(clickedNbAuraId.length - 1); //number
+        let oldAIdText = clickedNbAuraId.slice(0, -1); //text
+        let newNumber = parseInt(oldAIdNumber) + 1;
+        let newAuraId = oldAIdText + newNumber;
+        console.log('2');
+
+        const numberOfPages = component.get('v.numberOfPages');
+        let offsetSize = component.get('v.offsetSize');
+        console.log('CLICKED AURA:');
+        console.log(clickedNbAuraId);
+        console.log((clickedNbAuraId === 'pn-m5'));
+        if (clickedNbAuraId === 'pn-m5') {
+            this.increaseButtons(component);
+            console.log('WYCHODZI Z INCREASE BUTTONS');
+            console.log(component.get('v.clickedNumber-auraId'));
+            newAuraId = component.get('v.clickedNumber-auraId');
+            clickedNbAuraId = component.get('v.clickedNumber-value');
+    }else {
+            console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+            this.colorElement(component, newAuraId);
+            console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+        }
+        component.set('v.clickedNumber-value', clickedNbValue + 1);
+        component.set('v.clickedNumber-auraId', newAuraId);
+        console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+        console.log('3');
+        console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+
+        this.showPreviousPage(component);
+        if ((clickedNbValue + 1) >= numberOfPages) {
+            this.hideNextPage(component);
+            this.showPreviousPage(component);
+        }
+        console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+        console.log('4');
+
+        let offset = component.get('v.offset');
+        let newOffset = parseInt(offset) + parseInt(offsetSize);
+        component.set('v.offset', newOffset);
+        console.log('5');
+        console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+        this.changeData(component, newOffset);
+        console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+    },
+
+    choosePage: function (component, event) {
+        let id = event.target.id;
+        let fields = id.split(' ');
+        let value = fields[0];
+        let auraId = fields[1];
+        let element = component.find(auraId);
+        this.removeColorFromAll(component);
+        $A.util.toggleClass(element, "colorElement");
+        let offsetSize = component.get('v.offsetSize');
+        let offset = (offsetSize * value) - offsetSize;
+        this.changeData(component, offset);
+
+        if (auraId === 'pn-m5') {
+            console.log('WCHODZI DO IF');
+            this.increaseButtons(component);
+        }
+        if (value > 1) {
+            this.showPreviousPage(component);
+        } else {
+            this.hidePreviousPage(component);
+        }
+        component.set('v.clickedNumber-auraId', auraId);
+        component.set('v.clickedNumber-value', value);
     },
 
     setNumberOfPages: function (component, numberOfRecords, limit) {
@@ -47,44 +135,6 @@
         component.set('v.numberOfPages', numberOfPages);
     },
 
-    pressPreviousButton: function (component) {
-        let pageNumber = component.get('v.pageNumber');
-        component.set('v.pageNumber', pageNumber - 1);
-        console.log(pageNumber - 1);
-        console.log(1 >= (pageNumber - 1));
-        this.showNextPage(component);
-        if (1 >= (pageNumber - 1)) {
-            console.log('WCHODZI DO IFA');
-            this.hidePreviousPage(component);
-            this.showNextPage(component);
-        }
-
-        let offset = component.get('v.offset');
-        let offsetSize = component.get('v.offsetSize');
-        component.set('v.offset', offset - offsetSize);
-        console.log('OFFSET:');
-        console.log(offset);
-        this.changeData(component, offset - offsetSize);
-    },
-
-    pressNextButton: function (component, event, helper) {
-        console.log('NEXT BUTTON PRESSED');
-        let offsetSize = component.get('v.offsetSize');
-        const numberOfPages = component.get('v.numberOfPages');
-        let pageNumber = component.get('v.pageNumber');
-        component.set('v.pageNumber', pageNumber + 1);
-        this.showPreviousPage(component);
-        if ((pageNumber + 1) >= numberOfPages) {
-            this.hideNextPage(component);
-            this.showPreviousPage(component);
-        }
-
-        let offset = component.get('v.offset');
-        component.set('v.offset', offset + offsetSize);
-        console.log('OFFSET:');
-        console.log(offset);
-        this.changeData(component, offset + offsetSize);
-    },
 
     hidePreviousPage: function (component) {
         console.log('WCHODZI DO HIDE PREVIOUS PAGE');
@@ -118,12 +168,10 @@
     },
 
     changeData: function (component, offset) {
-        console.log('WCHODZI DO CHANGE DATA');
+
         let sessionKey = 'productWrappers';
         let sessionJson = sessionStorage.getItem(sessionKey);
         let firstQueryInfo = JSON.parse(sessionJson);
-        console.log('QUERY PHRASE: ');
-        console.log(firstQueryInfo.queryPhrase);
         let action = component.get("c.getNextPageOffset");
         action.setParams({
             inpTxt: firstQueryInfo.queryPhrase,
@@ -131,16 +179,13 @@
         });
 
         action.setCallback(this, function (response) {
-            console.log('WCHODZI DO SET CALLBACK');
             let state = response.getState();
             if (state === "SUCCESS") {
-                console.log('WCHODZI DO SUCCESS');
 
-
+                console.log('WCHODZI DO SUCCESS!');
                 let productsFromApex = response.getReturnValue();
-                console.log('PRODUKTY:');
-                console.log(productsFromApex);
                 component.set("v.products", productsFromApex);
+                console.log(productsFromApex);
                 let numberOfRecords = firstQueryInfo.numberOfProducts;
                 this.setRange(component, numberOfRecords, offset, firstQueryInfo.queryLimit);
 
@@ -164,6 +209,19 @@
 
     },
 
+    setRange: function (component, numberOfRecords, offset, limit) {
+        let rangeStart = offset;
+        component.set('v.recordsOnPage_start', rangeStart);
+        let rangeEnd;
+        if ((limit + offset) > numberOfRecords) {
+            rangeEnd = numberOfRecords;
+        } else {
+            rangeEnd = limit + offset;
+        }
+        component.set('v.recordsOnPage_end', rangeEnd);
+
+    },
+
     displayPageNumbers: function (component) {
         let numberOfPages = component.get('v.numberOfPages');
 
@@ -179,56 +237,25 @@
         }
     },
 
-    choosePage: function (component, event) {
-        let id = event.target.id;
-        let fields = id.split(' ');
-        let value = fields[0];
-        let auraId = fields[1];
-        let element = component.find(auraId);
-        this.removeColorFromAll(component);
-        $A.util.toggleClass(element, "colorElement");
-        let offsetSize = component.get('v.offsetSize');
-        let offset = (offsetSize * value) - offsetSize;
-        this.changeData(component, offset);
-
-        if (auraId === 'pn-m5') {
-            console.log('WCHODZI DO IF');
-            this.increaseButtons(component);
-        }
-        if (value > 1) {
-            this.showPreviousPage(component);
-        } else {
-            this.hidePreviousPage(component);
-        }
-        component.set('v.clickedNumber-auraId', auraId);
-        component.set('v.clickedNumber-value', value);
-    },
-
     setPageNumbers: function (component, additionalValue) {
-        let c1 = component.get('v.pn_first');
-        component.set('v.pn_first', c1 + additionalValue);
-        let c2 = component.get('v.pn_second');
-        component.set('v.pn_second', c2 + additionalValue);
-        let c3 = component.get('v.pn_third');
-        component.set('v.pn_third', c3 + additionalValue);
-        let c4 = component.get('v.pn_fourth');
-        component.set('v.pn_fourth', c4 + additionalValue);
-        let c5 = component.get('v.pn_fifth');
-        component.set('v.pn_fifth', c5 + additionalValue);
-
+        this.setPageNumber(component, 'pn_first', 'pn-m1', additionalValue);
+        this.setPageNumber(component, 'pn_second', 'pn-m2', additionalValue);
+        this.setPageNumber(component, 'pn_third', 'pn-m3', additionalValue);
+        this.setPageNumber(component, 'pn_fourth', 'pn-m4', additionalValue);
+        this.setPageNumber(component, 'pn_fifth', 'pn-m5', additionalValue);
     },
 
-    setPageNumber: function(component, cmpName, cmpAuraId, additionalValue) {
+    setPageNumber: function (component, cmpName, cmpAuraId, additionalValue) {
         let numberOfPages = component.get('v.numberOfPages');
         let getCmpName = 'v.' + cmpName;
         let cmpValue = component.get(getCmpName);
         let newValue = cmpValue + additionalValue;
         let element = component.find(cmpAuraId);
-        if (newValue <= numberOfPages) {
+        if (newValue <= numberOfPages && newValue > 0) {
             component.set(getCmpName, newValue);
             $A.util.removeClass(element, "hideElement");
             $A.util.toggleClass(element, "showElement");
-        }else {
+        } else {
             $A.util.removeClass(element, "showElement");
             $A.util.toggleClass(element, "hideElement");
         }
@@ -244,9 +271,26 @@
     },
 
     increaseButtons: function (component) {
+        console.log('/////////////////////');
+        console.log('/////////////////////');
+
+        console.log('INCREASE BUTTONS');
+
+        let clickedNbValue = component.get('v.clickedNumber-value');
+        let clickedNbAuraId = component.get('v.clickedNumber-auraId');
+
+        console.log('auraId: ' + clickedNbAuraId);
+        let newNumber = parseInt(clickedNbValue) + 1;
+        //todo check is is changed to String
+        component.set('v.clickedNumber-value',newNumber);
+        component.set('v.clickedNumber-auraId','pn-m1');
+        console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
         this.setPageNumbers(component, 4);
         this.removeColorFromAll(component);
         this.colorElement(component, 'pn-m1');
+        console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
+        console.log('/////////////////////');
+        console.log('/////////////////////');
     },
 
     decreaseButtons: function (component) {
