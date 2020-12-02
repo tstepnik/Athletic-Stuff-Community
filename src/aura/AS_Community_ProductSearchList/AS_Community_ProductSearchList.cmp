@@ -42,7 +42,7 @@
         </lightning:layout>
         <lightning:layout class="pagination-lightningLayout">
 
-            <div class="pagination">
+            <div class="pagination" aura:id="pagination-div">
                 <div class="products-number">
                     <p>{!v.recordsOnPage_start} - {!v.recordsOnPage_end} z {!v.recordsNumber} ofert</p>
                 </div>

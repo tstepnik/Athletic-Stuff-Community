@@ -1,0 +1,40 @@
+<!--
+ - Created by tomas on 02.12.2020.
+ -->
+
+<aura:component description="AS_Community_Basket_HoverElement"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                flexipage:availableForRecordHome,
+                 force:appHostable">
+    <aura:attribute type="String" name="productId"/>
+    <aura:attribute type="Object" name="opportunityProduct"/>
+
+    <aura:attribute name="product" type="Object"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.opportunityProduct.Product2Id}"
+                      fields="Id,Name,Description,Family,mainPictureId__c"
+                      targetFields="{!v.product}"
+                      targetError="{!v.recordLoadError}"
+    />
+
+    <lightning:layout class="mainContainer-layout">
+    <div class="container-div">
+        <div class="container-cmp img">
+            <div class="background-img"
+                 style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">
+            </div>
+
+        </div>
+        <div class="product-title">
+        <p class="p-amount">1 x</p>
+            <p class="p-title">{!v.product.Name}</p>
+        </div>
+        <div class="product-amount">
+        <p class="p-price-sum">Price: 465 $</p>
+        <p class="p-price-unit">{!v.productPrice}$ per unit</p>
+        </div>
+    </div>
+    </lightning:layout>
+
+</aura:component>

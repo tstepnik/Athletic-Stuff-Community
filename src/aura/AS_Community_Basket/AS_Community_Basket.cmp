@@ -7,18 +7,28 @@
                 forceCommunity:availableForAllPageTypes,
                  force:appHostable,
                  force:hasRecordId"
+                controller="AS_Community_BasketListController"
 >
+    <lightning:notificationsLibrary aura:id="notification"/>
+    <aura:attribute name="opportunityProducts" type="Object[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
 
     <lightning:layout >
     <ul class="ul-basket">
         <li class="slds-context-bar__item">
             <a class="slds-context-bar__label-action">
-                        <span class="slds-truncate" onclick="{!c.redirect}">
+                        <span class="slds-truncate" onclick="{!c.redirect}" onmouseenter="{!c.showModal}" onmouseleave="{!c.hideModal}">
                              <lightning:icon iconName="utility:cart" />
                         </span>
             </a>
         </li>
     </ul>
+        <div class="basketModal" aura:id="basket-modal">
+            <aura:iteration items="{!v.opportunityProducts}" end="{!v.opportunityProducts.lenght}" var="product">
+                <c:AS_Community_Basket_HoverElement opportunityProduct = "{!product}" />
+            </aura:iteration>
+
+        </div>
     </lightning:layout>
 
 </aura:component>

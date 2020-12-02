@@ -17,7 +17,6 @@
         this.setRange(component, numberOfRecords, firstQueryInfo.offset, limit);
         this.setNumberOfPages(component, numberOfRecords, limit);
         this.hidePreviousPage(component);
-        this.displayPageNumbers(component);
         component.set('v.pn_first', 1);
         component.set('v.pn_second', 2);
         component.set('v.pn_third', 3);
@@ -25,6 +24,9 @@
         component.set('v.pn_fifth', 5);
         this.setPageNumbers(component,0);
         this.colorElement(component, 'pn-m1');
+        if(numberOfRecords <= 0){
+            this.hidePagination(component);
+        }
     },
 
     pressPreviousButton: function (component) {
@@ -239,21 +241,6 @@
 
     },
 
-    displayPageNumbers: function (component) {
-        let numberOfPages = component.get('v.numberOfPages');
-
-        if (numberOfPages < 3) {
-
-            for (let i = numberOfPages + 1; i <= 3; i++) {
-                let className = 'pn-m' + i;
-                let toggleText = component.find(className);
-                $A.util.removeClass(toggleText, "showElement");
-                $A.util.toggleClass(toggleText, "hideElement");
-            }
-
-        }
-    },
-
     setPageNumbers: function (component, additionalValue) {
         this.setPageNumber(component, 'pn_first', 'pn-m1', additionalValue);
         this.setPageNumber(component, 'pn_second', 'pn-m2', additionalValue);
@@ -315,6 +302,11 @@
         this.removeColorFromAll(component);
         this.colorElement(component, 'pn-m4');
     },
+
+    hidePagination: function (component) {
+        let pagination = component.find('pagination-div');
+        $A.util.toggleClass(pagination, "hideElement");
+    }
 
 
 })

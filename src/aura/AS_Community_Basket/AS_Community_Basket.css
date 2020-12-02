@@ -3,7 +3,7 @@
  */
 
 .THIS  {
-
+position: relative;
     float: right;
 }
 
@@ -23,3 +23,21 @@
 .THIS .ul-basket a {
 
 }
+
+.THIS .basketModal{
+    background-color: white;
+    position: absolute;
+    top: 95%;
+    right: 40%;
+    width: 30rem;
+    padding: 0.5rem 0.5rem 0;
+    border: 2px solid gray;
+}
+
+.THIS .hideElement{
+    display: none;
+}
+
+
+
+

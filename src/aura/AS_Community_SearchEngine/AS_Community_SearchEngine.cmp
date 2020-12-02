@@ -11,7 +11,7 @@
             <div class="search-container">
 
                 <form class="slds-form--inline">
-                    <lightning:input class="myinpt" type="text" placeholder="Type..." name="search" value="{!v.inputText}"/>
+                    <lightning:input label="base" class="myinpt" type="text" placeholder="Type..." name="search" value="{!v.inputText}"/>
                     <lightning:button iconName="utility:search"  class="mybtn" onclick="{!c.redirect}"/>
                 </form>
 

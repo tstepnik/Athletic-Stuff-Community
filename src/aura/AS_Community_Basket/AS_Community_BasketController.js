@@ -9,5 +9,16 @@
             "url": "/cart"
         });
         eUrl.fire();
-    }
+    },
+
+    showModal: function (component, event, helper) {
+         helper.showModal(component,event,helper);
+    },
+    hideModal: function(component,event,helper){
+        helper.hideModal(component);
+    },
+    onInit: function (component,event,helper) {
+        helper.onInit(component,event,helper);
+    },
+
 })
