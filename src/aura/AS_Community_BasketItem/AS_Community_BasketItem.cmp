@@ -19,6 +19,9 @@ controller="AS_Community_BasketItem_Controller">
     <aura:attribute name="productPrice" type="String"/>
     <aura:attribute name="priceSum" type="String"/>
 
+    <aura:registerEvent name="deleteRecordEvent" type="c:AS_Community_RequestSum_Event" />
+
+
     <force:recordData aura:id="recordLoader"
                       recordId="{!v.opportunityProduct.Product2Id}"
                       fields="Id,Name,Description,Family,mainPictureId__c"
@@ -56,7 +59,7 @@ controller="AS_Community_BasketItem_Controller">
                 <p class="price-number">{!v.priceSum}</p>
                 <p class="price-currency">$</p>
             </div>
-            <div class="price-per-unit" aura:id="unitPrice"><p>{!v.productPrice}$ per unit</p> </div>
+            <div class="price-per-unit" aura:id="unitPrice"><p>{!v.opportunityProduct.ListPrice}$ per unit</p> </div>
         </div>
         <div class="container-cmp trash">
             <button onclick="{!c.pressBasket}">

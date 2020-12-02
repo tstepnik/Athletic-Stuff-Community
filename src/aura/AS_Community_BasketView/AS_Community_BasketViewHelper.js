@@ -20,6 +20,33 @@
 
         });
         $A.enqueueAction(action);
+        console.log('PRZED COUNT SUM');
+        console.log('1');
+        this.countSum(component,event);
+
+    },
+
+    countSum: function (component,event) {
+        console.log('2');
+        console.log('WCHODZI DO COUNT SUM');
+        const action = component.get('c.countSum');
+        action.setCallback(this, function (response) {
+            let state = response.getState();
+            if (state === "SUCCESS") {
+                console.log('3');
+                console.log('WCHODZI DO SUCCESS');
+                let priceSum = response.getReturnValue();
+                console.log('Price: ' + priceSum);
+                component.set('v.priceSum',priceSum);
+                if(priceSum <= 0){
+                    this.hideButton(component);
+                }
+            }      else if (state === "ERROR") {
+                this.handleErrors(component,event,response);
+            }
+        });
+        $A.enqueueAction(action);
+
     },
 
     handleShowToast: function (component, event, title, variant, message) {
@@ -29,4 +56,30 @@
             "message": message
         });
     },
+
+    handleEvent: function (component, event) {
+        this.countSum(component,event);
+
+    },
+
+    hideButton: function (component) {
+        let element = component.find('buyBtn');
+        $A.util.toggleClass(element, "hideElement");
+        let cartIsEmpty = component.find('cart-is-empty');
+        $A.util.removeClass(cartIsEmpty, "hideElement");
+
+    },
+
+    showButton: function(component) {
+        let element = component.find('buyBtn');
+        $A.util.removeClass(element, "hideElement");
+        let cartIsEmpty = component.find('cart-is-empty');
+        $A.util.toggleClass(cartIsEmpty, "hideElement");
+    },
+
+    hideEmptyCartText: function (component) {
+        let cartIsEmpty = component.find('cart-is-empty');
+        $A.util.toggleClass(cartIsEmpty, "hideElement");
+    }
+
 })

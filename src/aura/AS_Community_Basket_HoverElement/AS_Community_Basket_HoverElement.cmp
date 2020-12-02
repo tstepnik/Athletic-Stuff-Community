@@ -8,7 +8,10 @@
                 flexipage:availableForRecordHome,
                  force:appHostable">
     <aura:attribute type="String" name="productId"/>
+    <aura:attribute type="String" name="sumPrice"/>
     <aura:attribute type="Object" name="opportunityProduct"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
 
     <aura:attribute name="product" type="Object"/>
     <force:recordData aura:id="recordLoader"
@@ -27,12 +30,12 @@
 
         </div>
         <div class="product-title">
-        <p class="p-amount">1 x</p>
+        <p class="p-amount">{!v.opportunityProduct.Quantity} x</p>
             <p class="p-title">{!v.product.Name}</p>
         </div>
         <div class="product-amount">
-        <p class="p-price-sum">Price: 465 $</p>
-        <p class="p-price-unit">{!v.productPrice}$ per unit</p>
+        <p class="p-price-sum">Price: {!v.sumPrice} $</p>
+        <p class="p-price-unit" aura:id="p-priceInit">{!v.opportunityProduct.ListPrice}$ per unit</p>
         </div>
     </div>
     </lightning:layout>

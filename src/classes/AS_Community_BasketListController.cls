@@ -14,19 +14,6 @@ public with sharing class AS_Community_BasketListController {
             System.debug(o);
             System.debug(o.Product2);
         }
-
-
-        List<OpportunityLineItem> oppProducts = new List<OpportunityLineItem>();
-
-        OpportunityLineItem opp1 = new OpportunityLineItem(Product2Id = '01t7R000007fbU5QAI', UnitPrice = 25.5);
-        OpportunityLineItem opp2 = new OpportunityLineItem(Product2Id = '01t7R000007fcNFQAY', UnitPrice = 52);
-        OpportunityLineItem opp3 = new OpportunityLineItem(Product2Id = '01t7R000007fc4eQAA', UnitPrice = 18);
-
-
-        oppProducts.add(opp1);
-        oppProducts.add(opp2);
-        oppProducts.add(opp3);
-
         return orderItems;
     }
 
@@ -115,6 +102,31 @@ public with sharing class AS_Community_BasketListController {
         PricebookEntry myPricebookEntry = [select id, UnitPrice from PricebookEntry where Product2Id = :productId and Pricebook2.Name = 'Standard'];
         OrderItem myOrderItem = new OrderItem(Product2Id = productId, OrderId = basketOrder.Id, Quantity = quantity, PricebookEntryId = myPricebookEntry.Id, UnitPrice = myPricebookEntry.UnitPrice);
         upsert myOrderItem;
+    }
+
+    @AuraEnabled
+    public static Decimal countSum(){
+        Decimal sum =  0;
+
+        Order basketOrder = getBasketOrder();
+
+        List<OrderItem> items = [
+                select Id,
+                        ListPrice,
+                        Quantity
+                from OrderItem
+                where OrderId = :basketOrder.Id
+        ];
+
+        if(items.isEmpty() || items == null){
+            return 0;
+        }
+
+        for(OrderItem item : items){
+            sum += (item.Quantity * item.ListPrice);
+        }
+
+        return sum.setScale(2,RoundingMode.HALF_UP);
     }
 
 }

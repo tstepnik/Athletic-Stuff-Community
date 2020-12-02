@@ -2,8 +2,8 @@
  * Created by tomas on 20.11.2020.
  */
 
-.THIS  {
-position: relative;
+.THIS {
+    position: relative;
     float: right;
 }
 
@@ -16,7 +16,7 @@ position: relative;
 }
 
 
-.THIS .slds-context-bar__item{
+.THIS .slds-context-bar__item {
     float: right;
 }
 
@@ -24,7 +24,7 @@ position: relative;
 
 }
 
-.THIS .basketModal{
+.THIS .basketModal {
     background-color: white;
     position: absolute;
     top: 95%;
@@ -34,10 +34,26 @@ position: relative;
     border: 2px solid gray;
 }
 
-.THIS .hideElement{
+.THIS .hideElement {
     display: none;
 }
 
+.THIS .sum {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.THIS .sum p {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.THIS .empty-basket-p{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+}
 
 
 

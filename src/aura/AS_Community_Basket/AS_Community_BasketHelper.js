@@ -1,14 +1,13 @@
-/**
- * Created by tomas on 02.12.2020.
- */
 ({
     onInit: function(component,event,helper){
         this.hideModal(component);
         this.getOpportunityProducts(component,event,helper);
+        this.countSum(component,event);
     },
 
 
     getOpportunityProducts: function (component,event,helper) {
+        this.showSpinner(component);
         const action = component.get('c.getOpportunityProducts');
 
         action.setCallback(this, function (response) {
@@ -25,6 +24,7 @@
                     console.error(JSON.stringify(errors[0].message));
                 }
             }
+            this.hideSpinner(component);
 
         });
         $A.enqueueAction(action);
@@ -42,6 +42,7 @@
 
     showModal: function(component,event,helper){
         this.getOpportunityProducts(component,event,helper);
+        this.countSum(component,event);
         let modal = component.find('basket-modal');
         $A.util.removeClass(modal, "hideElement");
 
@@ -50,6 +51,33 @@
     hideModal: function(component){
         let modal = component.find('basket-modal');
         $A.util.toggleClass(modal, "hideElement");
-    }
+    },
+
+    countSum: function (component,event) {
+        console.log('2');
+        console.log('WCHODZI DO COUNT SUM');
+        const action = component.get('c.countSum');
+        action.setCallback(this, function (response) {
+            let state = response.getState();
+            if (state === "SUCCESS") {
+                console.log('3');
+                console.log('WCHODZI DO SUCCESS');
+                let priceSum = response.getReturnValue();
+                console.log('Price: ' + priceSum);
+                component.set('v.priceSum',priceSum);
+            }      else if (state === "ERROR") {
+                this.handleErrors(component,event,response);
+            }
+        });
+        $A.enqueueAction(action);
+
+    },
+
+    showSpinner: function(component) {
+        component.find('spinner').showSpinner();
+    },
+    hideSpinner: function(component) {
+        component.find('spinner').hideSpinner();
+    },
 
 })

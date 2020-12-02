@@ -28,7 +28,7 @@
         <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
 
             <aura:if isTrue="{!v.products.length > 0}">
-                <aura:iteration items="{!v.products}" end="{!v.products.lenght}" var="product">
+                <aura:iteration items="{!v.products}" end="{!v.products.length}" var="product">
                     <lightning:layoutItem flexibility="auto" class="slds-m-around_xx-large">
                         <c:AS_Community_ProductMiniLayout product="{!product}"/>
                     </lightning:layoutItem>

@@ -62,4 +62,12 @@ public with sharing class AS_Community_BasketItem_Controller {
         return basketOrder;
     }
 
+
+    @AuraEnabled
+    public static void updateOrderItem(OrderItem orderItem){
+        update orderItem;
+    }
+
+
+
 }

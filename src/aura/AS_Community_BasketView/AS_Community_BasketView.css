@@ -2,6 +2,7 @@
  * Created by tomas on 26.11.2020.
  */
 .THIS {
+    flex-direction: column;
 }
 
 
@@ -43,13 +44,13 @@
     color: gray;
 }
 
-.THIS .buttons-and-sum{
+.THIS .buttons-and-sum {
     width: 80%;
     display: flex;
     justify-content: flex-end;
 }
 
-.THIS .b-and-s-ctn{
+.THIS .b-and-s-ctn {
     width: 30%;
     display: flex;
     justify-content: space-between;
@@ -68,4 +69,12 @@
 .THIS .sum {
     display: flex;
     font-size: 2rem;
+}
+
+.THIS .hideElement {
+    display: none !important;
+}
+
+.THIS .showElement {
+    display: flex;
 }

@@ -1,6 +1,3 @@
-<!--
- - Created by tomas on 26.11.2020.
- -->
 
 <aura:component description="AS_Community_BasketView"
                 implements="flexipage:availableForAllPageTypes,
@@ -11,48 +8,40 @@
 >
 
     <aura:attribute name="opportunityProducts" type="Object[]"/>
+    <aura:attribute name="priceSum" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:handler event="c:AS_Community_RequestSum_Event" action="{!c.handleEvent}"/>
     <lightning:notificationsLibrary aura:id="notification"/>
-    <lightning:layout horizontalAlign="center" verticalAlign="center">
+    <lightning:layout horizontalAlign="center" verticalAlign="center" class="layoutContainer">
 
         <div class='bView-container'>
 
             <div class="bView-header">
                 <p class="title">Cart</p>
             </div>
-
+            <aura:if isTrue="{!v.opportunityProducts.length > 0}">
             <div class="bView-product-list">
 
 
-
-                <aura:if isTrue="{!1 > 0}">
-                                        <aura:iteration items="{!v.opportunityProducts}" end="{!v.opportunityProducts.lenght}" var="product">
+                                        <aura:iteration items="{!v.opportunityProducts}" end="{!v.opportunityProducts.length}" var="product">
                     <c:AS_Community_BasketItem opportunityProduct = "{!product}" />
                                         </aura:iteration>
-
-                    <aura:set attribute="else">
-                        <lightning:layoutItem class="slds-align_absolute-center" flexibility="auto" padding="around-small">
-                            <ui:outputText value="Basket is empty"/>
-                        </lightning:layoutItem>
-                    </aura:set>
-                </aura:if>
-
-
             </div>
 
-            <div class="buttons-and-sum">
+            <div class="buttons-and-sum" aura:id="buyBtn">
                 <div class="b-and-s-ctn">
                     <div class="buttons">
                         <button class="btn1">Buy</button>
                     </div>
                     <div class="sum">
                         <p>Sum:</p>
-                        <p>1345</p>
+                        <p>{!v.priceSum}</p>
                         <p>$</p>
                     </div>
                 </div>
             </div>
+            </aura:if>
         </div>
-
+        <div aura:id="cart-is-empty" class="cartIsEmpty"><p>Cart is empty</p></div>
     </lightning:layout>
 </aura:component>
