@@ -1,9 +1,23 @@
-
 .THIS{
     font-family: Arial, Helvetica, sans-serif;
     width: 100%;
     height: 100%;
 }
+
+.THIS  .slds-grow {
+    width: 95% !important;
+}
+
+/*.THIS  .slds-grow :focus,*/
+/*.THIS  .slds-grow :hover{*/
+/*    outline: none !important;*/
+/*}*/
+
+
+/*.THIS  input :focus,*/
+/*.THIS  input :hover{*/
+/*    outline: none !important;*/
+/*}*/
 
 .THIS .topnav{
     width: 100%;
@@ -29,7 +43,6 @@
     width: 100% ;
     /*margin-left: 10px;*/
 }
-
 
 .THIS .mybtn{
     cursor: pointer;

@@ -13,6 +13,6 @@ public with sharing class AS_Community_AddToBasketController {
 //        }catch (DmlException e){
 //            System.debug(e);
 //        }
-//    }
+    }
 
 }

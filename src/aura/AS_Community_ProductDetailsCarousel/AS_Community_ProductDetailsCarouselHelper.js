@@ -9,7 +9,6 @@
 
             if (state === "SUCCESS") {
                 component.set('v.pictures', response.getReturnValue());
-                console.log(response.getReturnValue());
             } else if (state === "INCOMPLETE") {
                 //todo do something
             } else if (state === "ERROR") {

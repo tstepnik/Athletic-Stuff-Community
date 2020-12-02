@@ -8,6 +8,7 @@
     <aura:attribute name="product" type="Object"/>
     <aura:attribute name="price" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <lightning:notificationsLibrary aura:id="notification"/>
 
 
     <force:recordData aura:id="recordLoader"
@@ -39,7 +40,7 @@
 
 
         <div class="buttons">
-            <lightning:button variant="success" label="Add to cart"/>
+            <lightning:button onclick="{!c.addToBasket}" variant="success" label="{!$Label.c.AS_Community_BuyButton}"/>
         </div>
     </div>
 </aura:component>

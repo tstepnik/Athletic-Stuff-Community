@@ -129,7 +129,7 @@ public with sharing class AS_QueryBuilder {
 
     //todo need Test
     public void void_whereCondition_returnIf_CertainFields_Contain_CertainPhrases(Map<String, Object> fieldsMap, List<String> conditions, String andOr) {
-        Map<String, String> map = new Map<String, String>();
+
         andOr = checkAndOr(andOr);
 
         Boolean firstQuery = true;
@@ -259,10 +259,14 @@ public with sharing class AS_QueryBuilder {
         if (phrase != null) {
             addWHERE();
             ownCondition(' IsActive = true ');
-            ownCondition(' AND Pricebook2.Name LIKE \'Standard Price Book\' AND ');
+            ownCondition(' AND Pricebook2.Name LIKE \'Standard\' AND ');
             query += ' ( ';
             void_whereCondition_returnIf_FieldsContainPhrase(phrase, where_fields, andOr);
             query += ' ) ';
+        }else{
+            addWHERE();
+            ownCondition(' Pricebook2.Name LIKE \'Standard\'');
+
         }
     }
 

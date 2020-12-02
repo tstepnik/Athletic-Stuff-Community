@@ -20,34 +20,3 @@
         </div>
     </div>
     </aura:component>
-
-
-
-
-
-
-<!--    <aura:attribute name="productName" type="String" />-->
-<!--    <aura:attribute name="searchProduct" type="Aura.Action" />-->
-
-<!--    <div class="slds-card">-->
-
-<!--&lt;!&ndash;        <div class="topnav">&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="search-container">&ndash;&gt;-->
-<!--&lt;!&ndash;                <form class="slds-form&#45;&#45;inline">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <lightning:input class="myinpt" type="text" placeholder="Search..." name="search" value="{!v.productName}" />&ndash;&gt;-->
-<!--&lt;!&ndash;                    <lightning:buttonIcon iconName="utility:search" onclick="{!v.searchProduct}" class="mybtn"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                </form>&ndash;&gt;-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--                {!v.recordId}-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--    </div>-->
-<!--</aura:component>-->

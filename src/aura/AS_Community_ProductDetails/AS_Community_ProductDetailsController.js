@@ -2,8 +2,10 @@
 ({
 
     onInit: function (component, event, helper) {
-        console.log('WCHODZI DO CONTROLLERA');
         helper.loadPrice(component, event, helper);
-    }
+    },
+    addToBasket: function(component, event, helper){
+        helper.addProductToOrder(component,event,helper);
+    },
 
 })

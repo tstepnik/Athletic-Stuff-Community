@@ -84,7 +84,7 @@
     margin: 1%;
 }
 
-.THIS .lp-container span{
+.THIS .priceSpan{
 
     display: flex;
     justify-content: center;
@@ -100,9 +100,27 @@
     align-items: center;
 }
 
+.THIS .price{
+    flex-direction: column;
+}
+
 .THIS .price-container p{
     margin: 0.2rem;
     font-size: 1.3rem;
+}
+
+.THIS .price-per-unit{
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+}
+
+
+.THIS  .hideElement{
+    display: none;
+}
+
+.THIS .showElement{
+    display: block;
 }
 
 .THIS .trash {
@@ -122,4 +140,9 @@
     border: none;
     background: none;
     outline:none;
+}
+
+
+.THIS .lp-container input {
+    text-align: center;
 }

@@ -21,7 +21,9 @@ controller="AS_ProductViewController">
     <lightning:layout>
     <ui:button class="product-mini-container" press="{!c.redirect}">
 <!--        <div class="product-mini-background" style="{!'background-image:url(\''+v.product.mainPictureId__c+''}">-->
-        <div class="product-mini-background" style="{!'background-image:url(\'/as/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId+'\')'}">
+        <div class="product-mini-background" style="{! v.product.mainPictureId != null ?
+                'background-image:url(\'/as/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId+'\')'
+                : 'background-image:url(\'/resource/1606769344000/AS_Community_DefaultPhoto\')'}">
         </div>
         <div class="product-mini-desc">
         <p class="product-name">{!v.product.productName}</p>

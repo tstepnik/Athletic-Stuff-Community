@@ -12,6 +12,15 @@
 
     decrease: function (component, event, helper) {
         helper.decreaseProductsNumber(component, event, helper);
+    },
+    changeNumber: function (component,event,helper) {
+        helper.changeNumber(component,event);
+    },
+
+    pressBasket: function (component, event, helper) {
+        console.log('pressBasket controller');
+        helper.removeProductFromBasket(component,event,helper);
+        helper.pressBasket(component,event);
     }
 
 })

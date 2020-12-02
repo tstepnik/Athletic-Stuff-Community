@@ -6,9 +6,11 @@
                 implements="flexipage:availableForAllPageTypes,
                 forceCommunity:availableForAllPageTypes,
                 flexipage:availableForRecordHome,
-                 force:appHostable">
+                 force:appHostable"
+controller="AS_Community_BasketItem_Controller">
 
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <lightning:notificationsLibrary aura:id="notification"/>
 
     <aura:attribute type="Object" name="opportunityProduct"/>
     <aura:attribute type="Object" name="product"/>
@@ -24,8 +26,8 @@
                       targetError="{!v.recordLoadError}"
     />
 
-    <lightning:layout class="lightning-layout-container">
-        <div class="container">
+    <lightning:layout class="lightning-layout-container" >
+        <div class="container" aura:id="mainContainer">
 
             <!--        <div class="container-cmp img" style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">-->
             <!--                 style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/0687R00000FXE5MQAX\')'}"></div>-->
@@ -45,7 +47,7 @@
         <div class="container-cmp lp">
             <div class="lp-container">
                 <button onclick="{!c.decrease}">-</button>
-                <span>{!v.numberOfUnits}</span>
+                <lightning:input class="priceSpan" value="{!v.numberOfUnits}" onchange="{!c.changeNumber}"/>
                 <lightning:button class="lightning-btn" onclick="{!c.increase}">+</lightning:button>
             </div>
         </div>
@@ -54,9 +56,10 @@
                 <p class="price-number">{!v.priceSum}</p>
                 <p class="price-currency">$</p>
             </div>
+            <div class="price-per-unit" aura:id="unitPrice"><p>{!v.productPrice}$ per unit</p> </div>
         </div>
         <div class="container-cmp trash">
-            <button>
+            <button onclick="{!c.pressBasket}">
                 <lightning:icon class="trash-icon" iconName="utility:delete"/>
             </button>
         </div>

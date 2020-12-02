@@ -1,0 +1,123 @@
+<aura:component description="UFCComuunity_ProductView" implements="force:hasRecordId, forceCommunity:availableForAllPageTypes"
+                controller="UFCCommunity_Controller">
+    <aura:attribute name="product" type="Object"/>
+<!--    <aura:attribute name="sizes" type="List"/>-->
+    <aura:attribute name="pictures" type="List"/>
+    <aura:attribute name="errorMessage" type="String"/>
+<!--    <aura:attribute name="price" type="Object"/>-->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <lightning:notificationsLibrary aura:id="notification"/>
+
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Name, Description, Family, ProductCode"
+                      targetFields="{!v.product}"
+                      targetError="{!v.errorMessage}"
+    />
+
+    <aura:if isTrue="{!v.errorMessage.length > 0}">
+        <div class="slds-p-horizontal_small">
+            <div class="slds-text-body_regular slds-m-vertical_medium slds-align_absolute-center">
+                        {!v.errorMessage}
+                </div>
+        </div>
+        <aura:set attribute="else">
+            <!--    <force:recordData recordId="{!v.product.Id}"-->
+            <lightning:layout multipleRows="true">
+<!--                <lightning:layoutItem size="1"><img src="{!'/servlet/servlet.FileDownload?file=06A7R00000JVST4UAP'}"/></lightning:layoutItem>-->
+<!--                <lightning:layoutItem size="1"><img src="{!'/servlet/servlet.FileDownload?file=0687R00000EuqZ7QAJ'}"/></lightning:layoutItem>-->
+<!--                <lightning:layoutItem size="1"><img src="{!'/sfc/servlet.shepherd/version/download/06A7R00000JVST4UAP'}"/></lightning:layoutItem>-->
+<!--                <lightning:layoutItem size="1"><img src="{!'/sfc/servlet.shepherd/version/download/0687R00000EuqZ7QAJ'}"/></lightning:layoutItem>-->
+<!--                <lightning:layoutItem size="1"><lightning:fileCard fileId="06A7R00000JVST4UAP" description=" "/></lightning:layoutItem>-->
+<!--                <lightning:layoutItem size="1"><lightning:fileCard fileId="0687R00000EuqZ7QAJ" description=" "/></lightning:layoutItem>-->
+                <lightning:layoutItem size="5">
+
+<!--                            <lightning:fileCard fileId="{!v.attchid}" description=" "/>-->
+
+                    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false" scrollDuration="2">
+                        <aura:iteration items="{!v.pictures}" var="picture">
+<!--                            <lightning:carouselImage src="{!'https://icantcreateaplayground-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/' + picture.documentId}">-->
+                            <lightning:carouselImage src="{!'/ufc/sfc/servlet.shepherd/version/download/' + picture.documentId}">
+                            </lightning:carouselImage>
+                        </aura:iteration>
+                    </lightning:carousel>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6">
+                    <div class="product-details">
+<!--                        <div class="product-brand">Brand: <a href="#">{!v.product.Brand__c}</a></div>-->
+                        <h1>{!v.product.Name}</h1>
+<!--                        <div class="product-code">Product no.{!v.product.ProductCode}</div> &lt;!&ndash; c hange to price&ndash;&gt;-->
+                        <div class="product-details-panel">
+<!--                            <div class="rating">-->
+<!--                                <div class="product-rating slds-button-group-row">-->
+<!--                                    <span></span>-->
+<!--                                    <span></span>-->
+<!--                                    <span></span>-->
+<!--                                    <span></span>-->
+<!--                                    <span></span>-->
+<!--                                </div>-->
+<!--                                <div> - 5 stars</div>-->
+<!--                            </div>-->
+<!--                            <div class="product-info">-->
+<!--                                Color: <span>&lt;!&ndash;{!v.product.Color__c}&ndash;&gt;</span>-->
+<!--                            </div>-->
+<!--                            <div class="product-info">-->
+<!--                                Type: <span>{!v.product.RecordType.Name}</span>-->
+<!--                            </div>-->
+                            <div class="product-buy">
+<!--                                <div class="product-size">-->
+<!--                                    <p>SIZE:</p>-->
+<!--                                    <aura:iteration items="{!v.sizes}" var="size">-->
+<!--                                        <lightning:button label="{!size}"/>-->
+<!--                                    </aura:iteration>-->
+<!--                                </div>-->
+                                <div class="product-prize">20$</div>
+                            </div>
+                            <div class="product-add-to-basket">
+                                <lightning:button  label="ADD TO BASKET" onclick="{!c.addElementToBasket}"/><!-- change to price-->
+                            </div>
+                        </div>
+                        <div class="product-additional-info">
+<!--                            <div>-->
+<!--                                <div>-->
+<!--                                    <img src="/resource/WU_FastShipping/" alt="24 hour icon"/>-->
+<!--                                </div>-->
+<!--                                <p>Fast Shipping</p>-->
+<!--                            </div>-->
+<!--                            <br/>-->
+<!--                            <div>-->
+<!--                                <div>-->
+<!--                                    <img src="/resource/WU_returnTime/" alt="30 days icon"/>-->
+<!--                                </div>-->
+<!--                                <p>30 days for return products</p>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout >
+                <lightning:tabset class="tabset-margin-bottom" selectedTabId="collection">
+                    <lightning:tab label="Description" id="description">
+                        <lightning:layout>
+                            <lightning:layoutItem size="1"/>
+                            <lightning:layoutItem size="10">
+                                    {!v.product.Description}
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="1"/>
+                        </lightning:layout>
+                    </lightning:tab>
+<!--                    <lightning:tab label="Complete collection" id="collection">-->
+<!--                        When i will do search form there will be more stuffs to buy-->
+<!--                    </lightning:tab>-->
+                    <lightning:tab label="Customer Reviews" id="reviews">
+                        Placeholder
+                    </lightning:tab>
+<!--                    <lightning:tab label="Add review" id="addReview">-->
+<!--                        There will be Customer Reviews add panel !-->
+<!--                    </lightning:tab>-->
+                </lightning:tabset>
+            </lightning:layout>
+        </aura:set>
+    </aura:if>
+
+</aura:component>

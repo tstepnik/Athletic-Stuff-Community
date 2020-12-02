@@ -1,13 +1,8 @@
-<!--
- - Created by tomas on 23.11.2020.
- -->
-
 <aura:component description="AS_Community_ProductSearchList"
                 implements="flexipage:availableForAllPageTypes,
                 forceCommunity:availableForAllPageTypes,
-                flexipage:availableForRecordHome,
-                 force:appHostable"
-controller="AS_Community_SearchEngineController">
+                flexipage:availableForRecordHome,force:appHostable"
+                controller="AS_Community_SearchEngineController">
 
     <aura:attribute name="products" type="Object[]"/>
     <aura:attribute name="recordsNumber" type="String"/>
@@ -28,7 +23,6 @@ controller="AS_Community_SearchEngineController">
     <aura:attribute name="pn_fifth" type="String"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-    <!--    <aura:handler name="change" value="{!v.products}" action="{!c.doInit}"/>-->
 
     <div class='slds-m-around_medium listContainer'>
         <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
@@ -48,7 +42,6 @@ controller="AS_Community_SearchEngineController">
         </lightning:layout>
         <lightning:layout class="pagination-lightningLayout">
 
-
             <div class="pagination">
                 <div class="products-number">
                     <p>{!v.recordsOnPage_start} - {!v.recordsOnPage_end} z {!v.recordsNumber} ofert</p>
@@ -56,7 +49,7 @@ controller="AS_Community_SearchEngineController">
                 <div class="change-page-section">
                     <div class="previous-page" onclick="{!c.pressPreviousButton}" aura:id="previousPage-id">
                         <p class="arrow">❮</p>
-                        <p class="changePageWord">PREVIOUS</p>
+                        <p class="changePageWord">{!$Label.c.AS_Community_PreviousBtn}</p>
                     </div>
                     <div class="page-numbers">
                         <p class="page-lp" aura:id="pn-m1" id="{!v.pn_first + ' pn-m1'}" onclick="{!c.choosePage}">{!v.pn_first}</p>
@@ -68,13 +61,12 @@ controller="AS_Community_SearchEngineController">
                         <p class="readonly">{!v.numberOfPages}</p>
                     </div>
                     <div class="next-page" onclick="{!c.pressNextButton}" aura:id="nextPage-id">
-                        <p class="changePageWord">NEXT</p>
+                        <p class="changePageWord">{!$Label.c.AS_Community_NextBtn}</p>
                         <p class="arrow">❯</p>
                     </div>
 
                 </div>
             </div>
-
         </lightning:layout>
     </div>
 </aura:component>

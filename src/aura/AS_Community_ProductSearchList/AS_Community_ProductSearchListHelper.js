@@ -23,11 +23,11 @@
         component.set('v.pn_third', 3);
         component.set('v.pn_fourth', 4);
         component.set('v.pn_fifth', 5);
+        this.setPageNumbers(component,0);
         this.colorElement(component, 'pn-m1');
     },
 
     pressPreviousButton: function (component) {
-        let decreaseNumbers = false;
         let clickedNbValue = component.get('v.clickedNumber-value');
         let clickedNbAuraId = component.get('v.clickedNumber-auraId');
         if (clickedNbValue > 1) {
@@ -36,11 +36,9 @@
             let newNumber = parseInt(oldAIdNumber) - 1;
             let newAuraId = oldAIdText + newNumber;
 
-            const numberOfPages = component.get('v.numberOfPages');
             let offsetSize = component.get('v.offsetSize');
             if (clickedNbAuraId === 'pn-m1') {
                 this.decreaseButtons(component);
-                decreaseNumbers = true;
                 newAuraId = component.get('v.clickedNumber-auraId');
             } else {
                 this.colorElement(component, newAuraId);
@@ -81,22 +79,15 @@
                 this.increaseButtons(component);
                 increseNumbers = true;
                 newAuraId = component.get('v.clickedNumber-auraId');
-                // clickedNbValue -= 1;
             } else {
-                console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
                 this.colorElement(component, newAuraId);
-                console.log('auraId: ' + component.get('v.clickedNumber-auraId'));
             }
 
             component.set('v.clickedNumber-value', parseInt(clickedNbValue) + 1);
             component.set('v.clickedNumber-auraId', newAuraId);
 
             this.showPreviousPage(component);
-            console.log('///////////');
-            console.log('clickedNbValue: ' + clickedNbValue);
-            console.log('numberOfPages:' + numberOfPages);
             if ((clickedNbValue + 1) >= numberOfPages) {
-                console.log('WCHODZI TUTAJ A NIE POWINNO');
                 this.hideNextPage(component);
                 this.showPreviousPage(component);
             }
@@ -122,7 +113,6 @@
         let element = component.find(auraId);
         component.set('v.clickedNumber-auraId', auraId);
         component.set('v.clickedNumber-value', value);
-        console.log('CHOOSE PAGE VALUE : ' + value);
         this.removeColorFromAll(component);
         $A.util.toggleClass(element, "colorElement");
 
@@ -161,8 +151,6 @@
 
     hidePreviousPage: function (component) {
         let pageNumber = component.get('v.clickedNumber-value');
-        console.log('HIDE PREVIOUS PAGE: ');
-        console.log(pageNumber);
         if (pageNumber <= 1) {
             let toggleText = component.find("previousPage-id");
             $A.util.removeClass(toggleText, "showElement");
@@ -213,10 +201,8 @@
             let state = response.getState();
             if (state === "SUCCESS") {
 
-                console.log('WCHODZI DO SUCCESS!');
                 let productsFromApex = response.getReturnValue();
                 component.set("v.products", productsFromApex);
-                console.log(productsFromApex);
                 let numberOfRecords = firstQueryInfo.numberOfProducts;
                 this.setRange(component, numberOfRecords, offset, firstQueryInfo.queryLimit);
 

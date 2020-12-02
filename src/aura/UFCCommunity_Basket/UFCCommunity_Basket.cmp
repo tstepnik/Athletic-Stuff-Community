@@ -1,0 +1,67 @@
+<aura:component description="UFCCommunity_Basket" implements="force:hasRecordId, forceCommunity:availableForAllPageTypes"
+                controller="UFCCommunity_Controller">
+
+    <aura:attribute name="contactId" type="String"/>
+    <aura:attribute name="basketElements" type="List"/>
+    <aura:attribute name="isConfirmDeleteDialogVisible" type="Boolean" default="false"/>
+    <aura:attribute name="clickedItemIndex" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <lightning:notificationsLibrary aura:id="notification"/>
+
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+        <tr class="slds-text-title_caps">
+            <th scope="col">
+                <div class="slds-truncate" title="Product Name">Product Name</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="Quantity">Quantity</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="Price">Price</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="Actions">Actions</div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <aura:iteration items="{!v.basketElements}" var="item" indexVar="index">
+            <tr aura:id="row" data-id="{!item.Id}" data-index="{!index}" class="">
+                <td data-label="Product Name">
+                    <lightning:formattedText value="{!item.Product2.Name}"/>
+                </td>
+                <td data-label="Quantity">
+                    <lightning:formattedNumber value="{!item.Quantity}"/>
+                </td>
+                <td data-label="Price">
+                    <lightning:formattedRichText value="{!item.ListPrice}"/>$
+                </td>
+                <td data-label="Actions">
+                    <lightning:button value="{!index}" onclick="{!c.showConfirmDeleteDialog}" label="Remove from Basket" iconName="utility:delete" iconPosition="left"  variant="destructive"/>
+                </td>
+            </tr>
+        </aura:iteration>
+        </tbody>
+        <lightning:button onclick="{!c.makeOrder}" label="Make Order" iconPosition="right" variant="brand"/>
+    </table>
+
+    <aura:if isTrue="{!v.isConfirmDeleteDialogVisible}">
+        <div role="dialog" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h1 class="slds-text-heading--medium">Confirmation</h1>
+                </header>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <center><b>Are you sure you want to delete this Item from Basket?</b></center>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+                    <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleConfirmDialogYes}'/>
+                </footer>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+
+</aura:component>
