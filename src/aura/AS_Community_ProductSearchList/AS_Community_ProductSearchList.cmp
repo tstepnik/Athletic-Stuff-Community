@@ -23,7 +23,7 @@
     <aura:attribute name="pn_fifth" type="String"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-
+    <lightning:notificationsLibrary aura:id="notification"/>
     <div class='slds-m-around_medium listContainer'>
         <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
 
