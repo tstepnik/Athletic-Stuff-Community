@@ -31,13 +31,15 @@ controller="AS_Community_BasketItem_Controller">
 
     <lightning:layout class="lightning-layout-container" >
         <div class="container" aura:id="mainContainer">
-
+<!--            style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}"-->
             <!--        <div class="container-cmp img" style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">-->
             <!--                 style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/0687R00000FXE5MQAX\')'}"></div>-->
 
             <div class="container-cmp img">
                 <div class="background-img"
-                style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">
+                     style="{! v.product.mainPictureId__c != null ?
+            'background-image:url(\'/as/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'
+            : 'background-image:url(\'/resource/1606769344000/AS_Community_DefaultPhoto\')'}">
             </div>
 
         </div>

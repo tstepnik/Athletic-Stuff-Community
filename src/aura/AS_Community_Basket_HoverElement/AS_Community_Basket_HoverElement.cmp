@@ -20,12 +20,16 @@
                       targetFields="{!v.product}"
                       targetError="{!v.recordLoadError}"
     />
+<!--    style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">-->
+
 
     <lightning:layout class="mainContainer-layout">
     <div class="container-div">
         <div class="container-cmp img">
             <div class="background-img"
-                 style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">
+                 style="{! v.product.mainPictureId__c != null ?
+                         'background-image:url(\'/as/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'
+                         : 'background-image:url(\'/resource/1606769344000/AS_Community_DefaultPhoto\')'}">
             </div>
 
         </div>
