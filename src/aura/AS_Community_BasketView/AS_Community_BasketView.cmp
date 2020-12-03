@@ -17,7 +17,7 @@
         <div class='bView-container'>
 
             <div class="bView-header">
-                <p class="title">Cart</p>
+                <p class="title">Basket</p>
             </div>
             <aura:if isTrue="{!v.opportunityProducts.length > 0}">
             <div class="bView-product-list">
@@ -42,6 +42,6 @@
             </div>
             </aura:if>
         </div>
-        <div aura:id="cart-is-empty" class="cartIsEmpty"><p>Cart is empty</p></div>
+        <div aura:id="cart-is-empty" class="cartIsEmpty"><p>Basket is empty</p></div>
     </lightning:layout>
 </aura:component>

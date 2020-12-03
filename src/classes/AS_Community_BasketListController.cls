@@ -1,74 +1,31 @@
-/**
- * Created by tomas on 26.11.2020.
- */
 
 public with sharing class AS_Community_BasketListController {
 
     @auraEnabled
     public static List<OrderItem> getOpportunityProducts() {
-        List<OrderItem> orderItems = new List<OrderItem>();
-        orderItems = getBasketElements();
-
-        System.debug('ORDER ITEMS:');
-        for(OrderItem o : orderItems){
-            System.debug(o);
-            System.debug(o.Product2);
-        }
-        return orderItems;
+        return AS_Service.getOpportunityProducts();
     }
 
-
-
-
-
+    @AuraEnabled
+    public static Decimal countSum() {
+        return AS_Service.countSum();
+    }
 
     @AuraEnabled
     public static List<OrderItem> getBasketElements() {
-        Id contactId = getContactId();
-        Order basketOrder = getBasketOrder();
-        System.debug('xwerewrwrwrre');
-        List<OrderItem> basketItems = [
-                select Product2.Id,Product2.mainPictureId__c,Product2.Family,
-                        Product2.Name, Product2.Description, Quantity, ListPrice
-                from OrderItem
-                where OrderId = :basketOrder.Id
-        ];
-        System.debug('xwetwerewrew');
-        return basketItems;
+        return AS_Service.getBasketElements();
     }
 
     @auraEnabled
-    public static Order createNewOrder() {//todo still testing
-        Id contactId = getContactId();
-        Contract myContract = [select id, StartDate from Contract where id = '8007R0000070AS7QAM'];
-        Order newOrder = new Order(BillToContactId = contactId, ContractId = myContract.Id, Status = 'Draft', AccountId = '0017R00002CqVWOQA3', EffectiveDate = myContract.StartDate, Pricebook2Id = getStandardPricebook().Id);
-        upsert newOrder;
-        return newOrder;
+    public static Order createNewOrder() {
+        return AS_Service.createNewOrder();
     }
-
-
-    @AuraEnabled
-    public static void removeBasketElement(String sObjectId) {
-        OrderItem myOrderItem = new OrderItem(Id = sObjectId);
-        delete myOrderItem;
-    }
-
-
-    @auraEnabled
-    public static pricebook2 getStandardPricebook() {//todo still testing
-        return [select id from pricebook2 where name = 'Standard'];
-    }
-
 
     public static String getContactId() {
 
         Id userId = UserInfo.getUserId();
         User loggedUser = [SELECT ContactId FROM User WHERE Id = :userId limit 1];
-
-//        return loggedUser.ContactId;
-
-        return '0037R00002do2KGQAY';
-
+        return loggedUser.ContactId;
     }
 
     @AuraEnabled
@@ -89,44 +46,9 @@ public with sharing class AS_Community_BasketListController {
             ];
             System.debug('x');
         } catch (QueryException e) {
-            System.debug('QUERY EXCEPTION FROM AS_COMMUNITY_BASKETLISTCONTROOLLER LINE 49');
-//            basketOrder = createNewOrder();
+            basketOrder = createNewOrder();
         }
         return basketOrder;
-    }
-
-    @auraEnabled
-    public static void addProductToBasket (String productId, Integer quantity){
-        Id contactId = getContactId();
-        Order basketOrder = getBasketOrder();
-        PricebookEntry myPricebookEntry = [select id, UnitPrice from PricebookEntry where Product2Id = :productId and Pricebook2.Name = 'Standard'];
-        OrderItem myOrderItem = new OrderItem(Product2Id = productId, OrderId = basketOrder.Id, Quantity = quantity, PricebookEntryId = myPricebookEntry.Id, UnitPrice = myPricebookEntry.UnitPrice);
-        upsert myOrderItem;
-    }
-
-    @AuraEnabled
-    public static Decimal countSum(){
-        Decimal sum =  0;
-
-        Order basketOrder = getBasketOrder();
-
-        List<OrderItem> items = [
-                select Id,
-                        ListPrice,
-                        Quantity
-                from OrderItem
-                where OrderId = :basketOrder.Id
-        ];
-
-        if(items.isEmpty() || items == null){
-            return 0;
-        }
-
-        for(OrderItem item : items){
-            sum += (item.Quantity * item.ListPrice);
-        }
-
-        return sum.setScale(2,RoundingMode.HALF_UP);
     }
 
 }

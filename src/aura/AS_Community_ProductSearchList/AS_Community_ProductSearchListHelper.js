@@ -16,7 +16,6 @@
 
         this.setRange(component, numberOfRecords, firstQueryInfo.offset, limit);
         this.setNumberOfPages(component, numberOfRecords, limit);
-        this.hidePreviousPage(component);
         component.set('v.pn_first', 1);
         component.set('v.pn_second', 2);
         component.set('v.pn_third', 3);
@@ -24,25 +23,49 @@
         component.set('v.pn_fifth', 5);
         this.setPageNumbers(component,0);
         this.colorElement(component, 'pn-m1');
+        let numberOfPages = component.get('v.numberOfPages');
+        this.hidePreviousPage(component);
         if(numberOfRecords <= 0){
             this.hidePagination(component);
+        }else if(numberOfPages === 1){
+            this.hideNextPage(component);
         }
     },
 
     pressPreviousButton: function (component) {
-        let clickedNbValue = component.get('v.clickedNumber-value');
+        console.log(' ');
+        console.log(' ');
+        console.log('//////////PREVIOUS BTN ////////////////');
+        console.log(' ');
+        console.log(' ');
+        let clickedNbValue = component.get('v.clickedNumber-value'); /// gdy przeskakuje na inne strony to z powrotem wyrzuca NaN
         let clickedNbAuraId = component.get('v.clickedNumber-auraId');
+        console.log('Było na stronie ' + (clickedNbValue) + ' a teraz jest na ' + (clickedNbValue - 1));
+        console.log(' ');
+        console.log('clockenNbVale: ' + clickedNbValue);
+        console.log('clockenNbAuraId: ' + clickedNbAuraId);
+
         if (clickedNbValue > 1) {
             let oldAIdNumber = clickedNbAuraId.substring(clickedNbAuraId.length - 1); //number
             let oldAIdText = clickedNbAuraId.slice(0, -1); //text
             let newNumber = parseInt(oldAIdNumber) - 1;
             let newAuraId = oldAIdText + newNumber;
 
+            console.log('oldAidNumber: ' + oldAIdNumber);
+            console.log('oldAIdText: ' + oldAIdText);
+            console.log('newNumber: ' + newNumber);
+            console.log('newAuraId: ' + newAuraId);
+
+
             let offsetSize = component.get('v.offsetSize');
+            console.log('offsetSize: ' + offsetSize);
             if (clickedNbAuraId === 'pn-m1') {
+                console.log('pn-m1 i wchodzi do ifa');
                 this.decreaseButtons(component);
                 newAuraId = component.get('v.clickedNumber-auraId');
+                console.log('auraId sie poprawia: ' + newAuraId);
             } else {
+                console.log('wchodzi do elsa i koloruje element');
                 this.colorElement(component, newAuraId);
             }
 
@@ -50,38 +73,82 @@
             component.set('v.clickedNumber-auraId', newAuraId);
 
             this.showNextPage(component);
+            console.log('clickedNbValue: ' + clickedNbValue);
             if (1 >= (clickedNbValue - 1)) {
+                console.log('1 >= (clickedNbValue - 1)');
+                console.log('wchodzi do ifa');
+
                 this.hidePreviousPage(component);
                 this.showNextPage(component);
             }
 
 
             let offset = component.get('v.offset');
+            console.log('offset: ' + offset);
             let newOffset = parseInt(offset) - parseInt(offsetSize);
+            console.log('newOffset: ' + newOffset);
             component.set('v.offset', newOffset);
             this.changeData(component, newOffset);
 
         }
+        console.log(' ');
+        console.log(' ');
+        console.log('//////////PREVIOUS BTN ////////////////');
+        console.log(' ');
+        console.log(' ');
+
     },
 
     pressNextButton: function (component, event, helper) {
+        console.log(' ');
+        console.log(' ');
+        console.log('//////////NEXT BTN ////////////////');
+        console.log(' ');
+        console.log(' ');
         let increseNumbers = false;
         let clickedNbValue = component.get('v.clickedNumber-value');
         let clickedNbAuraId = component.get('v.clickedNumber-auraId');
         const numberOfPages = component.get('v.numberOfPages');
+        console.log('Było na stronie ' + (clickedNbValue) + ' a teraz jest na ' + (clickedNbValue + 1));
+        console.log(' ');
+        console.log('clockenNbVale: ' + clickedNbValue);
+        console.log('clockenNbAuraId: ' + clickedNbAuraId);
 
         if (clickedNbValue <= numberOfPages) {
             let oldAIdNumber = clickedNbAuraId.substring(clickedNbAuraId.length - 1); //number
             let oldAIdText = clickedNbAuraId.slice(0, -1); //text
-            let newNumber = parseInt(oldAIdNumber) + 1;
-
+            let newNumber;
+            if (parseInt(oldAIdNumber) >= 5){
+                newNumber = 1;
+            } else {
+                newNumber = parseInt(oldAIdNumber) + 1;
+            }
             let newAuraId = oldAIdText + newNumber;
             let offsetSize = component.get('v.offsetSize');
+
+            console.log('oldAidNumber: ' + oldAIdNumber);
+            console.log('oldAIdText: ' + oldAIdText);
+            console.log('newNumber: ' + newNumber);
+            console.log('newAuraId: ' + newAuraId);
+            console.log('offsetSize: ' + offsetSize);
+
             if (clickedNbAuraId === 'pn-m5') {
+                console.log('wchodzi do ifa: (clickedNbAuraId === \'pn-m5\')');
+                console.log('metoda increaseButtons');
+                console.log('///////////////////');
+                console.log('///////////////////');
+                console.log('BEFORE INCREASE BTNS');
+                this.printButtons(component);
                 this.increaseButtons(component);
+                console.log('AFTER INCREASE BTNS');
+                this.printButtons(component);
+                console.log('///////////////////');
+                console.log('///////////////////');
                 increseNumbers = true;
                 newAuraId = component.get('v.clickedNumber-auraId');
+                console.log('newAuraId: ' + newAuraId);
             } else {
+                console.log('coloruje element');
                 this.colorElement(component, newAuraId);
             }
 
@@ -90,16 +157,25 @@
 
             this.showPreviousPage(component);
             if ((clickedNbValue + 1) >= numberOfPages) {
+                console.log('wchodzi do ifa: ((clickedNbValue + 1) >= numberOfPages)');
                 this.hideNextPage(component);
                 this.showPreviousPage(component);
             }
 
             let offset = component.get('v.offset');
             let newOffset = parseInt(offset) + parseInt(offsetSize);
+            console.log('offset: ' + offset);
+            console.log('newOffset: ' + newOffset);
+
             component.set('v.offset', newOffset);
             this.changeData(component, newOffset);
 
         }
+        console.log(' ');
+        console.log(' ');
+        console.log('//////////NEXT BTN ////////////////');
+        console.log(' ');
+        console.log(' ');
     },
 
     choosePage: function (component, event) {
@@ -255,8 +331,8 @@
         let cmpValue = component.get(getCmpName);
         let newValue = cmpValue + additionalValue;
         let element = component.find(cmpAuraId);
+        component.set(getCmpName, newValue);
         if (newValue <= numberOfPages && newValue > 0) {
-            component.set(getCmpName, newValue);
             $A.util.removeClass(element, "hideElement");
             $A.util.toggleClass(element, "showElement");
         } else {
@@ -287,6 +363,17 @@
         this.removeColorFromAll(component);
         this.colorElement(component, 'pn-m2');
 
+    },
+
+    printButtons: function(component){
+        console.log('//////////NUMBERS////////////');
+        console.log(component.get('v.pn_first'));
+        console.log(component.get('v.pn_second'));
+        console.log(component.get('v.pn_third'));
+        console.log(component.get('v.pn_fourth'));
+        console.log(component.get('v.pn_fifth'));
+
+        console.log('//////////NUMBERS////////////');
     },
 
     decreaseButtons: function (component) {

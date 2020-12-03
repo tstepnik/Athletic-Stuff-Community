@@ -37,7 +37,6 @@ public with sharing class AS_Service {
             return wrappers;
         }
 
-
         private static String pricebookEntryQuery(String phrase, Integer queryLimit, Integer offset) {
 
             AS_QueryBuilder queryBuilder = new AS_QueryBuilder();
@@ -106,6 +105,7 @@ public with sharing class AS_Service {
                     LIMIT 10
             ];
         }
+
         private static List<DocumentContentWrapper> wrapContentDocumentLinks(List<ContentDocumentLink> contentDocumentLinks) {
             List<DocumentContentWrapper> documentContentWrappers = new List<DocumentContentWrapper>();
             for (ContentDocumentLink contentDocumentLink : contentDocumentLinks) {
@@ -175,4 +175,128 @@ public with sharing class AS_Service {
 
             return String.valueOf(price);
         }
+
+    //BASKET
+
+    public static String getContactId() {
+
+        Id userId = UserInfo.getUserId();
+        User loggedUser = [SELECT ContactId FROM User WHERE Id = :userId limit 1];
+
+//        return loggedUser.ContactId;
+
+        return '0037R00002do2KGQAY';
+
+    }
+
+    public static Order getBasketOrder() {
+        Id contactId = getContactId();
+        Order basketOrder;
+        System.debug('x');
+        try {//todo still testing
+            basketOrder = [
+                    select Id,
+                            Status
+                    from order
+                    where BillToContactId = :contactId
+                    and Status = 'Draft'
+                    order by
+                            CreatedDate desc
+                    limit 1
+            ];
+            System.debug('x');
+        } catch (QueryException e) {
+            System.debug('QUERY EXCEPTION FROM AS_COMMUNITY_BASKETLISTCONTROOLLER LINE 49');
+//            basketOrder = createNewOrder();
+        }
+        return basketOrder;
+    }
+
+    public static List<OrderItem> getBasketElements() {
+        Id contactId = getContactId();
+        Order basketOrder = getBasketOrder();
+        System.debug('xwerewrwrwrre');
+        List<OrderItem> basketItems = [
+                select Product2.Id,Product2.mainPictureId__c,Product2.Family,
+                        Product2.Name, Product2.Description, Quantity, ListPrice
+                from OrderItem
+                where OrderId = :basketOrder.Id
+        ];
+        System.debug('xwetwerewrew');
+        return basketItems;
+    }
+
+    public static List<OrderItem> getOpportunityProducts() {
+        List<OrderItem> orderItems = new List<OrderItem>();
+        orderItems = getBasketElements();
+
+        System.debug('ORDER ITEMS:');
+        for(OrderItem o : orderItems){
+            System.debug(o);
+            System.debug(o.Product2);
+        }
+        return orderItems;
+    }
+
+    public static Decimal countSum(){
+        Decimal sum =  0;
+
+        Order basketOrder = getBasketOrder();
+
+        List<OrderItem> items = [
+                select Id,
+                        ListPrice,
+                        Quantity
+                from OrderItem
+                where OrderId = :basketOrder.Id
+        ];
+
+        if(items.isEmpty() || items == null){
+            return 0;
+        }
+
+        for(OrderItem item : items){
+            sum += (item.Quantity * item.ListPrice);
+        }
+
+        return sum.setScale(2,RoundingMode.HALF_UP);
+    }
+
+    public static Order createNewOrder() {//todo still testing
+        //'8007R0000070AS7QAM'
+        Id contactId = getContactId();
+        Contract myContract = [select id, StartDate from Contract where id = :contactId];
+        Order newOrder = new Order(BillToContactId = contactId, ContractId = myContract.Id, Status = 'Draft', AccountId = '0017R00002GUT1OQAX', EffectiveDate = myContract.StartDate, Pricebook2Id = getStandardPricebook().Id);
+        upsert newOrder;
+        return newOrder;
+    }
+
+    public static pricebook2 getStandardPricebook() {//todo still testing
+        return [select id from pricebook2 where name = 'Standard'];
+    }
+
+    public static void removeItemFromOrder(String productId){
+        Order basketOrder = getBasketOrder();
+        List<OrderItem> items = [
+                select Id,
+                        Product2Id,
+                        Product2.Name
+                from OrderItem
+                where OrderId = :basketOrder.Id
+        ];
+        System.debug('LIST SIZE: ' + items.size());
+        for (OrderItem item : items) {
+            System.debug('/////////////////');
+            System.debug('item id: ' + item.Product2Id);
+            System.debug('product id: ' + productId);
+            System.debug('/////////////////');
+            if (item.Product2Id.equals(productId)) {
+                System.debug('WCHODZI DO IFA!');
+                delete item;
+            }
+        }
+    }
+
+
+    //BASKET
     }

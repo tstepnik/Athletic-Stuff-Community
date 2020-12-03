@@ -11,8 +11,10 @@
             <div class="search-container">
 
                 <form class="slds-form--inline">
+                    <span onkeypress="{!c.redirect}" class="input-span">
                     <lightning:input label="base" class="myinpt" type="text" placeholder="Type..." name="search" value="{!v.inputText}"/>
-                    <lightning:button iconName="utility:search"  class="mybtn" onclick="{!c.redirect}"/>
+                    </span>
+                        <lightning:button iconName="utility:search"  class="mybtn" onclick="{!c.redirect}"/>
                 </form>
 
 

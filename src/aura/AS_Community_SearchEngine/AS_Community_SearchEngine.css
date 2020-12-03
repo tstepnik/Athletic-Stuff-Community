@@ -57,6 +57,15 @@
 
 .THIS .slds-form--inline button {
     box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.THIS .input-span{
+    width: 100%;
+    height: 100%;
 }
 
 .THIS .mybtn{
@@ -79,4 +88,10 @@
 
 .THIS .slds-form--compound, .THIS .slds-form_compound{
     outline:none;
+}
+
+.THIS lightning-primitive-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
