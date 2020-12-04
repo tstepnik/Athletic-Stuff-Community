@@ -12,8 +12,8 @@ public with sharing class AS_Community_SearchEngineController {
     }
 
     @AuraEnabled
-    public static AS_Product_Service.FirstQueryInfo getFirstQueryInfo(String inpTxt) {
-        return AS_Product_Service.getFirstQueryInfo(inpTxt, 0);
+    public static AS_Product_Service.SearchProductsWrapper getSearchProductsWrapper(String inpTxt) {
+        return AS_Product_Service.getSearchProductsWrapper(inpTxt, 0);
 
     }
 

@@ -167,6 +167,36 @@ public with sharing class AS_Order_Service {
         return basketOrder;
     }
 
+    public static String addProductToBasket(String productId) {
+
+        Boolean alreadyInBasket = false;
+
+        Id contactId = getContactId();
+        Order basketOrder = getBasketOrder();
+        List<OrderItem> items = [
+                select Id,
+                        Product2Id,
+                        Product2.Name
+                from OrderItem
+                where OrderId = :basketOrder.Id
+        ];
+
+        for (OrderItem item : items) {
+            if (item.Product2Id.equals(productId)) {
+                alreadyInBasket = true;
+                return 'Product is already in basket. You can change his amount by click basket icon.';
+            }
+        }
+
+        if (!alreadyInBasket) {
+            PricebookEntry myPricebookEntry = [select id, UnitPrice from PricebookEntry where Product2Id = :productId and Pricebook2.Name = 'Standard'];
+            OrderItem myOrderItem = new OrderItem(Product2Id = productId, OrderId = basketOrder.Id, Quantity = 1, PricebookEntryId = myPricebookEntry.Id, UnitPrice = myPricebookEntry.UnitPrice);
+            upsert myOrderItem;
+            return 'Product successfully added to basket. Click basket icon to change product amount.';
+        }
+        return 'Something wrong, contact Admin';
+    }
+
 
 
 }

@@ -1,13 +1,13 @@
 public with sharing class AS_Product_Service {
 
-    public static FirstQueryInfo getFirstQueryInfo(String searchPhrase, Integer offset) {
+    public static AS_Product_Service.SearchProductsWrapper getSearchProductsWrapper(String searchPhrase, Integer offset) {
         Integer queryLimit = Integer.valueOf(System.Label.AS_Community_SearchLimit);
 
         List<ProductInfoWrapper> wrappers = productInfoWrappers(searchPhrase, offset);
 
         Integer numberOfProducts = countProducts(searchPhrase);
 
-        return new FirstQueryInfo(wrappers, numberOfProducts, queryLimit, searchPhrase, offset);
+        return new SearchProductsWrapper(wrappers, numberOfProducts, queryLimit, searchPhrase, offset);
     }
 
     public static List<ProductInfoWrapper> productInfoWrappers(String phrase, Integer offset) {
@@ -84,6 +84,17 @@ public with sharing class AS_Product_Service {
 
     }
 
+    public static String getProductPrice(String productId) {
+        Decimal price = [
+                SELECT
+                        UnitPrice
+                FROM PricebookEntry
+                WHERE Product2Id = :productId
+        ][0].UnitPrice;
+
+        return String.valueOf(price);
+    }
+
     public class ProductInfoWrapper {
         @auraEnabled
         public String productId { get; set; }
@@ -102,7 +113,7 @@ public with sharing class AS_Product_Service {
         }
     }
 
-    public class FirstQueryInfo {
+    public class SearchProductsWrapper {
         @auraEnabled
         public List<ProductInfoWrapper> wrappers { get; set; }
         @auraEnabled
@@ -117,7 +128,7 @@ public with sharing class AS_Product_Service {
         @auraEnabled
         public Integer offset { get; set; }
 
-        public FirstQueryInfo(List<ProductInfoWrapper> wrappers, Integer numberOfProducts, Integer queryLimit, String queryPhrase, Integer offset) {
+        public SearchProductsWrapper(List<ProductInfoWrapper> wrappers, Integer numberOfProducts, Integer queryLimit, String queryPhrase, Integer offset) {
             this.wrappers = wrappers;
             this.numberOfProducts = numberOfProducts;
             this.queryLimit = queryLimit;

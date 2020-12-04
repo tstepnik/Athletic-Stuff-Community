@@ -2,7 +2,7 @@
 
     searchOperations: function (component, event, helper) {
         let inputText = component.get('v.inputText');
-        const action = component.get('c.getFirstQueryInfo');
+        const action = component.get('c.getSearchProductsWrapper');
         action.setParams({inpTxt: inputText});
         action.setCallback(this, function (response) {
             let state = response.getState();
