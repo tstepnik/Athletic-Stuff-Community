@@ -17,7 +17,7 @@
     <aura:registerEvent name="accountSelectEvent" type="c:AS_DivisionSearch_SelectAccountEvent"/>
 
     <lightning:card title="Results" iconName="standard:partner_fund_request">
-        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
             <thead>
             <tr class="slds-text-title_caps">
                 <th scope="col">
@@ -37,7 +37,7 @@
                 </th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="table-body">
             <aura:iteration items="{!v.accountWrappers}" var="wrapper" indexVar="index">
                 <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.recordId}" data-index="{!index}">
                     <td data-label="Account name">

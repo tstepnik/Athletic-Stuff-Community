@@ -1,0 +1,12 @@
+<!--
+ - Created by tomas on 04.12.2020.
+ -->
+
+<aura:component description="AS_SendErrorToast">
+    <aura:method name="sendResultToast" action="{!c.sendResultToast}" access="public">
+        <aura:attribute name="title" type="String"/>
+        <aura:attribute name="message" type="String"/>
+        <aura:attribute name="type" type="String"/>
+        <aura:attribute name="errors" type="Object[]"/>
+    </aura:method>
+</aura:component>

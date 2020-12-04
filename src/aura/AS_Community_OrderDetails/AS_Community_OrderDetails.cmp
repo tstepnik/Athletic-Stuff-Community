@@ -1,0 +1,45 @@
+<!--
+ - Created by tomas on 04.12.2020.
+ -->
+
+<aura:component description="AS_Community_OrderDetails"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                 force:appHostable,
+                 force:hasRecordId"
+                controller="AS_Community_BasketListController"
+>
+    <aura:attribute name="opportunityProducts" type="Object[]"/>
+    <aura:attribute name="priceSum" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:handler event="c:AS_Community_RequestSum_Event" action="{!c.handleEvent}"/>
+    <lightning:notificationsLibrary aura:id="notification"/>
+    <lightning:layout horizontalAlign="center" verticalAlign="center" class="layoutContainer">
+
+        <div class='bView-container'>
+
+            <div class="bView-header">
+                <p class="title">Order</p>
+            </div>
+            <aura:if isTrue="{!v.opportunityProducts.length > 0}">
+                <div class="bView-product-list">
+
+
+                    <aura:iteration items="{!v.opportunityProducts}" end="{!v.opportunityProducts.length}" var="product">
+                        <c:AS_Community_OrderDetailsItem opportunityProduct = "{!product}" />
+                    </aura:iteration>
+                </div>
+
+                <div class="buttons-and-sum" aura:id="buyBtn">
+                    <div class="b-and-s-ctn">
+                        <div class="sum">
+                            <p>Sum:</p>
+                            <p>{!v.priceSum}</p>
+                            <p>$</p>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+        </div>
+    </lightning:layout>
+</aura:component>

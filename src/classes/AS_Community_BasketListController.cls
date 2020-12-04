@@ -3,52 +3,27 @@ public with sharing class AS_Community_BasketListController {
 
     @auraEnabled
     public static List<OrderItem> getOpportunityProducts() {
-        return AS_Service.getOpportunityProducts();
+        return AS_Order_Service.getOrderItems();
     }
 
     @AuraEnabled
     public static Decimal countSum() {
-        return AS_Service.countSum();
+        return AS_Order_Service.countOrderAmount();
     }
 
     @AuraEnabled
     public static List<OrderItem> getBasketElements() {
-        return AS_Service.getBasketElements();
+        return AS_Order_Service.getBasketElements();
     }
 
     @auraEnabled
     public static Order createNewOrder() {
-        return AS_Service.createNewOrder();
-    }
-
-    public static String getContactId() {
-
-        Id userId = UserInfo.getUserId();
-        User loggedUser = [SELECT ContactId FROM User WHERE Id = :userId limit 1];
-        return loggedUser.ContactId;
+        return AS_Order_Service.createNewOrder();
     }
 
     @AuraEnabled
     public static Order getBasketOrder() {
-        Id contactId = getContactId();
-        Order basketOrder;
-        System.debug('x');
-        try {//todo still testing
-            basketOrder = [
-                    select Id,
-                            Status
-                    from order
-                    where BillToContactId = :contactId
-                    and Status = 'Draft'
-                    order by
-                            CreatedDate desc
-                    limit 1
-            ];
-            System.debug('x');
-        } catch (QueryException e) {
-            basketOrder = createNewOrder();
-        }
-        return basketOrder;
+      return AS_Order_Service.getBasketOrder();
     }
 
 }

@@ -20,8 +20,6 @@
                       targetFields="{!v.product}"
                       targetError="{!v.recordLoadError}"
     />
-<!--    style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">-->
-
 
     <lightning:layout class="mainContainer-layout">
     <div class="container-div">

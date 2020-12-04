@@ -8,7 +8,6 @@
     <aura:attribute name="product" type="Object"/>
     <aura:attribute name="price" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
-    <lightning:notificationsLibrary aura:id="notification"/>
 
 
     <force:recordData aura:id="recordLoader"
@@ -43,6 +42,8 @@
             <lightning:button onclick="{!c.addToBasket}" variant="success" label="{!$Label.c.AS_Community_BuyButton}"/>
         </div>
     </div>
+    <c:AS_SendResultToast aura:id ="toastMaker"/>
+    <c:AS_SendErrorToast aura:id ="errorToastMaker"/>
 </aura:component>
 
 

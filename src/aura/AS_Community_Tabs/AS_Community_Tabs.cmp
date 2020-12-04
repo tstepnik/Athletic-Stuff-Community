@@ -21,8 +21,8 @@
             <div class="nav-tabs">
                 <ul>
                     <li><a href="/as"><span>Home</span></a></li>
-                    <li><a><span>Complaints</span></a></li>
-                    <li><a><span>Orders</span></a></li>
+                    <li><a ><span>Complaints</span></a></li>
+                    <li><a href="/as/s/orders"><span>Orders</span></a></li>
                 </ul>
                 <c:AS_Community_SearchEngine/>
             </div>
