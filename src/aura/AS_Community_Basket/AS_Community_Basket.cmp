@@ -3,10 +3,7 @@
  -->
 
 <aura:component description="AS_Community_Basket"
-                implements="flexipage:availableForAllPageTypes,
-                forceCommunity:availableForAllPageTypes,
-                 force:appHostable,
-                 force:hasRecordId"
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable,force:hasRecordId"
                 controller="AS_Community_BasketListController"
 >
     <lightning:notificationsLibrary aura:id="notification"/>
@@ -39,5 +36,6 @@
             </aura:if>
         </div>
     </lightning:layout>
-
+    <c:AS_SendResultToast aura:id ="toastMaker"/>
+    <c:AS_SendErrorToast aura:id ="errorToastMaker"/>
 </aura:component>

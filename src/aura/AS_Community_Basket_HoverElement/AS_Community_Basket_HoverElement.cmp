@@ -3,10 +3,7 @@
  -->
 
 <aura:component description="AS_Community_Basket_HoverElement"
-                implements="flexipage:availableForAllPageTypes,
-                forceCommunity:availableForAllPageTypes,
-                flexipage:availableForRecordHome,
-                 force:appHostable">
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable">
     <aura:attribute type="String" name="productId"/>
     <aura:attribute type="String" name="sumPrice"/>
     <aura:attribute type="Object" name="opportunityProduct"/>

@@ -23,8 +23,8 @@
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "SUCCESS") {
-                let sendToast = component.find('toastMaker');
                 let responseMessage = response.getReturnValue();
+                let sendToast = component.find('toastMaker');
                 sendToast.sendResultToast('Success', responseMessage, 'Success');
             } else if (state === "ERROR") {
                this.handleErrors(component,response);

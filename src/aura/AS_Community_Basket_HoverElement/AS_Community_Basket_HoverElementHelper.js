@@ -1,4 +1,3 @@
-
 ({
 
     countSum: function (component, event) {

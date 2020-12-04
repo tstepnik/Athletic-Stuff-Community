@@ -1,6 +1,3 @@
-/**
- * Created by tomas on 25.11.2020.
- */
 ({
 
     redirect: function(component, event, helper){

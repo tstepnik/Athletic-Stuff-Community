@@ -1,4 +1,3 @@
-
 ({
     getOpportunityProducts: function (component,event,helper) {
         const action = component.get('c.getOpportunityProducts');
@@ -20,29 +19,22 @@
 
         });
         $A.enqueueAction(action);
-        console.log('PRZED COUNT SUM');
-        console.log('1');
         this.countSum(component,event);
 
     },
 
     countSum: function (component,event) {
-        console.log('2');
-        console.log('WCHODZI DO COUNT SUM');
         const action = component.get('c.countSum');
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "SUCCESS") {
-                console.log('3');
-                console.log('WCHODZI DO SUCCESS');
                 let priceSum = response.getReturnValue();
-                console.log('Price: ' + priceSum);
                 component.set('v.priceSum',priceSum);
                 if(priceSum <= 0){
                     this.hideButton(component);
                 }
             }      else if (state === "ERROR") {
-                this.handleErrors(component,event,response);
+                this.handleErrors(component,response);
             }
         });
         $A.enqueueAction(action);
@@ -80,6 +72,12 @@
     hideEmptyCartText: function (component) {
         let cartIsEmpty = component.find('cart-is-empty');
         $A.util.toggleClass(cartIsEmpty, "hideElement");
+    },
+
+    handleErrors: function (component,response) {
+        let sendErrorToast = component.find('errorToastMaker');
+        let errors = response.getErrors();
+        sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
     }
 
 })

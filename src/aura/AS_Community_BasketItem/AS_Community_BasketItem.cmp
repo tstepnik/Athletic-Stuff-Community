@@ -3,14 +3,10 @@
  -->
 
 <aura:component description="AS_Community_BasketItem"
-                implements="flexipage:availableForAllPageTypes,
-                forceCommunity:availableForAllPageTypes,
-                flexipage:availableForRecordHome,
-                 force:appHostable"
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
 controller="AS_Community_BasketItem_Controller">
 
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
-    <lightning:notificationsLibrary aura:id="notification"/>
 
     <aura:attribute type="Object" name="opportunityProduct"/>
     <aura:attribute type="Object" name="product"/>
@@ -31,10 +27,6 @@ controller="AS_Community_BasketItem_Controller">
 
     <lightning:layout class="lightning-layout-container" >
         <div class="container" aura:id="mainContainer">
-<!--            style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}"-->
-            <!--        <div class="container-cmp img" style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId__c+'\')'}">-->
-            <!--                 style="{!'background-image:url(\'https://athletic-stuff-dev-ed.lightning.force.com/sfc/servlet.shepherd/version/download/0687R00000FXE5MQAX\')'}"></div>-->
-
             <div class="container-cmp img">
                 <div class="background-img"
                      style="{! v.product.mainPictureId__c != null ?
@@ -44,8 +36,6 @@ controller="AS_Community_BasketItem_Controller">
 
         </div>
         <div class="container-cmp name">
-            <!--    <p class="title">{!v.product.Name}</p>-->
-<!--            <p class="title">Łyżworolki 2w1 Dla Dziewczynek Regulowane 35-38</p>-->
             <p class="title">{!v.product.Name}</p>
 
         </div>
@@ -72,5 +62,6 @@ controller="AS_Community_BasketItem_Controller">
         </div>
 
     </lightning:layout>
-
+    <c:AS_SendResultToast aura:id ="toastMaker"/>
+    <c:AS_SendErrorToast aura:id ="errorToastMaker"/>
 </aura:component>
