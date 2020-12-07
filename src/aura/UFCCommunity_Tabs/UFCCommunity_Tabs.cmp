@@ -1,0 +1,27 @@
+<aura:component description="UFCCommunity_Tabs"
+                implements="flexipage:availableForAllPageTypes,
+                forceCommunity:availableForAllPageTypes,
+                 force:appHostable,
+                 force:hasRecordId"
+>
+    <aura:attribute name="cartItemsValue" type="Integer"/>
+    <aura:attribute name="totalPrice" type="Integer"/>
+    <aura:attribute name="cartItems" type="List"/>
+
+    <!--    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>-->
+    <!--    <aura:handler event="c:KEC_refreshCartBadge" action="{!c.onInit}" />-->
+
+    <div class="main-menu-container">
+        <div class="nav-logo"><p>UFC</p></div>
+        <nav class="main-nav" role="navigation">
+            <div class="nav-tabs">
+                <ul>
+                    <li><a href="/ufc/s"><span>Home</span></a></li>
+                    <li><a><span>Complaints</span></a></li>
+                    <li><a><span onclick="{!c.redirect}">Orders</span></a></li>
+                </ul>
+<!--                <c:AS_Community_SearchEngine/>-->
+            </div>
+        </nav>
+    </div>
+</aura:component>

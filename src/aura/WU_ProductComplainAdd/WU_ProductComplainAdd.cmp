@@ -1,0 +1,41 @@
+<aura:component description="WU_ProductComplainAdd" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId">
+    <aura:attribute name="productCase" type="Case"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <force:recordData
+            aura:id="service"
+            fields="Id, Subject, Description, Origin, SuppliedCompany, SuppliedEmail, SuppliedName, SuppliedPhone"
+            targetFields="{!v.productCase}"
+            targetError="{!v.recordError}"
+    />
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="12" padding="around-small">
+            <lightning:input name="title" label="Title" value="{!v.productCase.Subject}" variant="label-stacked" />
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12" padding="around-small">
+            <lightning:inputRichText label="Description" value="{!v.productCase.Description}" placeholder="Comment" labelVisible="true" disabledCategories="FORMAT_FONT" />
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12">
+            <div>If you don't fill information above we take this information from you account</div>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6" padding="around-small">
+            <lightning:input label="Web Name" value="{!v.productCase.SuppliedName}"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6" padding="around-small">
+            <lightning:input label="Web Company" value="{!v.productCase.SuppliedCompany}"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6" padding="around-small">
+            <lightning:input type="email" label="Web Email" value="{!v.productCase.SuppliedEmail}"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6" padding="around-small">
+            <lightning:input type="tel" label="Web Phone" value="{!v.productCase.SuppliedPhone}"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12" class="slds-align--absolute-center">
+            <lightning:button label="Submit" iconName="utility:save" onclick="{!c.onSave}" />
+        </lightning:layoutItem>
+    </lightning:layout>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">{!v.recordError}</div>
+    </aura:if>
+</aura:component>
