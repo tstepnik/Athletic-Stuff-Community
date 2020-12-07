@@ -12,16 +12,13 @@
     <aura:attribute name="totalPrice" type="Integer"/>
     <aura:attribute name="cartItems" type="List"/>
 
-    <!--    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>-->
-    <!--    <aura:handler event="c:KEC_refreshCartBadge" action="{!c.onInit}" />-->
-
     <div class="main-menu-container">
         <div class="nav-logo"><p>Athletic Stuff</p></div>
         <nav class="main-nav" role="navigation">
             <div class="nav-tabs">
                 <ul>
                     <li><a href="/as"><span>Home</span></a></li>
-                    <li><a ><span>Complaints</span></a></li>
+                    <li><a href="/as/s/complaints"><span>Complaints</span></a></li>
                     <li><a href="/as/s/orders"><span>Orders</span></a></li>
                 </ul>
                 <c:AS_Community_SearchEngine/>
@@ -29,35 +26,3 @@
         </nav>
     </div>
 </aura:component>
-
-
-<!--<div class="slds-context-bar">-->
-<!--    <div class="slds-context-bar__primary">-->
-<!--        <div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">-->
-<!--            <div class="slds-context-bar__icon-action">-->
-<!--            </div>-->
-<!--            <span class="slds-context-bar__label-action slds-context-bar__app-name">-->
-<!--        <span class="slds-truncate">Athletic Stuff</span>-->
-<!--      </span>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <nav class="slds-context-bar__secondary" role="navigation">-->
-<!--        <ul class="slds-grid">-->
-<!--            <li class="slds-context-bar__item slds-is-active">-->
-<!--                <a class="slds-context-bar__label-action">-->
-<!--                    <span class="slds-truncate mynavitem">Home</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--            <li class="slds-context-bar__item">-->
-<!--                <a class="slds-context-bar__label-action">-->
-<!--                    <span class="slds-truncate mynavitem">Complaints</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--            <li class="slds-context-bar__item lasttextitem">-->
-<!--                <a class="slds-context-bar__label-action">-->
-<!--                    <span class="slds-truncate mynavitem">orders</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </nav>-->
-<!--</div>-->

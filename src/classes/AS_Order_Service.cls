@@ -2,17 +2,21 @@
 public with sharing class AS_Order_Service {
 
     public static String getContactId() {
-
+//        System.debug('getCOntactId()');
         Id userId = UserInfo.getUserId();
         User loggedUser = [SELECT ContactId FROM User WHERE Id = :userId limit 1];
 
+//        System.debug('loggedUser.ContactId');
+//        System.debug(loggedUser.ContactId);
 //        return loggedUser.ContactId;
 
-        return '0037R00002do2KGQAY';
+        return '0037R00002o0nThQAI';
 
     }
 
     public static List<Order> fetchActivatedOrders() {//todo still testing
+        System.debug('fetchActivatedOrders');
+
         Id contactId = getContactId();
         List<Order> activatedOrders = [
                 select id, TotalAmount,OrderNumber,EffectiveDate, (Select id, Product2.Name, ListPrice, Quantity, Description from OrderItems)
@@ -39,6 +43,9 @@ public with sharing class AS_Order_Service {
     public class OrderWrapper {
 
         @auraEnabled
+        public String orderId { get; set; }
+
+        @auraEnabled
         public String orderNumber { get; set; }
 
         @auraEnabled
@@ -54,6 +61,7 @@ public with sharing class AS_Order_Service {
         public Decimal numberOfUnits { get; set; }
 
         public OrderWrapper(Order order) {
+            this.orderId = order.Id;
             this.orderNumber = order.OrderNumber;
             this.createdDate = String.valueOf(order.EffectiveDate);
             this.sum = String.valueOf(order.TotalAmount);
@@ -93,7 +101,10 @@ public with sharing class AS_Order_Service {
     public static List<OrderItem> getOrderItems() {
         List<OrderItem> orderItems = new List<OrderItem>();
         orderItems = getBasketElements();
-
+        System.debug('///////////////////');
+        System.debug('ORDER ITEMS');
+//        System.debug(orderItems[0].Product2);
+        System.debug('///////////////////');
         return orderItems;
     }
 
@@ -139,7 +150,7 @@ public with sharing class AS_Order_Service {
 
     public static Order createNewOrder() {
         Id contactId = getContactId();
-        Contract myContract = [select id, StartDate from Contract where id = :contactId];
+        Contract myContract = [select id, StartDate from Contract where id = '8007R000005mMDiQAM'];
         Order newOrder = new Order(BillToContactId = contactId, ContractId = myContract.Id, Status = 'Draft', AccountId = '0017R00002GUT1OQAX', EffectiveDate = myContract.StartDate, Pricebook2Id = getStandardPricebook().Id);
         upsert newOrder;
         return newOrder;
@@ -148,7 +159,6 @@ public with sharing class AS_Order_Service {
     public static Order getBasketOrder() {
         Id contactId = getContactId();
         Order basketOrder;
-        System.debug('x');
         try {//todo still testing
             basketOrder = [
                     select Id,
@@ -160,7 +170,6 @@ public with sharing class AS_Order_Service {
                             CreatedDate desc
                     limit 1
             ];
-            System.debug('x');
         } catch (QueryException e) {
             basketOrder = createNewOrder();
         }
@@ -197,6 +206,59 @@ public with sharing class AS_Order_Service {
         return 'Something wrong, contact Admin';
     }
 
+    public static List<OrderItemWrapper> getOrderItemWrappers(String orderId) {
+        System.debug('WRAPPERS: APEX SERVICE METHOD');
+        List<OrderItem> orderItems = [
+                select Product2.Id,Product2.mainPictureId__c,Product2.Family,
+                        Product2.Name, Product2.Description, Quantity, ListPrice
+                from OrderItem
+                where OrderId = :orderId
+        ];
+
+        List<OrderItemWrapper> wrappers = new List<OrderItemWrapper>();
+        if (orderItems == null || orderItems.isEmpty()) {
+            return wrappers;
+        }
+
+        for (OrderItem item : orderItems) {
+            wrappers.add(new OrderItemWrapper(item));
+        }
+        System.debug('///////////////////');
+        System.debug('WRAPPERS');
+        System.debug(wrappers);
+        System.debug('///////////////////');
+
+        return wrappers;
+    }
 
 
+    public static void completeExistingOrder() {//todo still testing
+        Order oldOrder = getBasketOrder();
+        oldOrder.Status = 'Activated';
+        upsert oldOrder;
+        Order newOrder = createNewOrder();
+    }
+
+
+    public class OrderItemWrapper {
+
+        @auraEnabled
+        public String productName { get; set; }
+
+        @auraEnabled
+        public Decimal quantity { get; set; }
+
+        @auraEnabled
+        public Decimal price { get; set; }
+
+        @auraEnabled
+        public Decimal totalAmount { get; set; }
+
+        public OrderItemWrapper(OrderItem item) {
+            this.productName = item.Product2.Name;
+            this.quantity = item.Quantity;
+            this.price = item.ListPrice;
+            this.totalAmount = (this.quantity * this.price).setScale(2);
+        }
+    }
 }

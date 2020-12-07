@@ -6,6 +6,12 @@ public with sharing class AS_Community_BasketListController {
         return AS_Order_Service.getOrderItems();
     }
 
+    @auraEnabled
+    public static List<AS_Order_Service.OrderItemWrapper> getOrderItemWrappers(String orderId){
+        System.debug('WRAPPERS: APEX CONTROLLER');
+        return AS_Order_Service.getOrderItemWrappers(orderId);
+    }
+
     @AuraEnabled
     public static Decimal countSum() {
         return AS_Order_Service.countOrderAmount();
@@ -23,7 +29,12 @@ public with sharing class AS_Community_BasketListController {
 
     @AuraEnabled
     public static Order getBasketOrder() {
-      return AS_Order_Service.getBasketOrder();
+        return AS_Order_Service.getBasketOrder();
+    }
+
+    @AuraEnabled
+    public static void completeTransaction(){
+        AS_Order_Service.completeExistingOrder();
     }
 
 }

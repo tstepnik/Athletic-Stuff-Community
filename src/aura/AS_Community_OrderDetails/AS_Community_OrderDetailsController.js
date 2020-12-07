@@ -1,10 +1,9 @@
 ({
-    onInit: function (component,event,helper) {
-        helper.hideEmptyCartText(component);
-        helper.getOpportunityProducts(component,event,helper);
+
+    onInit: function (component, event, helper) {
     },
 
-    handleEvent: function (component, event, helper) {
-        helper.handleEvent(component,event);
+    loadDetails: function (component, event, helper) {
+        helper.loadOrders(component,event);
     }
 })

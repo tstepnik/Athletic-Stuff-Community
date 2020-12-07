@@ -1,0 +1,41 @@
+<aura:component description="AS_Community_BasketProductList"
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable,force:hasRecordId">
+
+    <aura:attribute name="accountWrappers" type="Object[]"/>
+
+    <lightning:card title="Your Basket" iconName="standard:partner_fund_request">
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+            <tr class="slds-text-title_caps">
+                <th scope="col">
+                    <div class="slds-truncate" title="Account name">Actions</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Account name">Product Name</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Country">Code</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Rating">Family</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <aura:iteration items="{!v.accountWrappers}" var="wrapper" indexVar="index">
+                <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.recordId}" data-index="{!index}">
+                    <td data-label="Account name">
+                        <lightning:formattedText value="{!wrapper.name}"/>
+                    </td>
+                    <td data-label="Country">
+                        <lightning:formattedText value="{!wrapper.country}"/>
+                    </td>
+                    <td data-label="Rating">
+                        <lightning:formattedText value="{!wrapper.rating}"/>
+                    </td>
+                </tr>
+            </aura:iteration>
+            </tbody>
+        </table>
+    </lightning:card>
+</aura:component>
