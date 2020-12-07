@@ -1,10 +1,11 @@
 .THIS .mainContentArea {
     background-color: #f6f7f7;
-    width: 100% ;
-    margin-left: auto ;
-    margin-right: auto ;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 
 }
+
 .THIS .profileMenuRegion span {
     color: black;
 }
@@ -16,11 +17,12 @@
 .THIS .main-menu {
     width: 100%;
 }
+
 .THIS .margin-menu-div {
     width: 100%;
     height: 3rem;
     margin-bottom: 3rem;
-background-color: rgb(201, 199, 197);
+    background-color: rgb(201, 199, 197);
 }
 
 .THIS .main-menu {
@@ -42,7 +44,7 @@ background-color: rgb(201, 199, 197);
     width: 100%;
 }
 
-.THIS .searchRegion .search-field{
+.THIS .searchRegion .search-field {
     height: 5px;
 }
 
@@ -62,10 +64,10 @@ background-color: rgb(201, 199, 197);
     border: 1px solid #d4d4d4;
 }
 
-.THIS .mainMenu-margin{
+.THIS .mainMenu-margin {
 
     width: 100%;
     height: 2rem;
-    margin-top:2rem;
+    margin-top: 2rem;
 
 }

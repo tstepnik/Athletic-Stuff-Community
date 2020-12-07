@@ -1,0 +1,25 @@
+<!--
+ - Created by tomas on 07.12.2020.
+ -->
+
+<aura:component description="AS_Community_CaseMini">
+
+    <aura:attribute type="Object" name="caseWrapper"/>
+
+
+    <lightning:layout>
+        <div class="container">
+            <div class="case-basicInfo">
+                <p><b>Created at: </b> {!v.caseWrapper.caseOpen}</p>
+                <p><b>case number: </b> {!v.caseWrapper.caseNumber}</p>
+                <p><b>Status: </b> {!v.caseWrapper.status}</p>
+                <p><b>Product: </b> {!v.caseWrapper.productName}</p>
+                <p><b>Order: </b> {!v.caseWrapper.orderNumber}</p>
+            </div>
+            <div class="case-serviceResponse">
+                <p><b>Subject: </b> {!v.caseWrapper.subject}</p>
+                <p>{!v.caseWrapper.description}</p>
+            </div>
+        </div>
+    </lightning:layout>
+</aura:component>

@@ -16,20 +16,12 @@
 
                 <div class="main-menu sticky">
 
-
-
                     <Lightning:layoutItem size="9">
                         <div class="navigation">
 
                             {!v.menu}
                     </div>
                     </Lightning:layoutItem>
-                    <!--                <Lightning:layoutItem size="4">-->
-                    <!--                    <div class="searchRegion">-->
-
-                    <!--                            {!v.search}-->
-                    <!--                    </div>-->
-                    <!--                </Lightning:layoutItem>-->
                     <Lightning:layoutItem size="1">
                         <div class="profileMenuRegion">
 
@@ -37,8 +29,6 @@
 
                         </div>
                     </Lightning:layoutItem>
-
-
                     <Lightning:layoutItem size="2">
                         <div class="profileMenuRegion profileIcon">
 
@@ -55,7 +45,6 @@
                         {!v.headline}
                 </div>
             </Lightning:layoutItem>
-
             <Lightning:layoutItem size="12">
                 <div class="mainContentArea">
                         {!v.body}

@@ -2,10 +2,7 @@
     handleNewCaseModal: function(component, event) {
         component.set('v.showNewComplainModal', true);
     },
-    handleSuccess: function(component, event, helper) {
-        helper.handleSuccess(component, event);
 
-    },
     closeModal: function(component, event) {
         console.log('WCHODZI DO CLOSE MODAL');
         component.set('v.showNewComplainModal', false);
@@ -15,14 +12,14 @@
     onInit: function (component, event, helper) {
         helper.onInit(component,event);
     },
-    pressBasket: function (component, event, helper) {
-        helper.removeProductFromBasket(component,event,helper);
-        helper.pressBasket(component,event);
-        component.set('v.deleteBtnClicked',false);
+    createCase: function (component, event, helper) {
+        console.log('WCHODZI DO CONTROLLERA');
+        helper.createCase(component,event);
+        component.set('v.showNewComplainModal',false);
     },
 
     closePopup: function (component) {
-        component.set('v.deleteBtnClicked',false);
+        component.set('v.showNewComplainModal',false);
     },
 
 })

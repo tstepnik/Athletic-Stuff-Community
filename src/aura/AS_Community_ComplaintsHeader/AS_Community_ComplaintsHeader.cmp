@@ -1,10 +1,12 @@
-<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global"
+                controller="AS_Community_CaseController">
     <aura:attribute name="showNewComplainModal" type="Boolean"/>
     <aura:attribute name="fields" type="String[]"
                     default="['Name','AnnualRevenue','Industry','BillingCountry','BillingCity','BillingStreet']"/>
     <aura:attribute name="recordId" type="String"/>
     <aura:attribute name="myVal" type="String"/>
-    <aura:attribute name="caseOrderNumber" type="String"/>
+    <aura:attribute name="caseOrderNumber" type="Integer"/>
+    <aura:attribute name="caseProductName" type="String"/>
     <aura:attribute name="caseSubject" type="String"/>
     <aura:attribute name="caseMessage" type="String"/>
     <lightning:notificationsLibrary aura:id="notifLib"/>
@@ -18,22 +20,17 @@
                 </header>
                 <lightning:layout multipleRows="true">
                     <div class="popup-inputs">
-                        <!--                    <lightning:input name="input6" required="true" value="{!v.caseOrderNumber}" label="Order Number" maxlength="10"/>-->
-                        <lightning:select value="{!v.rating}" label="Rating">
-                            <option value=""></option>
-                            <option value="Hot">Hot</option>
-                            <option value="Cold">Cold</option>
-                            <option value="Warm">Warm</option>
-                        </lightning:select>
+                        <lightning:input name="input6" type="number" required="true" value="{!v.caseOrderNumber}" label="Order Number"/>
+                        <lightning:input name="input6" required="true" value="{!v.caseProductName}" label="Product Name"/>
                         <lightning:input name="input6" required="true" value="{!v.caseSubject}" label="Subject"
                                          maxlength="10"/>
                         <p>Information</p>
-                        <lightning:inputRichText value="{!v.caseMessage}" placeholder="Type your case details"/>
+                        <lightning:inputRichText value="{!v.caseMessage}"/>
                     </div>
                 </lightning:layout>
                 <footer class="slds-modal__footer">
                     <lightning:button name='No' label='No' onclick='{!c.closeModal}'/>
-                    <lightning:button variant="brand" name='Send' label='Yes' onclick='{!c.pressBasket}'/>
+                    <lightning:button variant="brand" name='Send' label='Yes' onclick='{!c.createCase}'/>
                 </footer>
             </div>
         </div>
@@ -98,5 +95,6 @@
             </div>
         </div>
     </div>
-
+    <c:AS_SendResultToast aura:id ="toastMaker"/>
+    <c:AS_SendErrorToast aura:id ="errorToastMaker"/>
 </aura:component>

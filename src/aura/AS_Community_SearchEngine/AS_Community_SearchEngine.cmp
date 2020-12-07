@@ -14,11 +14,11 @@
                     <span onkeypress="{!c.redirect}" class="input-span">
                     <lightning:input label="base" class="myinpt" type="text" placeholder="Type..." name="search" value="{!v.inputText}"/>
                     </span>
-                        <lightning:button iconName="utility:search"  class="mybtn" onclick="{!c.redirect}"/>
+                    <lightning:button iconName="utility:search"  class="mybtn" onclick="{!c.redirect}"/>
                 </form>
 
 
             </div>
         </div>
     </div>
-    </aura:component>
+</aura:component>

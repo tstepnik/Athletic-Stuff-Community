@@ -1,4 +1,3 @@
-
 ({
 
     redirect: function(component, event, helper){

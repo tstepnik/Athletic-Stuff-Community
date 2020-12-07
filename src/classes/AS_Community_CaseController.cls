@@ -5,19 +5,13 @@
 public with sharing class AS_Community_CaseController {
 
     @AuraEnabled
-    public static void createComplaint(String orderNumber, String caseSubject, String caseDescriptionString) {
+    public static void createComplaint(String productName, String orderNumber, String caseSubject, String description) {
+   AS_Case_Service.createCase(productName,orderNumber,caseSubject,description);
+    }
 
-        Case c = new Case();
-        c.Status = 'New';
-        c.Priority = 'Medium';
-        c.Origin = 'Web';
-        c.ContactId = AS_Order_Service.getContactId();
-        c.AccountId = '0017R00002GUT1OQAX';
-        c.Subject = caseSubject;
-        c.Description = caseDescriptionString;
-        c.Comments = 'Order Number: ' + orderNumber;
-
-        insert c;
+    @AuraEnabled
+    public static List<AS_Case_Service.CaseWrapper> getCaseWrappers(){
+       return  AS_Case_Service.getWrappers();
     }
 
 }
