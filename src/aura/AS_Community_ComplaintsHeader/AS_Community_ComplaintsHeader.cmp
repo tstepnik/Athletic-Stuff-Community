@@ -20,10 +20,9 @@
                 </header>
                 <lightning:layout multipleRows="true">
                     <div class="popup-inputs">
-                        <lightning:input name="input6" type="number" required="true" value="{!v.caseOrderNumber}" label="Order Number"/>
+                        <lightning:input name="input6" type="number" value="{!v.caseOrderNumber}" label="Order Number"/>
                         <lightning:input name="input6" required="true" value="{!v.caseProductName}" label="Product Name"/>
-                        <lightning:input name="input6" required="true" value="{!v.caseSubject}" label="Subject"
-                                         maxlength="10"/>
+                        <lightning:input name="input6" required="true" value="{!v.caseSubject}" label="Subject"/>
                         <p>Information</p>
                         <lightning:inputRichText value="{!v.caseMessage}"/>
                     </div>

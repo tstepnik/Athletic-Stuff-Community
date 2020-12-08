@@ -1,6 +1,11 @@
 
 public with sharing class AS_Community_BasketListController {
 
+    @AuraEnabled
+    public static void createComplaint(String productName, String orderNumber, String caseSubject, String description) {
+        AS_Case_Service.createCase(productName,orderNumber,caseSubject,description);
+    }
+
     @auraEnabled
     public static List<OrderItem> getOpportunityProducts() {
         return AS_Order_Service.getOrderItems();

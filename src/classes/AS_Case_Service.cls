@@ -11,25 +11,59 @@ public with sharing class AS_Case_Service {
         c.Subject = caseSubject;
         c.Description = description;
         c.ProductName__c = productName;
-        c.OrderNumber__c = Integer.valueOf(orderNumber);
+        c.OrderNumber__c = orderNumber;
         insert c;
     }
 
     public static List<CaseWrapper> getWrappers() {
         List<Case> cases = [
-                SELECT Id,Description,Subject,CaseNumber,Status,CreatedDate,ClosedDate,Reason,ProductName__c,OrderNumber__c
+                SELECT Id,Description,Subject,CaseNumber,Status,CreatedDate,ClosedDate,OrderNumber__c,Reason,ProductName__c, (SELECT Id,Title,CreatedDate,CreatedById,Body FROM Feeds)
                 FROM Case
                 WHERE ContactId = :AS_Order_Service.getContactId()
         ];
 
+        List<User> users = [SELECT Id,Name FROM User];
+
+        Map<String, String> userNameMap = new Map<String, String>();
+
+        for (User u : users) {
+            userNameMap.put(u.Id, u.Name);
+        }
+
+
         List<CaseWrapper> wrappers = new List<CaseWrapper>();
         if (cases != null && !cases.isEmpty()) {
             for (Case c : cases) {
-                wrappers.add(new CaseWrapper(c));
+                wrappers.add(new CaseWrapper(c, userNameMap));
 
             }
         }
+        System.debug('CASE WRAPPERS');
+        System.debug(wrappers);
         return wrappers;
+    }
+
+    public class ServiceResponseWrapper {
+
+        @AuraEnabled
+        public String createdAt { get; set; }
+        @AuraEnabled
+        public String owner { get; set; }
+        @AuraEnabled
+        public String message { get; set; }
+
+        public ServiceResponseWrapper(String createdAt, String owner, String message) {
+            this.createdAt = createdAt;
+            this.owner = owner;
+            this.message = cutString(message);
+        }
+        String cutString(String s) {
+            s = s.replaceAll('<p>','');
+            s = s.replaceAll('</p>','');
+            s = s.replaceAll('</b>','');
+            s = s.replaceAll('<b>','');
+            return s;
+        }
     }
 
     public class CaseWrapper {
@@ -53,10 +87,13 @@ public with sharing class AS_Case_Service {
         public String comments { set; get; }
         @AuraEnabled
         public String orderNumber { get; set; }
+        @AuraEnabled
+        public List<ServiceResponseWrapper> serviceResponseWrappers { get; set; }
 
 
-        public CaseWrapper(String description, String subject, String caseNumber, String status, String caseOpen, String caseClosed, String caseReason, String productName, String comments) {
+        public CaseWrapper(String description, String subject, String caseNumber, String status, String caseOpen, String caseClosed, String caseReason, String productName, String comments, List<ServiceResponseWrapper> serviceResponseWrappers) {
             this.description = Description;
+            this.serviceResponseWrappers = serviceResponseWrappers;
             this.subject = subject;
             this.caseNumber = caseNumber;
             this.status = status;
@@ -66,8 +103,9 @@ public with sharing class AS_Case_Service {
             this.caseReason = caseReason;
             this.comments = comments;
         }
-        public CaseWrapper(Case caseToWrapper) {
-            this.description = caseToWrapper.Description;
+        public CaseWrapper(Case caseToWrapper, Map<String, String> userNameMap) {
+            this.serviceResponseWrappers = getWrappersFromCase(caseToWrapper, userNameMap);
+            this.description = cutString(caseToWrapper.Description);
             this.subject = caseToWrapper.Subject;
             this.caseNumber = caseToWrapper.CaseNumber;
             this.status = caseToWrapper.Status;
@@ -77,22 +115,34 @@ public with sharing class AS_Case_Service {
             this.productName = caseToWrapper.ProductName__c ;
             this.orderNumber = String.valueOf(caseToWrapper.OrderNumber__c) ;
         }
-    }
 
-    public class ServiceResponseWrapper {
+        List<ServiceResponseWrapper> getWrappersFromCase(Case c, Map<String, String> userNameMap) {
+            List<ServiceResponseWrapper> wrappers = new List<ServiceResponseWrapper>();
+            List<CaseFeed> allWrappers = c.Feeds;
 
-        @AuraEnabled
-       public String createdAt { get; set; }
-        @AuraEnabled
-        public  String owner { get; set; }
-        @AuraEnabled
-        public  String message { get; set; }
+            if (allWrappers != null && !allWrappers.isEmpty()) {
+//                for (CaseFeed cf : allWrappers) {
+                for (Integer i = allWrappers.size() - 1; i >= 0; i--) {
+                    CaseFeed cf = allWrappers[i];
+                    if (cf.Body != null) {
+                        wrappers.add(new ServiceResponseWrapper(String.valueOf(cf.CreatedDate), userNameMap.get(cf.CreatedById), cf.Body));
+                    }
+                }
+            }
+            return wrappers;
+        }
 
-        public ServiceResponseWrapper(String createdAt, String owner, String message) {
-            this.createdAt = createdAt;
-            this.owner = owner;
-            this.message = message;
+        String cutString(String s) {
+            s = s.replaceAll('<p>','');
+            s = s.replaceAll('</p>','');
+            s = s.replaceAll('</b>','');
+            s = s.replaceAll('<b>','');
+            s = s.replaceAll('<br>','');
+            s = s.replaceAll('</br>','');
+
+            return s;
         }
     }
+
 
 }

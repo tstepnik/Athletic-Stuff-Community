@@ -31,5 +31,5 @@
             "accountWrapper": acct
         });
         eventt.fire();
-    },
+    }
 });
