@@ -1,22 +1,11 @@
-
 public with sharing class AS_Order_Service {
 
     public static String getContactId() {
-//        System.debug('getCOntactId()');
-        Id userId = UserInfo.getUserId();
-        User loggedUser = [SELECT ContactId FROM User WHERE Id = :userId limit 1];
 
-//        System.debug('loggedUser.ContactId');
-//        System.debug(loggedUser.ContactId);
-//        return loggedUser.ContactId;
-
-        return '0037R00002o0nThQAI';
-
+        return AS_User_Service.getLoggedUserContactId();
     }
 
-    public static List<Order> fetchActivatedOrders() {//todo still testing
-        System.debug('fetchActivatedOrders');
-
+    public static List<Order> fetchActivatedOrders() {
         Id contactId = getContactId();
         List<Order> activatedOrders = [
                 select id, TotalAmount,OrderNumber,EffectiveDate, (Select id, Product2.Name, ListPrice, Quantity, Description from OrderItems)
@@ -35,9 +24,7 @@ public with sharing class AS_Order_Service {
         for (Order order : orders) {
             wrappers.add(new OrderWrapper(order));
         }
-
         return wrappers;
-
     }
 
     public class OrderWrapper {
@@ -75,11 +62,8 @@ public with sharing class AS_Order_Service {
             for (OrderItem orderItem : items) {
                 sum += orderItem.Quantity;
             }
-
             return sum;
         }
-
-
     }
 
     public static void removeItemFromOrder(String productId) {
@@ -101,10 +85,6 @@ public with sharing class AS_Order_Service {
     public static List<OrderItem> getOrderItems() {
         List<OrderItem> orderItems = new List<OrderItem>();
         orderItems = getBasketElements();
-        System.debug('///////////////////');
-        System.debug('ORDER ITEMS');
-//        System.debug(orderItems[0].Product2);
-        System.debug('///////////////////');
         return orderItems;
     }
 
@@ -150,8 +130,8 @@ public with sharing class AS_Order_Service {
 
     public static Order createNewOrder() {
         Id contactId = getContactId();
-        Contract myContract = [select id, StartDate from Contract where id = '8007R000005mMDiQAM'];
-        Order newOrder = new Order(BillToContactId = contactId, ContractId = myContract.Id, Status = 'Draft', AccountId = '0017R00002GUT1OQAX', EffectiveDate = myContract.StartDate, Pricebook2Id = getStandardPricebook().Id);
+        Contract myContract = [select id, StartDate from Contract where id = :System.Label.AS_Community_ContractId];
+        Order newOrder = new Order(BillToContactId = contactId, ContractId = myContract.Id, Status = 'Draft', AccountId = System.Label.AS_Community_AccountId, EffectiveDate = myContract.StartDate, Pricebook2Id = getStandardPricebook().Id);
         upsert newOrder;
         return newOrder;
     }
@@ -159,7 +139,7 @@ public with sharing class AS_Order_Service {
     public static Order getBasketOrder() {
         Id contactId = getContactId();
         Order basketOrder;
-        try {//todo still testing
+        try {
             basketOrder = [
                     select Id,
                             Status
@@ -207,7 +187,6 @@ public with sharing class AS_Order_Service {
     }
 
     public static List<OrderItemWrapper> getOrderItemWrappers(String orderId) {
-        System.debug('WRAPPERS: APEX SERVICE METHOD');
         List<OrderItem> orderItems = [
                 select Product2.Id,Product2.mainPictureId__c,Product2.Family,
                         Product2.Name, Product2.Description, Quantity, ListPrice
@@ -223,16 +202,11 @@ public with sharing class AS_Order_Service {
         for (OrderItem item : orderItems) {
             wrappers.add(new OrderItemWrapper(item));
         }
-        System.debug('///////////////////');
-        System.debug('WRAPPERS');
-        System.debug(wrappers);
-        System.debug('///////////////////');
-
         return wrappers;
     }
 
 
-    public static void completeExistingOrder() {//todo still testing
+    public static void completeExistingOrder() {
         Order oldOrder = getBasketOrder();
         oldOrder.Status = 'Activated';
         upsert oldOrder;

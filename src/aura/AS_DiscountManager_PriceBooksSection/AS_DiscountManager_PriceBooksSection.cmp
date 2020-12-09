@@ -1,0 +1,66 @@
+<!--
+ - Created by tomas on 09.12.2020.
+ -->
+
+<aura:component description="AS_DiscountManager_PriceBooksSection"
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
+                controller="AS_DiscountManager_Controller">
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
+    <aura:attribute name="PriceBookWrapper" type="Object[]"/>
+    <lightning:card iconName="standard:account" title="Pricebooks">
+        <lightning:layout class="lightning-main-container">
+            <div class="container">
+                <div class="table">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
+                        <thead>
+                        <tr class="slds-text-title_caps">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Account name">Pricebook Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Country">Is Standard Pricebook</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Rating">Is Active</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="City">Created By</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Active">Actions</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-body">
+                        <aura:iteration items="{!v.PriceBookWrapper}" var="wrapper" indexVar="index">
+                            <tr>
+                                <td data-label="Pricebook Name">
+                                        {!wrapper.name}
+                                </td>
+                                <td data-label="Is Standard">
+                                        {!wrapper.isStandard}
+
+                                </td>
+                                <td data-label="Is Active">
+                                        {!wrapper.isActive}
+
+                                </td>
+                                <td data-label="Created by">
+                                        {!wrapper.createdBy}
+
+                                </td>
+                                <td data-label="Actions">
+                                    <lightning:button variant="brand-outline" label="Activate"/>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </lightning:layout>
+    </lightning:card>
+</aura:component>

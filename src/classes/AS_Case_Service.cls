@@ -17,29 +17,19 @@ public with sharing class AS_Case_Service {
 
     public static List<CaseWrapper> getWrappers() {
         List<Case> cases = [
-                SELECT Id,Description,Subject,CaseNumber,Status,CreatedDate,ClosedDate,OrderNumber__c,Reason,ProductName__c, (SELECT Id,Title,CreatedDate,CreatedById,Body FROM Feeds)
+                SELECT Id,Description,Subject,CaseNumber,Status,CreatedDate,ClosedDate,OrderNumber__c,Reason,ProductName__c, (SELECT Id,Title,CreatedDate,CreatedById,Body,CreatedBy.Name FROM Feeds)
                 FROM Case
                 WHERE ContactId = :AS_Order_Service.getContactId()
         ];
 
-        List<User> users = [SELECT Id,Name FROM User];
-
-        Map<String, String> userNameMap = new Map<String, String>();
-
-        for (User u : users) {
-            userNameMap.put(u.Id, u.Name);
-        }
-
-
         List<CaseWrapper> wrappers = new List<CaseWrapper>();
+
         if (cases != null && !cases.isEmpty()) {
             for (Case c : cases) {
-                wrappers.add(new CaseWrapper(c, userNameMap));
+                wrappers.add(new CaseWrapper(c));
 
             }
         }
-        System.debug('CASE WRAPPERS');
-        System.debug(wrappers);
         return wrappers;
     }
 
@@ -58,10 +48,10 @@ public with sharing class AS_Case_Service {
             this.message = cutString(message);
         }
         String cutString(String s) {
-            s = s.replaceAll('<p>','');
-            s = s.replaceAll('</p>','');
-            s = s.replaceAll('</b>','');
-            s = s.replaceAll('<b>','');
+            s = s.replaceAll('<p>', '');
+            s = s.replaceAll('</p>', '');
+            s = s.replaceAll('</b>', '');
+            s = s.replaceAll('<b>', '');
             return s;
         }
     }
@@ -103,8 +93,9 @@ public with sharing class AS_Case_Service {
             this.caseReason = caseReason;
             this.comments = comments;
         }
-        public CaseWrapper(Case caseToWrapper, Map<String, String> userNameMap) {
-            this.serviceResponseWrappers = getWrappersFromCase(caseToWrapper, userNameMap);
+
+        public CaseWrapper(Case caseToWrapper) {
+            this.serviceResponseWrappers = getWrappersFromCase(caseToWrapper);
             this.description = cutString(caseToWrapper.Description);
             this.subject = caseToWrapper.Subject;
             this.caseNumber = caseToWrapper.CaseNumber;
@@ -116,16 +107,15 @@ public with sharing class AS_Case_Service {
             this.orderNumber = String.valueOf(caseToWrapper.OrderNumber__c) ;
         }
 
-        List<ServiceResponseWrapper> getWrappersFromCase(Case c, Map<String, String> userNameMap) {
+        List<ServiceResponseWrapper> getWrappersFromCase(Case c) {
             List<ServiceResponseWrapper> wrappers = new List<ServiceResponseWrapper>();
             List<CaseFeed> allWrappers = c.Feeds;
 
             if (allWrappers != null && !allWrappers.isEmpty()) {
-//                for (CaseFeed cf : allWrappers) {
                 for (Integer i = allWrappers.size() - 1; i >= 0; i--) {
                     CaseFeed cf = allWrappers[i];
                     if (cf.Body != null) {
-                        wrappers.add(new ServiceResponseWrapper(String.valueOf(cf.CreatedDate), userNameMap.get(cf.CreatedById), cf.Body));
+                        wrappers.add(new ServiceResponseWrapper(String.valueOf(cf.CreatedDate), cf.CreatedBy.Name, cf.Body));
                     }
                 }
             }
@@ -133,16 +123,14 @@ public with sharing class AS_Case_Service {
         }
 
         String cutString(String s) {
-            s = s.replaceAll('<p>','');
-            s = s.replaceAll('</p>','');
-            s = s.replaceAll('</b>','');
-            s = s.replaceAll('<b>','');
-            s = s.replaceAll('<br>','');
-            s = s.replaceAll('</br>','');
+            s = s.replaceAll('<p>', '');
+            s = s.replaceAll('</p>', '');
+            s = s.replaceAll('</b>', '');
+            s = s.replaceAll('<b>', '');
+            s = s.replaceAll('<br>', '');
+            s = s.replaceAll('</br>', '');
 
             return s;
         }
     }
-
-
 }

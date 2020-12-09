@@ -1,0 +1,14 @@
+<!--
+ - Created by tomas on 09.12.2020.
+ -->
+
+<aura:component description="AS_DiscountManager_PB_DetailsSection"
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
+controller="AS_DiscountManager_Controller"
+>
+    <lightning:card iconName="standard:account" title="Pricebook Details">
+    <lightning:layout class="lightning-main-container">
+        <div class="container"></div>
+    </lightning:layout>
+    </lightning:card>
+</aura:component>
