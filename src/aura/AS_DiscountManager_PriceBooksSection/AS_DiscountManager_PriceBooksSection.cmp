@@ -6,6 +6,7 @@
                 implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
                 controller="AS_DiscountManager_Controller">
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:registerEvent name="getOrderIdEvent" type="c:AS_DiscountManager_PriceBook_Event"/>
 
     <aura:attribute name="PriceBookWrapper" type="Object[]"/>
     <lightning:card iconName="standard:account" title="Pricebooks">
@@ -19,10 +20,16 @@
                                 <div class="slds-truncate" title="Account name">Pricebook Name</div>
                             </th>
                             <th scope="col">
-                                <div class="slds-truncate" title="Country">Is Standard Pricebook</div>
+                                <div class="slds-truncate" title="Country">standard</div>
                             </th>
                             <th scope="col">
-                                <div class="slds-truncate" title="Rating">Is Active</div>
+                                <div class="slds-truncate" title="Rating">Active</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Start Date">Start Date</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="End Date">End Date</div>
                             </th>
                             <th scope="col">
                                 <div class="slds-truncate" title="City">Created By</div>
@@ -34,7 +41,8 @@
                         </thead>
                         <tbody class="table-body">
                         <aura:iteration items="{!v.PriceBookWrapper}" var="wrapper" indexVar="index">
-                            <tr>
+                            <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.id}"
+                                data-index="{!index}">
                                 <td data-label="Pricebook Name">
                                         {!wrapper.name}
                                 </td>
@@ -47,11 +55,18 @@
 
                                 </td>
                                 <td data-label="Created by">
+                                        {!wrapper.startDate}
+                                </td>
+                                <td data-label="Created by">
+                                        {!wrapper.endDate}
+                                </td>
+                                <td data-label="Created by">
                                         {!wrapper.createdBy}
-
                                 </td>
                                 <td data-label="Actions">
-                                    <lightning:button variant="brand-outline" label="Activate"/>
+                                    <aura:if isTrue="{!!wrapper.isActive}">
+                                        <lightning:button variant="brand-outline" label="Activate"/>
+                                    </aura:if>
                                 </td>
                             </tr>
                         </aura:iteration>

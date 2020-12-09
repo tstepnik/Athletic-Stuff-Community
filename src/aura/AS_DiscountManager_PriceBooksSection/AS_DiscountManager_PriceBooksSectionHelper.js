@@ -19,5 +19,22 @@
             }
         });
         $A.enqueueAction(action);
+    },
+
+    tableRowClicked: function (component, event) {
+        let wrappersList = component.get('v.PriceBookWrapper');
+        let index = event.currentTarget.dataset.index;
+        let wrapper = wrappersList[index];
+        let rows = component.find("row");
+
+        let eventt = $A.get('e.c:AS_DiscountManager_PriceBook_Event');
+        let id = wrapper.id;
+        let orderNumber = wrapper.orderNumber;
+        eventt.setParams({
+            "recordId": id,
+        });
+
+        eventt.fire();
+        console.log('EVENT się wysyła z id: ' + id);
     }
 })

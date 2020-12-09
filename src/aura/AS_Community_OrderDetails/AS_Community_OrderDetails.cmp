@@ -9,14 +9,14 @@
 >
     <aura:attribute name="orderItemWrappers" type="Object[]"/>
     <aura:attribute name="OrderNumber" type="String"/>
-    <aura:handler event="c:AS_Community_OrderIdEvent" action="{!c.loadDetails}"/>
     <aura:attribute name="showNewComplainModal" type="Boolean"/>
     <aura:attribute name="caseOrderNumber" type="Integer"/>
     <aura:attribute name="caseProductName" type="String"/>
     <aura:attribute name="caseSubject" type="String"/>
     <aura:attribute name="caseMessage" type="String"/>
+    <aura:handler event="c:AS_Community_OrderIdEvent" action="{!c.loadDetails}"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
-    <lightning:notificationsLibrary aura:id="notification"/>
+<!--    <lightning:notificationsLibrary aura:id="notification"/>-->
 
     <aura:if isTrue="{!v.showNewComplainModal}">
 
@@ -47,9 +47,6 @@
         <div class="container">
             <div class="title-and-btn">
             <p>Order Details</p>
-<!--                <div class="buttons">-->
-<!--                    <lightning:button variant="brand-outline" label="Complaint"/>-->
-<!--                </div>-->
             </div>
                 <lightning:card title="{!'Order nr: ' + v.OrderNumber}" iconName="standard:partner_fund_request">
                 <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
@@ -103,54 +100,6 @@
     </lightning:layout>
     <c:AS_SendResultToast aura:id ="toastMaker"/>
     <c:AS_SendErrorToast aura:id ="errorToastMaker"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </aura:component>

@@ -1,0 +1,7 @@
+<!--
+ - Created by tomas on 09.12.2020.
+ -->
+
+<aura:event type="APPLICATION" description="AS_DiscountManager_PriceBook_Event">
+<aura:attribute type="String" name="recordId"/>
+</aura:event>

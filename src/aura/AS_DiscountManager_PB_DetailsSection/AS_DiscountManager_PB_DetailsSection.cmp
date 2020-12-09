@@ -4,11 +4,57 @@
 
 <aura:component description="AS_DiscountManager_PB_DetailsSection"
                 implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
-controller="AS_DiscountManager_Controller"
+                controller="AS_DiscountManager_Controller"
 >
+    <aura:handler event="c:AS_DiscountManager_PriceBook_Event" action="{!c.loadDetails}"/>
+    <!--    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>  -->
+    <aura:attribute name="PbEntryWrappers" type="Object[]"/>
     <lightning:card iconName="standard:account" title="Pricebook Details">
-    <lightning:layout class="lightning-main-container">
-        <div class="container"></div>
-    </lightning:layout>
+        <lightning:layout class="lightning-main-container">
+            <div class="container">
+                <div class="table">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
+                        <thead>
+                        <tr class="slds-text-title_caps">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Account name">Product</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Country">Old Price</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Rating">New Price</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Active">Actions</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-body">
+                        <aura:iteration items="{!v.PbEntryWrappers}" var="wrapper" indexVar="index">
+                            <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.id}"
+                                data-index="{!index}">
+                                <td data-label="Pricebook Name">
+                                        {!wrapper.name}
+                                </td>
+                                <td data-label="Is Standard">
+                                        {!wrapper.oldPrice}
+
+                                </td>
+                                <td data-label="Is Active">
+                                        {!wrapper.newPrice}
+                                </td>
+
+                                <td data-label="Actions">
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </lightning:layout>
     </lightning:card>
+    <c:AS_SendResultToast aura:id="toastMaker"/>
+    <c:AS_SendErrorToast aura:id="errorToastMaker"/>
 </aura:component>

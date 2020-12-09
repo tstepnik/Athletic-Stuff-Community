@@ -5,8 +5,14 @@
 public with sharing class AS_DiscountManager_Controller {
 
     @auraenabled
-    public static List<AS_PriceBook_Service.PriceBookWrapper> getPriceBookWrappers(){
+    public static List<AS_PriceBook_Service.PriceBookWrapper> getPriceBookWrappers() {
         return AS_PriceBook_Service.getPriceBookWrappers();
+    }
+
+
+    @auraenabled
+    public static List<AS_PriceBook_Service.PbEntryWrapper>getPricebookDetails(String pricebookId) {
+        return AS_PriceBook_Service.getPricebookDetails(pricebookId);
     }
 
 }
