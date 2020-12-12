@@ -3,6 +3,7 @@
 flexipage:availableForRecordHome,
 force:appHostable"
                 controller="AS_DiscountManager_Controller">
+    <aura:registerEvent type="c:AS_DiscountManager_UpdatePbList_Event" name="updatePricebookListEvent"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler event="c:AS_DiscountManager_BasicPromotionEvent" action="{!c.createPromotion}"/>
@@ -50,6 +51,7 @@ force:appHostable"
                     </div>
                     </div>
                 </div>
+
                 <div class="result-table">
                     <div class="table">
                         <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
@@ -83,8 +85,8 @@ force:appHostable"
                             </aura:iteration>
                             </tbody>
                         </table>
-
                     </div>
+
                     <div class="pagination" aura:id="pagination-div">
                         <div class="products-number">
                             <p>{!v.recordsOnPage_start} - {!v.recordsOnPage_end} z {!v.recordsNumber} ofert</p>

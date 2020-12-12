@@ -23,7 +23,8 @@ public with sharing class AS_PriceBook_Service {
     }
 
     public static List<PricebookEntry> getPbEntries(String pricebookId) {
-        return [SELECT Id,Product2.Name,OldPrice__c,UnitPrice,IsActive FROM PricebookEntry WHERE Pricebook2Id = :pricebookId];
+        System.debug('PRICEBOOK ID IN GET PB ENTRIES: ' + pricebookId);
+        return [SELECT Id,Product2.Name,StandardPrice__c,UnitPrice,IsActive FROM PricebookEntry WHERE Pricebook2Id = :pricebookId];
     }
 
     public static void createDiscountPricebook(String discount, Boolean isPercent, String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
@@ -39,7 +40,7 @@ public with sharing class AS_PriceBook_Service {
             pbEntries.add(createPbEntry(wrapper, isPercent, discount, discountPricebook.Id));
         }
         System.debug('PRICEBOOK ENTRY: ');
-        for(PricebookEntry e : pbEntries){
+        for (PricebookEntry e : pbEntries) {
             System.debug(e);
         }
         insert pbEntries;
@@ -54,22 +55,80 @@ public with sharing class AS_PriceBook_Service {
         pricebookEntry.Pricebook2Id = pricebookId;
         pricebookEntry.Product2Id = wrapper.productId;
         pricebookEntry.UnitPrice = newPrice.setScale(2);
-        pricebookEntry.OldPrice__c = Decimal.valueOf(wrapper.price);
+        pricebookEntry.StandardPrice__c = Decimal.valueOf(wrapper.price);
 
         return pricebookEntry;
     }
 
     private static Decimal countDiscount(Boolean isPercent, String discount, String price) {
-        Decimal oldPrice = Decimal.valueOf(price);
+        Decimal standardPrice = Decimal.valueOf(price);
         Decimal discountAmount = Decimal.valueOf(discount);
         Decimal newPrice;
         if (isPercent) {
-            newPrice = oldPrice - (oldPrice * (discountAmount / 100));
+            newPrice = standardPrice - (standardPrice * (discountAmount / 100));
         } else {
-            newPrice = oldPrice - discountAmount;
+            newPrice = standardPrice - discountAmount;
         }
 
         return newPrice;
+    }
+
+    public static void activatePricebook(String pricebookId) {
+        Pricebook2 pricebook = [
+                SELECT
+                        Id,
+                        IsActive
+                FROM Pricebook2
+                WHERE Id = :pricebookId
+        ];
+
+        if (!pricebook.IsActive) {
+            pricebook.IsActive = true;
+         try{
+             update pricebook;
+         }catch (DmlException e){
+             System.debug('DML exception in method activatePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
+         }
+        }
+    }
+
+    public static void deactivatePricebook(String pricebookId) {
+        System.debug('WCHODZI DO DEACITAVE');
+        System.debug('pricebookId: ' + pricebookId);
+        Pricebook2 pricebook = [
+                SELECT
+                        Id,
+                        Name,
+                        IsActive
+                FROM Pricebook2
+                WHERE Id =:pricebookId
+        LIMIT 1];
+        System.debug('pricebook: ' + pricebook.Name + ' Id: ' + pricebook.Id + ' IsActive: ' + pricebook.IsActive);
+
+        if (pricebook.IsActive) {
+            pricebook.IsActive = false;
+            try{
+                update pricebook;
+            }catch (DmlException e){
+                System.debug('DML exception in method deactivatePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
+            }
+        }
+    }
+
+    public static void deletePricebook(String pricebookId) {
+        Pricebook2 pricebook = [
+                SELECT
+                        Id
+                FROM Pricebook2
+                WHERE Id = :pricebookId
+        ];
+
+            try{
+                delete pricebook;
+            }catch (DmlException e){
+                System.debug('DML exception in method deletePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
+            }
+
     }
 
     public class PriceBookWrapper {
@@ -113,7 +172,7 @@ public with sharing class AS_PriceBook_Service {
         @AuraEnabled
         public String name { get; set; }
         @AuraEnabled
-        public String oldPrice { get; set; }
+        public String standardPrice { get; set; }
         @AuraEnabled
         public String newPrice { get; set; }
         @AuraEnabled
@@ -121,7 +180,7 @@ public with sharing class AS_PriceBook_Service {
 
         public PbEntryWrapper(PricebookEntry pbEntry) {
             this.name = pbEntry.Product2.Name;
-            this.oldPrice = String.valueOf(pbEntry.OldPrice__c);
+            this.standardPrice = String.valueOf(pbEntry.StandardPrice__c);
             this.newPrice = String.valueOf(pbEntry.UnitPrice);
             this.active = pbEntry.IsActive;
         }

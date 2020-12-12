@@ -29,9 +29,11 @@
 
         let eventt = $A.get('e.c:AS_DiscountManager_PriceBook_Event');
         let id = wrapper.id;
+        let isActive = wrapper.isActive;
         let orderNumber = wrapper.orderNumber;
         eventt.setParams({
             "recordId": id,
+            "isActive": isActive
         });
 
         eventt.fire();

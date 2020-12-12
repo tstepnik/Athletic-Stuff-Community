@@ -15,6 +15,21 @@ public with sharing class AS_DiscountManager_Controller {
         return AS_PriceBook_Service.getPricebookDetails(pricebookId);
     }
 
+    @auraenabled
+    public static void activatePricebook(String pricebookId) {
+        AS_PriceBook_Service.activatePricebook(pricebookId);
+    }
+
+    @auraenabled
+    public static void deactivatePricebook(String pricebookId) {
+        AS_PriceBook_Service.deactivatePricebook(pricebookId);
+    }
+
+    @auraenabled
+    public static void deletePricebook(String pricebookId) {
+        AS_PriceBook_Service.deletePricebook(pricebookId);
+    }
+
     @AuraEnabled
     public static List<AS_Product_Service.ProductInfoWrapper> getNextPageOffset(String inpTxt, Integer offset) {
 
@@ -31,22 +46,9 @@ public with sharing class AS_DiscountManager_Controller {
         return AS_Product_Service.getSearchProductsWrapper(inpTxt, 0);
     }
 
-//    @AuraEnabled
-//    public static void createDiscountApex(List<AS_Product_Service.ProductInfoWrapper> wrappers,String discount, String startDate, String endDate, Boolean isPercent) {
-//        System.debug('APEX CONTROLLER METHOD:');
-//        System.debug(wrappers);
-//        System.debug(discount);
-//        System.debug(startDate);
-//        System.debug(endDate);
-//        System.debug(isPercent);
-//    }
-
-
     @AuraEnabled
     public static void createDiscountApex(String discount, Boolean isPercent, String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
         AS_PriceBook_Service.createDiscountPricebook(discount, isPercent, startDate, endDate, wrappers);
-
-
     }
 
 

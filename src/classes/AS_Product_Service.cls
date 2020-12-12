@@ -32,7 +32,7 @@ public with sharing class AS_Product_Service {
         List<String> selectedFields = new List<String>{
                 'Id',
                 'UnitPrice',
-                'OldPrice__c',
+                'StandardPrice__c',
                 'Product2Id',
                 'Product2.Name',
                 'Product2.Family',
@@ -95,19 +95,19 @@ public with sharing class AS_Product_Service {
         PricebookEntry pbe = entries[0];
         String productId = pbe.Product2Id;
         Decimal price = pbe.UnitPrice;
-        Decimal oldPrice = pbe.OldPrice__c;
+        Decimal standardPrice = pbe.StandardPrice__c;
         String mainPicture = pbe.Product2.mainPictureId__c;
         String productName = pbe.Product2.Name;
         for (PricebookEntry p : entries) {
             if (p.UnitPrice < price) {
                 price = p.UnitPrice;
                 productId = p.Product2Id;
-                oldPrice = p.OldPrice__c;
+                standardPrice = p.StandardPrice__c;
                 mainPicture = p.Product2.mainPictureId__c;
                 productName = p.Product2.Name;
             }
         }
-        return new ProductInfoWrapper(productId, mainPicture, productName, String.valueOf(price), String.valueOf(oldPrice));
+        return new ProductInfoWrapper(productId, mainPicture, productName, String.valueOf(price), String.valueOf(standardPrice));
     }
 
     public static Integer countProducts(String phrase) {
@@ -180,7 +180,7 @@ public with sharing class AS_Product_Service {
         @auraEnabled
         public String price { get; set; }
         @auraEnabled
-        public String oldPrice { get; set; }
+        public String standardPrice { get; set; }
 
         public ProductInfoWrapper() {
         }
@@ -191,12 +191,12 @@ public with sharing class AS_Product_Service {
             this.productName = productName;
             this.price = price;
         }
-        public ProductInfoWrapper(String productId, String mainPicId, String productName, String price, String oldPrice) {
+        public ProductInfoWrapper(String productId, String mainPicId, String productName, String price, String standardPrice) {
             this.productId = productId;
             this.mainPictureId = mainPicId;
             this.productName = productName;
             this.price = price;
-            this.oldPrice = oldPrice;
+            this.standardPrice = standardPrice;
         }
 
     }

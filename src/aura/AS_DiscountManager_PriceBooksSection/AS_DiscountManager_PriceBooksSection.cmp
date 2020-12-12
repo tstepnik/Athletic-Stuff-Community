@@ -6,6 +6,7 @@
                 implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
                 controller="AS_DiscountManager_Controller">
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:handler event="c:AS_DiscountManager_UpdatePbList_Event" action="{!c.onInit}"/>
     <aura:registerEvent name="getOrderIdEvent" type="c:AS_DiscountManager_PriceBook_Event"/>
 
     <aura:attribute name="PriceBookWrapper" type="Object[]"/>
@@ -31,9 +32,6 @@
                             <th scope="col">
                                 <div class="slds-truncate" title="End Date">End Date</div>
                             </th>
-                            <th scope="col">
-                                <div class="slds-truncate" title="Active">Actions</div>
-                            </th>
                         </tr>
                         </thead>
                         <tbody class="table-body">
@@ -56,11 +54,6 @@
                                 </td>
                                 <td data-label="Created by">
                                         {!wrapper.endDate}
-                                </td>
-                                <td data-label="Actions">
-                                    <aura:if isTrue="{!!wrapper.isActive}">
-                                        <lightning:button variant="brand-outline" label="Activate"/>
-                                    </aura:if>
                                 </td>
                             </tr>
                         </aura:iteration>

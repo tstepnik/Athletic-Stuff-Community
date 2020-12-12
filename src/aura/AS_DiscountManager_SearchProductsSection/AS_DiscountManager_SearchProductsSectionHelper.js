@@ -458,8 +458,9 @@
                 let responseMessage = 'Discount successfully created.'
                 let sendToast = component.find('toastMaker');
                 sendToast.sendResultToast('Success', responseMessage, 'Success');
+                this.fireUpdatePbListEvent();
 
-            } else  {
+            } else {
                 let errors = response.getError();
                 if (errors && Array.isArray(errors) && errors.length > 0) {
                     console.error(JSON.stringify(errors[0].message));
@@ -469,12 +470,12 @@
             }
         });
         $A.enqueueAction(action);
-        //create object for apex method
-        //ProductInfoWrapper
-        //discount
-        //isPercent (true,false)
     },
 
+    fireUpdatePbListEvent: function () {
+        let eventt = $A.get('e.c:AS_DiscountManager_UpdatePbList_Event');
+        eventt.fire();
+    }
 
 
 })
