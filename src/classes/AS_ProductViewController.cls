@@ -12,6 +12,11 @@ public with sharing class AS_ProductViewController {
         return AS_Product_Service.getProductPrice(productId);
     }
 
+    @auraEnabled
+    public static String getCheapestPrice_apex(String productId) {
+        return AS_Product_Service.getCheapestPrice(productId);
+    }
+
     @AuraEnabled
     public static Order getBasketOrder() {
        return AS_Order_Service.getBasketOrder();

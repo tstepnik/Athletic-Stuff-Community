@@ -26,6 +26,9 @@
                                 <div class="slds-truncate" title="Rating">New Price</div>
                             </th>
                             <th scope="col">
+                                <div class="slds-truncate" title="Rating">Active</div>
+                            </th>
+                            <th scope="col">
                                 <div class="slds-truncate" title="Active">Actions</div>
                             </th>
                         </tr>
@@ -34,7 +37,7 @@
                         <aura:iteration items="{!v.PbEntryWrappers}" var="wrapper" indexVar="index">
                             <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.id}"
                                 data-index="{!index}">
-                                <td data-label="Pricebook Name">
+                                <td data-label="Product" class="table-name-section">
                                         {!wrapper.name}
                                 </td>
                                 <td data-label="Is Standard">
@@ -43,6 +46,10 @@
                                 </td>
                                 <td data-label="Is Active">
                                         {!wrapper.newPrice}
+                                </td>
+
+                                <td data-label="Is Active">
+                                        {!wrapper.active}
                                 </td>
 
                                 <td data-label="Actions">

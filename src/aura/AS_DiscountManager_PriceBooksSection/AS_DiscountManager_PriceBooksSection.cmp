@@ -32,9 +32,6 @@
                                 <div class="slds-truncate" title="End Date">End Date</div>
                             </th>
                             <th scope="col">
-                                <div class="slds-truncate" title="City">Created By</div>
-                            </th>
-                            <th scope="col">
                                 <div class="slds-truncate" title="Active">Actions</div>
                             </th>
                         </tr>
@@ -59,9 +56,6 @@
                                 </td>
                                 <td data-label="Created by">
                                         {!wrapper.endDate}
-                                </td>
-                                <td data-label="Created by">
-                                        {!wrapper.createdBy}
                                 </td>
                                 <td data-label="Actions">
                                     <aura:if isTrue="{!!wrapper.isActive}">

@@ -1,0 +1,64 @@
+/**
+ * Created by tomas on 10.12.2020.
+ */
+.THIS .container {
+width: 100%;
+}
+
+.THIS .setDiscountS{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.THIS .setDiscountS h1 {
+    margin-left: 3rem;
+}
+
+.THIS .set-discount-section{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    align-items: flex-end;
+
+}
+
+.THIS .btns-and-title h1{
+    font-weight: bold;
+    font-size: 0.7rem;
+    margin-bottom: 0.4rem;
+}
+
+.THIS .slider{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.THIS .showElement{
+    display: flex;
+}
+
+.THIS .hideElement{
+    display: none;
+}
+
+
+.THIS .set-date{
+margin-top: 5rem;
+    display: flex;
+    justify-content: space-around;
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+
+.THIS .firstConfirmationBtns{
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+}
+
+
+

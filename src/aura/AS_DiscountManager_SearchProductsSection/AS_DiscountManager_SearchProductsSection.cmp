@@ -1,27 +1,126 @@
-<!--
- - Created by tomas on 09.12.2020.
- -->
-
 <aura:component description="AS_DiscountManager_SearchProductsSection"
-implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
-                controller="AS_DiscountManager_Controller"
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,
+flexipage:availableForRecordHome,
+force:appHostable"
+                controller="AS_DiscountManager_Controller">
 
->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:AS_DiscountManager_BasicPromotionEvent" action="{!c.createPromotion}"/>
 
-   <lightning:card iconName="standard:account" title="Search Products">
-   <lightning:layout class="lightning-main-container">
-   <div class="container">
+    <aura:attribute type="String" name="inputText"/>
+    <aura:attribute type="Object[]" name="productWrappers"/>
+    <aura:attribute type="Object[]" name="chosenProductWrappers"/>
+    <aura:attribute type="Object" name="productInfoBunch"/>
 
-   <div class="search-form">
-   </div>
-   <div class="result-table">
-   <div class="table"></div>
-   <div class="pagination"></div>
-   <div class="button"></div>
-   </div>
-   </div>
+    <aura:attribute name="recordsNumber" type="String"/>
+    <aura:attribute name="offset" type="Integer"/>
+    <aura:attribute name="offsetSize" type="Integer"/>
+    <aura:attribute name="recordsOnPage_start" type="String"/>
+    <aura:attribute name="recordsOnPage_end" type="String"/>
 
-   </lightning:layout>
-   </lightning:card>
+    <aura:attribute name="clickedNumber-value" type="String"/>
+    <aura:attribute name="clickedNumber-auraId" type="String"/>
 
+    <aura:attribute name="numberOfPages" type="String"/>
+    <aura:attribute name="pageNumber" type="String"/>
+    <aura:attribute name="pn_first" type="String"/>
+    <aura:attribute name="pn_second" type="String"/>
+    <aura:attribute name="pn_third" type="String"/>
+    <aura:attribute name="pn_fourth" type="String"/>
+    <aura:attribute name="pn_fifth" type="String"/>
+
+
+    <lightning:card iconName="standard:account" title="Search Products">
+        <lightning:layout class="lightning-main-container">
+            <div class="container">
+                <div class="search-form">
+                    <form class="slds-form--inline">
+                    <span onkeypress="{!c.redirect}" class="input-span">
+                    <lightning:input class="myinpt" type="text" placeholder="Type..." name="search"
+                                     value="{!v.inputText}"/>
+                    </span>
+                        <lightning:button iconName="utility:search" class="mybtn" onclick="{!c.getWrappers}"/>
+                    </form>
+                    <div class="choose-all-section">
+                    <div class="choose-all-btn">
+<!--                        <lightning:button label="choose all" class="mybtn" onclick="{!c.getWrappers}"/>-->
+                    </div>
+                    <div class="choose-all-info">
+<!--                    <p>0 from 6</p>-->
+                    </div>
+                    </div>
+                </div>
+                <div class="result-table">
+                    <div class="table">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
+                            <thead>
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Active"> <lightning:button onclick="{!c.clickTableMainBtn}" aura:id="tableMainBtn" class="lButton-empty" variant="brand-outline" label=" "/>
+                                    </div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Account name">Product Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Country">Price</div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-body">
+                            <aura:iteration items="{!v.productWrappers}" var="wrapper" indexVar="index">
+                                <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.productId}" data-index="{!index}">
+                                    <td data-label="Actions">
+                                            <button id="{!index + 'tableRowBtn'}" onclick="{!consoleLog}" class="lButton-empty"  variant="brand-outline" />
+                                    </td>
+                                    <td data-label="Product Name">
+                                            {!wrapper.productName}
+                                    </td>
+                                    <td data-label="Price">
+                                            {!wrapper.price}
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="pagination" aura:id="pagination-div">
+                        <div class="products-number">
+                            <p>{!v.recordsOnPage_start} - {!v.recordsOnPage_end} z {!v.recordsNumber} ofert</p>
+                        </div>
+                        <div class="change-page-section">
+                            <div class="previous-page" onclick="{!c.pressPreviousButton}" aura:id="previousPage-id">
+                                <p class="arrow">❮</p>
+                                <p class="changePageWord">{!$Label.c.AS_Community_PreviousBtn}</p>
+                            </div>
+                            <div class="page-numbers">
+                                <p class="page-lp" aura:id="pn-m1" id="{!v.pn_first + ' pn-m1'}"
+                                   onclick="{!c.choosePage}">{!v.pn_first}</p>
+                                <p class="page-lp" aura:id="pn-m2" id="{!v.pn_second + ' pn-m2'}"
+                                   onclick="{!c.choosePage}">{!v.pn_second}</p>
+                                <p class="page-lp" aura:id="pn-m3" id="{!v.pn_third + ' pn-m3'}"
+                                   onclick="{!c.choosePage}">{!v.pn_third}</p>
+                                <p class="page-lp" aura:id="pn-m4" id="{!v.pn_fourth + ' pn-m4'}"
+                                   onclick="{!c.choosePage}">{!v.pn_fourth}</p>
+                                <p class="page-lp" aura:id="pn-m5" id="{!v.pn_fifth + ' pn-m5'}"
+                                   onclick="{!c.choosePage}">{!v.pn_fifth}</p>
+                                <p>z</p>
+                                <p class="readonly">{!v.numberOfPages}</p>
+                            </div>
+                            <div class="next-page" onclick="{!c.pressNextButton}" aura:id="nextPage-id">
+                                <p class="changePageWord">{!$Label.c.AS_Community_NextBtn}</p>
+                                <p class="arrow">❯</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="button"></div>
+                </div>
+            </div>
+
+        </lightning:layout>
+    </lightning:card>
+    <c:AS_SendResultToast aura:id ="toastMaker"/>
+    <c:AS_SendErrorToast aura:id ="errorToastMaker"/>
 </aura:component>

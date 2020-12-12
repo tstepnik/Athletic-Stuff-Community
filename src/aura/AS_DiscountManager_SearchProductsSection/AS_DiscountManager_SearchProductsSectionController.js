@@ -1,0 +1,39 @@
+({
+    getWrappers: function (component, event, helper) {
+        helper.searchOperations(component, event, helper);
+        helper.showPagination(component);
+    },
+
+    doInit: function (component, event, helper) {
+        helper.hidePagination(component);
+    },
+
+    pressPreviousButton: function (component, event, helper) {
+        helper.pressPreviousButton(component, event, helper);
+    },
+    pressNextButton: function (component, event, helper) {
+        helper.pressNextButton(component, event, helper);
+    },
+
+    choosePage: function (component, event, helper) {
+        helper.choosePage(component, event);
+    },
+
+    clickTableMainBtn: function (component, event, helper) {
+        helper.clickTableMainBtn(component, event);
+    },
+
+    tableRowClicked: function (component, event, helper) {
+        helper.tableRowClicked(component, event);
+    },
+
+    consoleLog: function (component, event, helper) {
+        helper.consoleLog(component, event);
+    },
+
+    createPromotion: function (component, event, helper) {
+        helper.createPromotion(component, event);
+    }
+
+
+})

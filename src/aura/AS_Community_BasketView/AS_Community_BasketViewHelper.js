@@ -13,9 +13,9 @@
                 this.handleShowToast(component, event, 'Error', 'error', 'Error while processing loading data');
                 let errors = response.getError();
                 if (errors && Array.isArray(errors) && errors.length > 0) {
-                    console.error(JSON.stringify(errors[0].message));
-                }
+                console.error(JSON.stringify(errors[0].message));
             }
+        }
 
         });
         $A.enqueueAction(action);

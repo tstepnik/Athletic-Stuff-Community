@@ -1,0 +1,10 @@
+<!--
+ - Created by tomas on 10.12.2020.
+ -->
+
+<aura:event type="APPLICATION" description="AS_DiscountManager_BasicPromotionEvent">
+    <aura:attribute type="String" name="discount"/>
+    <aura:attribute type="Date" name="startDate"/>
+    <aura:attribute type="Date" name="endDate"/>
+    <aura:attribute type="Boolean" name="isPercent"/>
+</aura:event>

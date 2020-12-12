@@ -16,8 +16,6 @@ public with sharing class AS_Product_Service {
 
         productsInfo = Database.query(pricebookEntryQuery(phrase, queryLimit, offset));
 
-        System.debug(pricebookEntryQuery(phrase, queryLimit, offset));
-
         return convertToInfoWrappers(productsInfo);
 
     }
@@ -34,6 +32,7 @@ public with sharing class AS_Product_Service {
         List<String> selectedFields = new List<String>{
                 'Id',
                 'UnitPrice',
+                'OldPrice__c',
                 'Product2Id',
                 'Product2.Name',
                 'Product2.Family',
@@ -52,15 +51,63 @@ public with sharing class AS_Product_Service {
     }
 
     private static List<ProductInfoWrapper> convertToInfoWrappers(List<PricebookEntry> pbEntries) {
-
+        System.debug('WCHODZI DO : convertToInfoWrappers' );
         List<ProductInfoWrapper> wrappers = new List<ProductInfoWrapper>();
 
+        Map<String, List<PricebookEntry>> pbMap = new Map<String, List<PricebookEntry>>();
+        System.debug('WCHODZI DO : convertToInfoWrappers 11' );
+
         for (PricebookEntry p : pbEntries) {
-            ProductInfoWrapper wrapper = new ProductInfoWrapper(p.Product2Id, p.Product2.mainPictureId__c, p.Product2.Name, String.valueOf(p.UnitPrice));
+            System.debug('WCHODZI DO : convertToInfoWrappers 22' );
+
+            String productName = p.Product2.Name;
+            System.debug('WCHODZI DO : convertToInfoWrappers 33' );
+
+            if (pbMap.containsKey(productName)) {
+                System.debug('WCHODZI DO : convertToInfoWrappers 44' );
+
+                List<PricebookEntry> entries = new List<PricebookEntry>();
+                entries = pbMap.get(productName);
+                entries.add(p);
+                pbMap.put(productName, entries);
+            } else {
+                System.debug('WCHODZI DO : convertToInfoWrappers 55' );
+
+                List<PricebookEntry> entries = new List<PricebookEntry>();
+                entries.add(p);
+                pbMap.put(productName, entries);
+            }
+        }
+        System.debug('WCHODZI DO : convertToInfoWrappers 66' );
+
+        for (String key : pbMap.keySet()) {
+            List<PricebookEntry> entries = pbMap.get(key);
+            ProductInfoWrapper wrapper = returnCheapestWrapper(entries);
             wrappers.add(wrapper);
         }
 
         return wrappers;
+    }
+
+    public static ProductInfoWrapper returnCheapestWrapper(List<PricebookEntry> entries) {
+        System.debug('WCHODZI DO : returnCheapestWrapper' );
+
+        PricebookEntry pbe = entries[0];
+        String productId = pbe.Product2Id;
+        Decimal price = pbe.UnitPrice;
+        Decimal oldPrice = pbe.OldPrice__c;
+        String mainPicture = pbe.Product2.mainPictureId__c;
+        String productName = pbe.Product2.Name;
+        for (PricebookEntry p : entries) {
+            if (p.UnitPrice < price) {
+                price = p.UnitPrice;
+                productId = p.Product2Id;
+                oldPrice = p.OldPrice__c;
+                mainPicture = p.Product2.mainPictureId__c;
+                productName = p.Product2.Name;
+            }
+        }
+        return new ProductInfoWrapper(productId, mainPicture, productName, String.valueOf(price), String.valueOf(oldPrice));
     }
 
     public static Integer countProducts(String phrase) {
@@ -95,6 +142,34 @@ public with sharing class AS_Product_Service {
         return String.valueOf(price);
     }
 
+
+    public static String getCheapestPrice(String productId) {
+        List<PricebookEntry> pricebookEntries = [
+                SELECT
+                        UnitPrice
+                FROM PricebookEntry
+                WHERE Product2Id = :productId
+                AND Pricebook2.IsActive = true
+        ];
+
+        List<Decimal> prices = new List<Decimal>();
+
+        for (PricebookEntry entry : pricebookEntries) {
+            prices.add(entry.UnitPrice);
+        }
+
+        Decimal cheapestPrice = prices[0];
+
+        for (Decimal p : prices) {
+            if (cheapestPrice > p) {
+                cheapestPrice = p;
+            }
+        }
+
+        return String.valueOf(cheapestPrice);
+
+    }
+
     public class ProductInfoWrapper {
         @auraEnabled
         public String productId { get; set; }
@@ -104,13 +179,26 @@ public with sharing class AS_Product_Service {
         public String productName { get; set; }
         @auraEnabled
         public String price { get; set; }
+        @auraEnabled
+        public String oldPrice { get; set; }
 
-        ProductInfoWrapper(String productId, String mainPicId, String productName, String price) {
+        public ProductInfoWrapper() {
+        }
+
+        public ProductInfoWrapper(String productId, String mainPicId, String productName, String price) {
             this.productId = productId;
             this.mainPictureId = mainPicId;
             this.productName = productName;
             this.price = price;
         }
+        public ProductInfoWrapper(String productId, String mainPicId, String productName, String price, String oldPrice) {
+            this.productId = productId;
+            this.mainPictureId = mainPicId;
+            this.productName = productName;
+            this.price = price;
+            this.oldPrice = oldPrice;
+        }
+
     }
 
     public class SearchProductsWrapper {

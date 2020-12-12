@@ -1049,6 +1049,10 @@
                             <option name="name" value="AS_DiscountManager_PriceBook_Event" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_DiscountManager_BasicPromotionEvent" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="AuraDefinitionBundle" />

@@ -259,16 +259,15 @@ public with sharing class AS_QueryBuilder {
         if (phrase != null) {
             addWHERE();
             ownCondition(' IsActive = true ');
-            ownCondition(' AND Pricebook2.Name LIKE \'Standard\' AND ');
+            ownCondition(' AND Pricebook2.IsActive = true AND ');
             query += ' ( ';
             void_whereCondition_returnIf_FieldsContainPhrase(phrase, where_fields, andOr);
             query += ' ) ';
         }else{
             addWHERE();
-            ownCondition(' Pricebook2.Name LIKE \'Standard\'');
-
+            ownCondition(' IsActive = true ');
+            ownCondition(' AND Pricebook2.IsActive = true ');
         }
     }
-
 
 }
