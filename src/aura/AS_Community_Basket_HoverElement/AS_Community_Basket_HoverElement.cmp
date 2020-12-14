@@ -6,13 +6,13 @@
                 implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable">
     <aura:attribute type="String" name="productId"/>
     <aura:attribute type="String" name="sumPrice"/>
-    <aura:attribute type="Object" name="opportunityProduct"/>
+    <aura:attribute type="Object" name="getBasketItemWrapper"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
 
 
     <aura:attribute name="product" type="Object"/>
     <force:recordData aura:id="recordLoader"
-                      recordId="{!v.opportunityProduct.Product2Id}"
+                      recordId="{!v.getBasketItemWrapper.productId}"
                       fields="Id,Name,Description,Family,mainPictureId__c"
                       targetFields="{!v.product}"
                       targetError="{!v.recordLoadError}"
@@ -29,12 +29,12 @@
 
         </div>
         <div class="product-title">
-        <p class="p-amount">{!v.opportunityProduct.Quantity} x</p>
+        <p class="p-amount">{!v.getBasketItemWrapper.quantity} x</p>
             <p class="p-title">{!v.product.Name}</p>
         </div>
         <div class="product-amount">
         <p class="p-price-sum">Price: {!v.sumPrice} $</p>
-        <p class="p-price-unit" aura:id="p-priceInit">{!v.opportunityProduct.ListPrice}$ per unit</p>
+        <p class="p-price-unit" aura:id="p-priceInit">{!v.getBasketItemWrapper.price}$ per unit</p>
         </div>
     </div>
     </lightning:layout>

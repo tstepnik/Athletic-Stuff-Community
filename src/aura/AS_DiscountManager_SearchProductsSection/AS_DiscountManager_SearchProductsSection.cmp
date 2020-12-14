@@ -12,6 +12,7 @@ force:appHostable"
     <aura:attribute type="Object[]" name="productWrappers"/>
     <aura:attribute type="Object[]" name="chosenProductWrappers"/>
     <aura:attribute type="Object" name="productInfoBunch"/>
+    <aura:attribute name="columns" type="List"/>
 
     <aura:attribute name="recordsNumber" type="String"/>
     <aura:attribute name="offset" type="Integer"/>
@@ -54,37 +55,12 @@ force:appHostable"
 
                 <div class="result-table">
                     <div class="table">
-                        <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
-                            <thead>
-                            <tr class="slds-text-title_caps">
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Active"> <lightning:button onclick="{!c.clickTableMainBtn}" aura:id="tableMainBtn" class="lButton-empty" variant="brand-outline" label=" "/>
-                                    </div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Account name">Product Name</div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Country">Price</div>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody class="table-body">
-                            <aura:iteration items="{!v.productWrappers}" var="wrapper" indexVar="index">
-                                <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.productId}" data-index="{!index}">
-                                    <td data-label="Actions">
-                                            <button id="{!index + 'tableRowBtn'}" onclick="{!consoleLog}" class="lButton-empty"  variant="brand-outline" />
-                                    </td>
-                                    <td data-label="Product Name">
-                                            {!wrapper.productName}
-                                    </td>
-                                    <td data-label="Price">
-                                            {!wrapper.price}
-                                    </td>
-                                </tr>
-                            </aura:iteration>
-                            </tbody>
-                        </table>
+                        <lightning:datatable data="{! v.productWrappers }"
+                                             columns="{! v.columns }"
+                                             keyField="id"
+                                             onrowaction="{! c.handleRowAction }"
+                                             aura:id="linesTable"
+                        />
                     </div>
 
                     <div class="pagination" aura:id="pagination-div">

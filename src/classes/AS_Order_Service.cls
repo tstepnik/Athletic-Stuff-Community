@@ -88,25 +88,46 @@ public with sharing class AS_Order_Service {
         return orderItems;
     }
 
+//    public static List<OrderItem> getOrderItemWrappers(){
+//
+//    }
+
+//    public static Decimal countOrderAmount() {
+//        Decimal sum = 0;
+//
+//        Order basketOrder = getBasketOrder();
+//
+//        List<OrderItem> items = [
+//                select Id,
+//                        ListPrice,
+//                        Quantity
+//                from OrderItem
+//                where OrderId = :basketOrder.Id
+//        ];
+//
+//        if (items.isEmpty() || items == null) {
+//            return 0;
+//        }
+//
+//        for (OrderItem item : items) {
+//            sum += (item.Quantity * item.ListPrice);
+//        }
+//
+//        return sum.setScale(2, RoundingMode.HALF_UP);
+//    }
+
     public static Decimal countOrderAmount() {
         Decimal sum = 0;
 
-        Order basketOrder = getBasketOrder();
+        List<OrderItemWrapper> orderItemWrappers = getBasketItemWrappers();
 
-        List<OrderItem> items = [
-                select Id,
-                        ListPrice,
-                        Quantity
-                from OrderItem
-                where OrderId = :basketOrder.Id
-        ];
 
-        if (items.isEmpty() || items == null) {
+        if (orderItemWrappers.isEmpty() || orderItemWrappers == null) {
             return 0;
         }
 
-        for (OrderItem item : items) {
-            sum += (item.Quantity * item.ListPrice);
+        for (OrderItemWrapper item : orderItemWrappers) {
+            sum += (item.quantity * item.price);
         }
 
         return sum.setScale(2, RoundingMode.HALF_UP);
@@ -142,7 +163,8 @@ public with sharing class AS_Order_Service {
         try {
             basketOrder = [
                     select Id,
-                            Status
+                            Status,
+                            OrderNumber
                     from order
                     where BillToContactId = :contactId
                     and Status = 'Draft'
@@ -156,7 +178,8 @@ public with sharing class AS_Order_Service {
         return basketOrder;
     }
 
-    public static String addProductToBasket(String productId) {
+    public static String addProductToBasket(String productId, String pricebookEntryId, String unitPrice) {
+        System.debug('WCHODZI DO addProductToBasket SERVICE');
 
         Boolean alreadyInBasket = false;
 
@@ -176,10 +199,13 @@ public with sharing class AS_Order_Service {
                 return 'Product is already in basket. You can change his amount by click basket icon.';
             }
         }
+        System.debug('////////////////////////////');
+        System.debug('BEFORE ADD PRODUCT TO BASKET');
 
         if (!alreadyInBasket) {
             PricebookEntry myPricebookEntry = [select id, UnitPrice from PricebookEntry where Product2Id = :productId and Pricebook2.Name = 'Standard'];
-            OrderItem myOrderItem = new OrderItem(Product2Id = productId, OrderId = basketOrder.Id, Quantity = 1, PricebookEntryId = myPricebookEntry.Id, UnitPrice = myPricebookEntry.UnitPrice);
+            OrderItem myOrderItem = new OrderItem(Product2Id = productId, OrderId = basketOrder.Id, Quantity = 1, PricebookEntryId = myPricebookEntry.Id, UnitPrice = Decimal.valueOf(unitPrice));
+            System.debug(myOrderItem);
             upsert myOrderItem;
             return 'Product successfully added to basket. Click basket icon to change product amount.';
         }
@@ -205,12 +231,144 @@ public with sharing class AS_Order_Service {
         return wrappers;
     }
 
+    public static Map<String, OrderItemWrapper> getMapProductNameOrderItemWrapperFromList(List<OrderItemWrapper> wrappers) {
+        Map<String, AS_Order_Service.OrderItemWrapper> wrapperMap = new Map<String, AS_Order_Service.OrderItemWrapper>();
+        for (AS_Order_Service.OrderItemWrapper w : wrappers) {
+            wrapperMap.put(w.productName, w);
+        }
+        return wrapperMap;
+    }
+
+
+    public static List<OrderItemWrapper> getBasketItemWrappers() {
+        List<OrderItemWrapper> wrapperPreparedToBasket = new List<AS_Order_Service.OrderItemWrapper>();
+        Order order = getBasketOrder();
+        List<OrderItemWrapper> wrappers = getOrderItemWrappers(order.Id);
+
+        Map<String, OrderItemWrapper> wrapperMap = getMapProductNameOrderItemWrapperFromList(wrappers);
+
+        Set<String> ids = getIdsFromOrderItemWrappers(wrappers);
+        List<PricebookEntry> pbEntries = getPbEntryListFromProductIds(ids);
+        Map<String, List<PricebookEntry>> pbMap = groupPbEntryByName(pbEntries);
+
+        for (String key : pbMap.keySet()) {
+            List<PricebookEntry> entries = pbMap.get(key);
+            OrderItemWrapper wrapper = returnCheapestOrderItemWrapper(entries);
+            OrderItemWrapper wrapperFromMap = wrapperMap.get(wrapper.productName);
+            wrapperFromMap.price = wrapper.price;
+            wrapperPreparedToBasket.add(wrapperFromMap);
+        }
+        return wrapperPreparedToBasket;
+    }
+
+
+    public static Map<String, List<PricebookEntry>> groupPbEntryByName(List<PricebookEntry> pbEntries) {
+        Map<String, List<PricebookEntry>> pbMap = new Map<String, List<PricebookEntry>>();
+
+        for (PricebookEntry p : pbEntries) {
+            String productName = p.Product2.Name;
+
+            if (pbMap.containsKey(productName)) {
+
+                List<PricebookEntry> entries = new List<PricebookEntry>();
+                entries = pbMap.get(productName);
+                entries.add(p);
+                pbMap.put(productName, entries);
+            } else {
+
+                List<PricebookEntry> entries = new List<PricebookEntry>();
+                entries.add(p);
+                pbMap.put(productName, entries);
+            }
+        }
+
+        return pbMap;
+
+    }
+
+
+    public static List<PricebookEntry> getPbEntryListFromProductIds(Set<String> ids) {
+        return [
+                SELECT Id,
+                        UnitPrice,
+                        StandardPrice__c,
+                        Product2Id,
+                        Product2.Name,
+                        Product2.Family,
+                        Product2.Description,
+                        Product2.mainPictureId__c
+                FROM PricebookEntry
+                WHERE IsActive = true
+                AND Pricebook2.IsActive = true
+                AND Product2Id IN :ids
+        ];
+    }
+
+    public static Set<String> getIdsFromOrderItemWrappers(List<OrderItemWrapper> wrappers) {
+        Set<String> ids = new Set<String>();
+
+        for (OrderItemWrapper w : wrappers) {
+            ids.add(w.productId);
+        }
+        return ids;
+    }
+
+    public static OrderItemWrapper returnCheapestOrderItemWrapper(List<PricebookEntry> entries) {
+
+        PricebookEntry pbe = entries[0];
+        String productId = pbe.Product2Id;
+        String productName = pbe.Product2.Name;
+        Decimal price = pbe.UnitPrice;
+
+        for (PricebookEntry p : entries) {
+            if (p.UnitPrice < price) {
+                price = p.UnitPrice;
+                productId = p.Product2Id;
+                productName = p.Product2.Name;
+            }
+        }
+        return new OrderItemWrapper(productName, productId, price);
+    }
 
     public static void completeExistingOrder() {
+
         Order oldOrder = getBasketOrder();
+        List<OrderItemWrapper> wrappers = getBasketItemWrappers();
+
+        Pricebook2 pricebook = AS_PriceBook_Service.createPricebookForOrder();
+        removeAllItemsFromOrder();
+        oldOrder.Pricebook2Id = pricebook.Id;
+        upsert oldOrder;
+        Map<String, PricebookEntry> pricebookEntryMap = AS_PriceBook_Service.addPricebookEntriesToPricebook(wrappers, pricebook.Id);
+
+
+        addNewItemsToOrder(wrappers, oldOrder.Id, pricebookEntryMap);
+        oldOrder = getBasketOrder();
         oldOrder.Status = 'Activated';
         upsert oldOrder;
         Order newOrder = createNewOrder();
+    }
+
+    public static void addNewItemsToOrder(List<OrderItemWrapper> wrappers, String orderId, Map<String, PricebookEntry> pbEntryMap) {
+        List<OrderItem> items = new List<OrderItem>();
+
+        for (OrderItemWrapper w : wrappers) {
+            PricebookEntry pbEntry = pbEntryMap.get(w.productName);
+            items.add(new OrderItem(OrderId = orderId, Quantity = w.quantity, Product2Id = w.productId, PricebookEntryId = pbEntry.Id, UnitPrice = w.price));
+        }
+        insert items;
+    }
+
+    public static void removeAllItemsFromOrder() {
+        Order basketOrder = getBasketOrder();
+        List<OrderItem> items = [
+                select Id,
+                        Product2Id,
+                        Product2.Name
+                from OrderItem
+                where OrderId = :basketOrder.Id
+        ];
+        delete items;
     }
 
 
@@ -218,6 +376,12 @@ public with sharing class AS_Order_Service {
 
         @auraEnabled
         public String productName { get; set; }
+
+        @auraEnabled
+        public String orderItemId { get; set; }
+
+        @auraEnabled
+        public String productId { get; set; }
 
         @auraEnabled
         public Decimal quantity { get; set; }
@@ -229,10 +393,21 @@ public with sharing class AS_Order_Service {
         public Decimal totalAmount { get; set; }
 
         public OrderItemWrapper(OrderItem item) {
+            this.orderItemId = item.Id;
+            this.productId = item.Product2Id;
             this.productName = item.Product2.Name;
             this.quantity = item.Quantity;
             this.price = item.ListPrice;
             this.totalAmount = (this.quantity * this.price).setScale(2);
         }
+
+        public OrderItemWrapper(String productName, String productId, Decimal price) {
+            this.productName = productName;
+            this.productId = productId;
+            this.price = price;
+        }
+
     }
+
+
 }

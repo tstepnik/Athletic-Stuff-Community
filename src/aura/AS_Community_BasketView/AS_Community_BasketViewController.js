@@ -6,5 +6,9 @@
 
     handleEvent: function (component, event, helper) {
         helper.handleEvent(component,event);
+    },
+
+    completeOrder: function (component, event, helper) {
+        helper.completeOrder(component,event);
     }
 })

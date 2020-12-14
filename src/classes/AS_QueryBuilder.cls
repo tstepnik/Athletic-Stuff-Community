@@ -250,9 +250,8 @@ public with sharing class AS_QueryBuilder {
         }
     }
 
-
-    public void readyQuery_PricebookEntry_standardPB_returnIfFieldsContainPhrase_andIsActive(List<String> selectedFields, String fromObj, String phrase, List<String> where_fields, String andOr) {
-
+    public void readyQuery_PricebookEntry_cheapestPrice_returnIfFieldsContainPhrase_andIsActive(List<String> selectedFields, String fromObj, String phrase, List<String> where_fields, String andOr) {
+        System.debug('WCHODZI TUTAJ');
         clearQuery();
         selectedFields(selectedFields);
         fromObj(fromObj);
@@ -267,6 +266,26 @@ public with sharing class AS_QueryBuilder {
             addWHERE();
             ownCondition(' IsActive = true ');
             ownCondition(' AND Pricebook2.IsActive = true ');
+        }
+    }
+
+
+    public void readyQuery_PricebookEntry_standardPB_returnIfFieldsContainPhrase_andIsActive(List<String> selectedFields, String fromObj, String phrase, List<String> where_fields, String andOr) {
+
+        clearQuery();
+        selectedFields(selectedFields);
+        fromObj(fromObj);
+        if (phrase != null) {
+            addWHERE();
+            ownCondition(' IsActive = true ');
+            ownCondition(' AND Pricebook2.Name LIKE \'Standard\' AND ');
+            query += ' ( ';
+            void_whereCondition_returnIf_FieldsContainPhrase(phrase, where_fields, andOr);
+            query += ' ) ';
+        }else{
+            addWHERE();
+            ownCondition(' IsActive = true ');
+            ownCondition(' AND Pricebook2.Name LIKE \'Standard\' ');
         }
     }
 

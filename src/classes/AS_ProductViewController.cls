@@ -8,8 +8,9 @@ public with sharing class AS_ProductViewController {
     }
 
     @auraEnabled
-    public static String getProductPrice_apex(String productId) {
-        return AS_Product_Service.getProductPrice(productId);
+    public static AS_Product_Service.ProductInfoWrapper getProductInfoWrapper(String productId) {
+        System.debug('WCHODZI DO APEXA cheapest price details p');
+        return AS_Product_Service.getProductInfoWrapperForDetailsPage(productId);
     }
 
     @auraEnabled
@@ -23,9 +24,12 @@ public with sharing class AS_ProductViewController {
     }
 
     @auraEnabled
-    public static String addProductToBasket(String productId) {
-
-        return AS_Order_Service.addProductToBasket(productId);
+    public static String addProductToBasket(String productId, String pricebookEntryId,String unitPrice) {
+        System.debug('WCHODZI DO APEX CONTROLLER addProductToBasket');
+        System.debug('productId: ' + productId);
+        System.debug('pricebookId: ' + pricebookEntryId);
+        System.debug('unitPrice: ' + unitPrice);
+        return AS_Order_Service.addProductToBasket(productId, pricebookEntryId, unitPrice);
     }
 }
 

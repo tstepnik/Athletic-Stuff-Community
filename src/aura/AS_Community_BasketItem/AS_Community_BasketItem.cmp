@@ -8,7 +8,7 @@ controller="AS_Community_BasketItem_Controller">
 
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
 
-    <aura:attribute type="Object" name="opportunityProduct"/>
+    <aura:attribute type="Object" name="orderItemWrapper"/>
     <aura:attribute type="Object" name="product"/>
     <aura:attribute name="recordLoadError" type="String"/>
     <aura:attribute name="numberOfUnits" type="String"/>
@@ -19,7 +19,7 @@ controller="AS_Community_BasketItem_Controller">
 
 
     <force:recordData aura:id="recordLoader"
-                      recordId="{!v.opportunityProduct.Product2Id}"
+                      recordId="{!v.orderItemWrapper.productId}"
                       fields="Id,Name,Description,Family,mainPictureId__c"
                       targetFields="{!v.product}"
                       targetError="{!v.recordLoadError}"
@@ -51,7 +51,7 @@ controller="AS_Community_BasketItem_Controller">
                 <p class="price-number">{!v.priceSum}</p>
                 <p class="price-currency">$</p>
             </div>
-            <div class="price-per-unit" aura:id="unitPrice"><p>{!v.opportunityProduct.ListPrice}$ per unit</p> </div>
+            <div class="price-per-unit" aura:id="unitPrice"><p>{!v.orderItemWrapper.price}$ per unit</p> </div>
         </div>
         <div class="container-cmp trash">
             <button onclick="{!c.pressBasket}">

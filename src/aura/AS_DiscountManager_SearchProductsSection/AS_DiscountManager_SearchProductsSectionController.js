@@ -1,11 +1,12 @@
 ({
     getWrappers: function (component, event, helper) {
-        helper.searchOperations(component, event, helper);
+        helper.searchOperations(component);
         helper.showPagination(component);
     },
 
     doInit: function (component, event, helper) {
         helper.hidePagination(component);
+        helper.setDatatable(component);
     },
 
     pressPreviousButton: function (component, event, helper) {
@@ -33,6 +34,10 @@
 
     createPromotion: function (component, event, helper) {
         helper.createPromotion(component, event);
+    },
+
+    handleRowAction: function (component, event, helper) {
+        helper.handleRowAction(component,event);
     }
 
 

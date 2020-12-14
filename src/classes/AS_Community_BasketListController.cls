@@ -12,6 +12,11 @@ public with sharing class AS_Community_BasketListController {
     }
 
     @auraEnabled
+    public static List<AS_Order_Service.OrderItemWrapper> getBasketItemWrappers() {
+        return AS_Order_Service.getBasketItemWrappers();
+    }
+
+    @auraEnabled
     public static List<AS_Order_Service.OrderItemWrapper> getOrderItemWrappers(String orderId){
         System.debug('WRAPPERS: APEX CONTROLLER');
         return AS_Order_Service.getOrderItemWrappers(orderId);

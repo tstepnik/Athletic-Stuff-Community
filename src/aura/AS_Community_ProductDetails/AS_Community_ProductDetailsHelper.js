@@ -1,14 +1,15 @@
 ({
 
     loadPrice: function (component, event) {
-        const action = component.get('c.getProductPrice_apex');
+        console.log('WCHODZI DO LOAD PRICE');
+        const action = component.get('c.getProductInfoWrapper');
         action.setParams({productId: component.get('v.recordId')});
         action.setCallback(this, function (response) {
-
+            console.log('WCHODZI DO CALL BACK');
             const status = response.getState();
             if (status === 'SUCCESS') {
-                let apexPrice = response.getReturnValue();
-                component.set('v.price', apexPrice);
+                let productInfoWrapper = response.getReturnValue();
+                component.set('v.productInfoWrapper', productInfoWrapper);
             } else if (status === "ERROR") {
                 this.handleErrors(component,response);
             }
@@ -17,9 +18,14 @@
     },
 
     addProductToOrder: function (component, event) {
-        let productId = component.get('v.recordId');
+        console.log('WCHODZI DO ADD PRODUCT TO BASKET');
+        let productInfoWrapper = component.get('v.productInfoWrapper');
         const action = component.get('c.addProductToBasket');
-        action.setParams({productId: productId});
+        action.setParams({
+            productId: productInfoWrapper.productId,
+            pricebookEntryId: productInfoWrapper.pricebookEntryId,
+            unitPrice: productInfoWrapper.price
+        });
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "SUCCESS") {

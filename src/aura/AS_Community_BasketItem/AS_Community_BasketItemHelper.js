@@ -1,8 +1,8 @@
 ({
 
     setDetails: function (component, event, helper) {
-        let numberOfProducts = component.get('v.opportunityProduct').Quantity;
-        let price = component.get('v.opportunityProduct').ListPrice;
+        let numberOfProducts = component.get('v.orderItemWrapper').quantity;
+        let price = component.get('v.orderItemWrapper').price;
         let sum = price * numberOfProducts;
         component.set('v.numberOfUnits', numberOfProducts);
         component.set('v.productPrice', price);
@@ -83,7 +83,7 @@
     },
 
     removeProductFromBasket: function (component, event, helper) {
-        let productId = component.get('v.opportunityProduct.Product2Id');
+        let productId = component.get('v.orderItemWrapper.productId');
         const action = component.get('c.removeItemFromOrder');
         action.setParams({productId: productId});
         action.setCallback(this, function (response) {
@@ -97,11 +97,14 @@
 
     updateOpportunityItem: function (component, event, newAmount) {
         let amount = component.get('v.numberOfUnits');
-        let orderItem = component.get('v.opportunityProduct');
-        orderItem.Quantity = amount;
+        let orderItem = component.get('v.orderItemWrapper');
+        orderItem.quantity = amount;
 
         const action = component.get('c.updateOrderItem');
-        action.setParams({orderItem: orderItem});
+        action.setParams({
+            orderItemId: orderItem.orderItemId,
+            quantity: orderItem.quantity
+        });
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "ERROR") {

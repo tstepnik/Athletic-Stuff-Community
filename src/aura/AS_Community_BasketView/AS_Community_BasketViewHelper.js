@@ -1,14 +1,13 @@
 ({
     getOpportunityProducts: function (component,event,helper) {
-        const action = component.get('c.getOpportunityProducts');
+        const action = component.get('c.getBasketItemWrappers');
 
         action.setCallback(this, function (response) {
 
             const status = response.getState();
             if (status === 'SUCCESS') {
-                let oppProducts = response.getReturnValue();
-                component.set('v.opportunityProducts', oppProducts);
-
+                let orderItemWrappers = response.getReturnValue();
+                component.set('v.orderItemWrappers', orderItemWrappers);
             } else {
                 this.handleShowToast(component, event, 'Error', 'error', 'Error while processing loading data');
                 let errors = response.getError();
@@ -78,6 +77,23 @@
         let sendErrorToast = component.find('errorToastMaker');
         let errors = response.getErrors();
         sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
+    },
+    completeOrder: function (component, event) {
+        console.log('WCHODZI DO COMPLETE');
+        const action = component.get('c.completeTransaction');
+        action.setCallback(this, function (response) {
+            let state = response.getState();
+            if (state === "SUCCESS") {
+                let mainContainer = component.find('bViewContainer');
+                $A.util.toggleClass(mainContainer, "hideElement");
+                component.set('v.buyBtnPressed',true);
+                console.log('WCHODZI DO SUCCESSS');
+            } else if (state === "ERROR") {
+                this.handleErrors(component, response);
+            }
+        });
+        $A.enqueueAction(action);
+        console.log('WYCHODZI DO COMPLETE');
     }
 
 })

@@ -8,14 +8,14 @@
 
     getOpportunityProducts: function (component) {
         this.showSpinner(component);
-        const action = component.get('c.getOpportunityProducts');
+        const action = component.get('c.getBasketItemWrappers');
 
         action.setCallback(this, function (response) {
 
             const status = response.getState();
             if (status === 'SUCCESS') {
-                let oppProducts = response.getReturnValue();
-                component.set('v.opportunityProducts', oppProducts);
+                let getBasketItemWrappers = response.getReturnValue();
+                component.set('v.getBasketItemWrappers', getBasketItemWrappers);
 
             } else {
                 this.handleErrors(component,response);

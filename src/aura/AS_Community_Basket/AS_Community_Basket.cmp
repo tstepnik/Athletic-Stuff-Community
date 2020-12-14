@@ -7,7 +7,7 @@
                 controller="AS_Community_BasketListController"
 >
     <lightning:notificationsLibrary aura:id="notification"/>
-    <aura:attribute name="opportunityProducts" type="Object[]"/>
+    <aura:attribute name="getBasketItemWrappers" type="Object[]"/>
     <aura:attribute name="priceSum" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
 
@@ -23,9 +23,9 @@
     </ul>
         <div class="basketModal" aura:id="basket-modal">
             <c:Spinner aura:id="spinner"/>
-            <aura:if isTrue="{!v.opportunityProducts.length > 0}">
-            <aura:iteration items="{!v.opportunityProducts}" end="{!v.opportunityProducts.length}" var="product">
-                <c:AS_Community_Basket_HoverElement opportunityProduct = "{!product}" />
+            <aura:if isTrue="{!v.getBasketItemWrappers.length > 0}">
+            <aura:iteration items="{!v.getBasketItemWrappers}" end="{!v.getBasketItemWrappers.length}" var="product">
+                <c:AS_Community_Basket_HoverElement getBasketItemWrapper = "{!product}" />
             </aura:iteration>
             <div class="sum">
             <p>Sum: {!v.priceSum} $</p>

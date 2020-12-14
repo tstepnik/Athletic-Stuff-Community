@@ -3,42 +3,56 @@
                 controller="AS_Community_BasketListController"
 >
 
-    <aura:attribute name="opportunityProducts" type="Object[]"/>
+    <aura:attribute name="orderItemWrappers" type="Object[]"/>
+
     <aura:attribute name="priceSum" type="String"/>
+    <aura:attribute name="buyBtnPressed" type="Boolean"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
     <aura:handler event="c:AS_Community_RequestSum_Event" action="{!c.handleEvent}"/>
     <lightning:notificationsLibrary aura:id="notification"/>
     <lightning:layout horizontalAlign="center" verticalAlign="center" class="layoutContainer">
 
-        <div class='bView-container'>
+        <div class='bView-container' aura:id="bViewContainer">
 
             <div class="bView-header">
                 <p class="title">Basket</p>
             </div>
-            <aura:if isTrue="{!v.opportunityProducts.length > 0}">
-            <div class="bView-product-list">
+            <aura:if isTrue="{!v.orderItemWrappers.length > 0}">
+                <div class="bView-product-list">
 
 
-                                        <aura:iteration items="{!v.opportunityProducts}" end="{!v.opportunityProducts.length}" var="product">
-                    <c:AS_Community_BasketItem opportunityProduct = "{!product}" />
-                                        </aura:iteration>
-            </div>
+                    <aura:iteration items="{!v.orderItemWrappers}" end="{!v.orderItemWrappers.length}" var="product">
+                        <c:AS_Community_BasketItem orderItemWrapper = "{!product}" />
+                    </aura:iteration>
+                </div>
 
-            <div class="buttons-and-sum" aura:id="buyBtn">
-                <div class="b-and-s-ctn">
-                    <div class="buttons">
-                        <button class="btn1">Buy</button>
-                    </div>
-                    <div class="sum">
-                        <p>Sum:</p>
-                        <p>{!v.priceSum}</p>
-                        <p>$</p>
+                <div class="buttons-and-sum" aura:id="buyBtn">
+                    <div class="b-and-s-ctn">
+                        <div class="buttons">
+                            <button class="btn1" onclick="{!c.completeOrder}">Buy</button>
+                        </div>
+                        <div class="sum">
+                            <p>Sum:</p>
+                            <p>{!v.priceSum}</p>
+                            <p>$</p>
+                        </div>
                     </div>
                 </div>
-            </div>
             </aura:if>
         </div>
         <div aura:id="cart-is-empty" class="cartIsEmpty"><p>Basket is empty</p></div>
+        <aura:if isTrue="{!v.buyBtnPressed}">
+            <div class="completeOrder-container">
+                <div class="completeOrder-title">
+                    <p>Success</p>
+                    <img src="{!$Resource.AS_Community_CompleteOrderIcon}"/>
+                </div>
+                <div class="completeOrder-description">
+                    <p>Thank you for your trust.
+                        Our workers are carefully
+                        preparing package for you. Expect it soon.</p> </div>
+            </div>
+        </aura:if>
     </lightning:layout>
     <c:AS_SendResultToast aura:id ="toastMaker"/>
     <c:AS_SendErrorToast aura:id ="errorToastMaker"/>

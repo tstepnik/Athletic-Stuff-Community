@@ -116,6 +116,9 @@
     background-color: #29A7FB;
 }
 
+.THIS .result-table{
+}
+
 
 .THIS .hideElement{
     display: none;
@@ -123,4 +126,11 @@
 
 .THIS .showElement{
     display: flex;
+}
+
+.THIS .table{
+width: 98%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

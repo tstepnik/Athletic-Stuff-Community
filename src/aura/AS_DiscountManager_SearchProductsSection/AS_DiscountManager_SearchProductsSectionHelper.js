@@ -1,5 +1,5 @@
 ({
-    searchOperations: function (component, event, helper) {
+    searchOperations: function (component) {
         let inputText = component.get('v.inputText');
         const action = component.get('c.getSearchProductsWrapper');
         action.setParams({inpTxt: inputText});
@@ -16,6 +16,21 @@
             }
         });
         $A.enqueueAction(action);
+    },
+
+    setDatatable: function (component) {
+
+        let actions = [
+            {label: 'Edit', name: 'edit'},
+            {label: 'Delete', name: 'delete'},
+            {label: 'Show Debug', name: 'debug'},
+        ];
+
+        component.set('v.columns', [
+            {label: 'Product Name', fieldName: 'productName', type: 'text'},
+            {label: 'Price', fieldName: 'price', type: 'text'},
+            {type: 'action', typeAttributes: {rowActions: actions}}
+        ]);
     },
 
     hidePagination: function (component) {
@@ -364,57 +379,10 @@
         }
     },
 
-    tableRowClicked: function (component, event) {
-        let productWrappers = component.get('v.productWrappers');
-        let index = event.currentTarget.dataset.index;
-        let elId = index + "tableRowBtn";
-        let btnElement = document.getElementById(elId);
-        let btnWasClicked = $A.util.hasClass(btnElement, 'colorBtn');
-        console.log('PRODUCT WRAPPER');
-        console.log(productWrappers[index]);
-        if (!btnWasClicked) {
-            btnElement.classList.add("colorBtn");
-            this.addToChosenProducts(component, productWrappers[index]);
-        } else {
-            btnElement.classList.remove("colorBtn");
-            this.removeFromChosenProducts(component, productWrappers[index]);
-        }
-    },
-
     consoleLog: function (component, event) {
         let index = event.currentTarget.dataset.index;
         console.log('INDEX');
         console.log(index);
-    },
-    addToChosenProducts: function (component, productWrapper) {
-        console.log('ADD TO CHOSEN PRODUCTS');
-        let chosenProducts = component.get('v.chosenProductWrappers');
-        console.log('before add to list');
-        console.log(component.get('v.chosenProductWrappers'));
-        chosenProducts.push(productWrapper);
-        component.set('v.chosenProductWrappers', chosenProducts);
-        console.log('after add to list');
-        console.log(component.get('v.chosenProductWrappers'));
-    },
-
-    removeFromChosenProducts: function (component, productWrapper) {
-        console.log('REMOVE FROM CHOSEN PRODUCTS');
-        let chosenProducts = component.get('v.chosenProductWrappers');
-        console.log('before remove from list');
-        console.log(component.get('v.chosenProductWrappers'));
-
-
-        for (let i = 0; i < chosenProducts.length; i++) {
-
-            if (chosenProducts[i] === productWrapper) {
-                chosenProducts.splice(i, 1);
-                i--;
-            }
-        }
-
-        component.set('v.chosenProductWrappers', chosenProducts);
-        console.log('after remove from list');
-        console.log(component.get('v.chosenProductWrappers'));
     },
 
     createPromotion: function (component, event) {
@@ -423,25 +391,9 @@
         let startDate = event.getParam('startDate');
         let endDate = event.getParam('endDate');
         let isPercent = event.getParam('isPercent');
-        let wrappers = component.get('v.chosenProductWrappers');
-        console.log('/////////////');
-        console.log('EVENT ARRGGS:');
-        console.log(discount);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(wrappers);
-        console.log('/////////////');
-        // action.setParams({
-        //     wrappers: wrappers,
-        //     discount: discount,
-        //     startDate: startDate,
-        //     endDate: endDate,
-        //     isPercent: isPercent
-        // });
-        console.log('BEFORE APEX METHOD');
-        console.log(isPercent);
+        let wrappers = component.find('linesTable').getSelectedRows();
+
         const action = component.get('c.createDiscountApex');
-        console.log('is Percent: ' + isPercent);
         action.setParams({
             discount: discount,
             isPercent: isPercent,
@@ -449,10 +401,8 @@
             endDate: endDate,
             wrappers: wrappers
         });
-        console.log('BEFORE APEX CALLBACK');
 
         action.setCallback(this, function (response) {
-            console.log('INSIDE CALLBACK');
             let state = response.getState();
             if (state === "SUCCESS") {
                 let responseMessage = 'Discount successfully created.'
@@ -466,7 +416,6 @@
                     console.error(JSON.stringify(errors[0].message));
                 }
 
-                // this.handleErrors(component, event, response);
             }
         });
         $A.enqueueAction(action);
@@ -475,7 +424,29 @@
     fireUpdatePbListEvent: function () {
         let eventt = $A.get('e.c:AS_DiscountManager_UpdatePbList_Event');
         eventt.fire();
-    }
+    },
 
+    handleRowAction: function (component, event) {
+        let action = event.getParam('action');
+        let row = event.getParam('row');
+
+        switch (action.name) {
+            case 'edit':
+                alert('Edit: ' + JSON.stringify(row));
+                break;
+            case 'delete':
+                alert('Delete: ' + JSON.stringify(row));
+                break;
+            case 'debug':
+                this.debugSelectedRows(component);
+                break;
+        }
+    },
+
+    debugSelectedRows: function (component) {
+        let lines = [];
+        lines = component.find('linesTable').getSelectedRows();
+        console.log(JSON.stringify(lines));
+    }
 
 })

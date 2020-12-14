@@ -84,11 +84,11 @@ public with sharing class AS_PriceBook_Service {
 
         if (!pricebook.IsActive) {
             pricebook.IsActive = true;
-         try{
-             update pricebook;
-         }catch (DmlException e){
-             System.debug('DML exception in method activatePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
-         }
+            try {
+                update pricebook;
+            } catch (DmlException e) {
+                System.debug('DML exception in method activatePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
+            }
         }
     }
 
@@ -101,15 +101,16 @@ public with sharing class AS_PriceBook_Service {
                         Name,
                         IsActive
                 FROM Pricebook2
-                WHERE Id =:pricebookId
-        LIMIT 1];
+                WHERE Id = :pricebookId
+                LIMIT 1
+        ];
         System.debug('pricebook: ' + pricebook.Name + ' Id: ' + pricebook.Id + ' IsActive: ' + pricebook.IsActive);
 
         if (pricebook.IsActive) {
             pricebook.IsActive = false;
-            try{
+            try {
                 update pricebook;
-            }catch (DmlException e){
+            } catch (DmlException e) {
                 System.debug('DML exception in method deactivatePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
             }
         }
@@ -123,11 +124,11 @@ public with sharing class AS_PriceBook_Service {
                 WHERE Id = :pricebookId
         ];
 
-            try{
-                delete pricebook;
-            }catch (DmlException e){
-                System.debug('DML exception in method deletePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
-            }
+        try {
+            delete pricebook;
+        } catch (DmlException e) {
+            System.debug('DML exception in method deletePricebook in class AS_PriceBook_Service \n Description: ' + e.getMessage());
+        }
 
     }
 
@@ -184,5 +185,25 @@ public with sharing class AS_PriceBook_Service {
             this.newPrice = String.valueOf(pbEntry.UnitPrice);
             this.active = pbEntry.IsActive;
         }
+    }
+
+    public static Pricebook2 createPricebookForOrder() {
+        Order order = AS_Order_Service.getBasketOrder();
+        String pricebookName = 'Pricebook for order nr: ' + order.OrderNumber;
+        Pricebook2 pricebook = new Pricebook2(Name = pricebookName);
+        insert pricebook;
+        return pricebook;
+    }
+
+    public static Map<String, PricebookEntry> addPricebookEntriesToPricebook(List<AS_Order_Service.OrderItemWrapper> wrappers, String pricebookId) {
+        List<PricebookEntry> pbEntries = new List<PricebookEntry>();
+        Map<String, PricebookEntry> pbEntriesMap = new Map<String, PricebookEntry>();
+        for (AS_Order_Service.OrderItemWrapper wrapper : wrappers) {
+        PricebookEntry pricebookEntry = New PricebookEntry(Product2Id = wrapper.productId, Pricebook2Id = pricebookId, UnitPrice = wrapper.price);
+            pbEntries.add(pricebookEntry);
+            pbEntriesMap.put(wrapper.productName,pricebookEntry);
+        }
+        insert pbEntries;
+        return pbEntriesMap;
     }
 }

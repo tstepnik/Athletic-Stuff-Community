@@ -78,3 +78,33 @@
 .THIS .showElement {
     display: flex;
 }
+
+.THIS .completeOrder-container{
+    margin-top: 3rem;
+    font-size: 1.5rem;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.THIS .completeOrder-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.THIS .completeOrder-title img {
+    width: 8%;
+}
+
+
+.THIS .completeOrder-title p {
+    font-size: 2.5rem;
+    color: green;
+}
+
+

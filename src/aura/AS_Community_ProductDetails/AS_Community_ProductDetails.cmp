@@ -6,7 +6,7 @@
                  force:appHostable,
                  force:hasRecordId">
     <aura:attribute name="product" type="Object"/>
-    <aura:attribute name="price" type="String"/>
+    <aura:attribute name="productInfoWrapper" type="Object"/>
     <aura:attribute name="discountPrice" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
 
@@ -33,11 +33,14 @@
         </div>
         <div class="price">
             <p class="price-word">Price: </p>
-            <div class="oldPrice">
-                <p>179 $</p>
-                <div class="score-price-out"></div>
-            </div>
-            <p class="price-number">{!v.price} $</p>
+            <aura:if isTrue="{!v.productInfoWrapper.standardPrice != null}">
+                <div class="oldPrice">
+                    <p>{!v.productInfoWrapper.standardPrice} $</p>
+                    <div class="score-price-out"></div>
+                </div>
+            </aura:if>
+
+            <p class="price-number">{!v.productInfoWrapper.price} $</p>
         </div>
         <h1 class="description-title">Description</h1>
         <p class="description">{!v.product.Description}</p>

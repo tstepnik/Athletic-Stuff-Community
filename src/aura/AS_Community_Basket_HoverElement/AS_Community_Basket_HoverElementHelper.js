@@ -1,8 +1,8 @@
 ({
 
     countSum: function (component, event) {
-        let quantity = component.get('v.opportunityProduct').Quantity;
-        let amount = component.get('v.opportunityProduct').ListPrice;
+        let quantity = component.get('v.getBasketItemWrapper').quantity;
+        let amount = component.get('v.getBasketItemWrapper').price;
 
         let sum = quantity * amount;
         if (quantity <=1){
