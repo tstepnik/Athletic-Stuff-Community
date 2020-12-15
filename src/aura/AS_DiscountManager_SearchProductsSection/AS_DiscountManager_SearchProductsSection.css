@@ -153,7 +153,7 @@
     width: 1rem;
     top: 0%;
     left: 0%;
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
     margin-left: 0.8rem;
     z-index: 1000;
 }
@@ -161,4 +161,42 @@
 
 .THIS .selectAllRow-btnSelected{
     background-color: #5db7f9;
+}
+
+.THIS .slds-modal__container{
+    max-width: none;
+    width: 70%;
+}
+
+.THIS .modal-LightningContainer{
+
+    width: 100%;
+    height: 100%;
+}
+
+.THIS .set-priceForSingleProduct{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.THIS .modalTable{
+    width: 80%;
+    height: 100%;
+    border: 1px solid #b3b3b3;
+}
+
+.THIS .tableModal-td{
+    height: 3.5rem;
+}
+
+.THIS .modalTable .slds-form-element{
+    display: flex;
+}
+
+.THIS .buttons {
+    margin-top: 3rem;
 }

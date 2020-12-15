@@ -302,6 +302,11 @@ public with sharing class AS_Product_Service {
         public String price { get; set; }
         @auraEnabled
         public String standardPrice { get; set; }
+        @auraEnabled
+        public String discount { get; set; }
+        @auraEnabled
+        public Boolean isPercent { get; set; }
+
 
         public ProductInfoWrapper() {
         }

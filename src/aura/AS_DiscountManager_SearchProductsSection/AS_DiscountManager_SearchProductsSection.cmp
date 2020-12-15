@@ -4,9 +4,11 @@ flexipage:availableForRecordHome,
 force:appHostable"
                 controller="AS_DiscountManager_Controller">
     <aura:registerEvent type="c:AS_DiscountManager_UpdatePbList_Event" name="updatePricebookListEvent"/>
+    <aura:registerEvent type="c:AS_DM_ColorSelectedRows_Event" name="colorSelectedRows"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler event="c:AS_DiscountManager_BasicPromotionEvent" action="{!c.createPromotion}"/>
+    <aura:handler event="c:AS_DiscountManager_OpenModal_Event" action="{!c.handleNewRecordModal}"/>
 
     <aura:attribute type="String" name="inputText"/>
     <aura:attribute type="Object[]" name="productWrappers"/>
@@ -23,6 +25,8 @@ force:appHostable"
 
     <aura:attribute name="clickedNumber-value" type="String"/>
     <aura:attribute name="clickedNumber-auraId" type="String"/>
+    <aura:attribute name="showNewRecordModal" type="Boolean"/>
+    <aura:attribute name="editBtnClicked" type="Boolean"/>
 
     <aura:attribute name="numberOfPages" type="String"/>
     <aura:attribute name="pageNumber" type="String"/>
@@ -45,27 +49,53 @@ force:appHostable"
                         <lightning:button iconName="utility:search" class="mybtn" onclick="{!c.getWrappers}"/>
                     </form>
                     <div class="choose-all-section">
-                    <div class="choose-all-btn">
-<!--                        <lightning:button label="choose all" class="mybtn" onclick="{!c.getWrappers}"/>-->
-                    </div>
-                    <div class="choose-all-info">
-<!--                    <p>0 from 6</p>-->
-                    </div>
+                        <div class="choose-all-btn">
+                            <!--                        <lightning:button label="choose all" class="mybtn" onclick="{!c.getWrappers}"/>-->
+                        </div>
+                        <div class="choose-all-info">
+                            <!--                    <p>0 from 6</p>-->
+                        </div>
                     </div>
                 </div>
 
                 <div class="result-table">
                     <div class="table">
-                        <lightning:button onclick="{!c.selectAllBtnClicked}" class="selectAllRow-btn" aura:id="table-selectAllBtn"></lightning:button>
-                        <lightning:datatable data="{! v.productWrappers }"
-                                             columns="{! v.columns }"
-                                             keyField="id"
-                                             onrowaction="{! c.handleRowAction }"
-                                             aura:id="linesTable"
-                                             hideCheckboxColumn="true"
-                                             onsort="{!c.debugSelectedRows}"
+                        <lightning:button onclick="{!c.selectAllBtnClicked}" class="selectAllRow-btn"
+                                          aura:id="table-selectAllBtn"></lightning:button>
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
+                            <thead>
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Select"></div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Product Name">Product Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Price">Price</div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-body">
+                            <aura:iteration items="{!v.productWrappers}" var="wrapper" indexVar="index">
+                                <tr aura:id="row" data-id="{!wrapper.id}">
+                                    <td data-label="">
+                                        <button data-index="{!index}" class="selectAllRow-btn"
+                                                id="{!'table-selectBtn' + index}"
+                                                onclick="{!c.tableRowClicked}"></button>
+                                    </td>
+                                    <td data-label="Product Name">
+                                            {!wrapper.productName}
 
-                        />
+                                    </td>
+                                    <td data-label="Price">
+                                            {!wrapper.price}
+
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="pagination" aura:id="pagination-div">
@@ -104,6 +134,139 @@ force:appHostable"
 
         </lightning:layout>
     </lightning:card>
-    <c:AS_SendResultToast aura:id ="toastMaker"/>
-    <c:AS_SendErrorToast aura:id ="errorToastMaker"/>
+
+    <aura:if isTrue="{!v.showNewRecordModal}">
+        <div role="dialog" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <lightning:card title="Single product settings">
+                    <lightning:layout class="modal-LightningContainer">
+                        <div class="set-priceForSingleProduct">
+                            <div class="modalTable">
+                                <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
+                                    <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Edit"></div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Product Name">Product Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Price">Price</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Discount">Discount</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Type">Type</div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-body">
+                                    <aura:iteration items="{!v.chosenProductWrappers}" var="wrapper" indexVar="index">
+                                        <tr aura:id="row" data-id="{!wrapper.id}"
+                                            class="tableModal-td"
+                                            data-index="{!index}">
+                                            <td data-label="">
+                                                <aura:if isTrue="{!v.editBtnClicked}">
+                                                    <lightning:button variant="brand-outline" label="Save" onclick="{!c.clickSaveBtn}"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:button variant="brand-outline" label="Edit" onclick="{!c.clickEditBtn}"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </td>
+                                            <td data-label="Product Name">
+                                                    {!wrapper.productName}
+
+                                            </td>
+                                            <td data-label="Price">
+                                                    {!wrapper.price}
+
+                                            </td>
+                                            <td data-label="Discount">
+                                                <aura:if isTrue="{!v.editBtnClicked}">
+                                                    <lightning:input type="number" name="Amount"
+                                                                     value="{!wrapper.discount}"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input disabled="true" type="number" name="Amount"
+                                                                         value="{!wrapper.discount}"/>
+
+                                                    </aura:set>
+                                                </aura:if>
+
+                                            </td>
+                                            <td data-label="Type">
+                                                <lightning:button onclick="{!c.clickCurrencyButton}"
+                                                                  value="{!v.discountAmount}" variant="brand-outline"
+                                                                  label="$" disabled="{!(!wrapper.isPercent)}"/>
+                                                <lightning:button onclick="{!c.clickPercentButton}"
+                                                                  value="{!v.discountPercent}" variant="brand-outline"
+                                                                  label="%" disabled="{!wrapper.isPercent}"/>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="buttons">
+                                <lightning:button variant="brand-outline" label="Create Discount"/>
+                                <lightning:button variant="brand-outline" label="Cancel" onclick="{!c.closeModal}"/>
+                            </div>
+                        </div>
+                    </lightning:layout>
+                </lightning:card>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+    <c:AS_SendResultToast aura:id="toastMaker"/>
+    <c:AS_SendErrorToast aura:id="errorToastMaker"/>
 </aura:component>
+
+
+<!--<tbody class="table-body">-->
+<!--<aura:iteration items="{!v.chosenProductWrappers}" var="wrapper" indexVar="index">-->
+<!--    <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!wrapper.id}"-->
+<!--        class="tableModal-td"-->
+<!--        data-index="{!index}">-->
+<!--        <td data-label="">-->
+<!--            <aura:if isTrue="{!c.editBtnClicked}">-->
+<!--                <lightning:button variant="brand-outline" label="Save"/>-->
+<!--                <aura:set attribute="else">-->
+<!--                    <lightning:button variant="brand-outline" label="Edit"/>-->
+<!--                </aura:set>-->
+<!--            </aura:if>-->
+<!--        </td>-->
+<!--        <td data-label="Product Name">-->
+<!--                {!wrapper.productName}-->
+
+<!--        </td>-->
+<!--        <td data-label="Price">-->
+<!--                {!wrapper.price}-->
+
+<!--        </td>-->
+<!--        <td data-label="Discount">-->
+
+<!--            <aura:if isTrue="{!c.editBtnClicked}">-->
+<!--                <lightning:input type="number" name="Amount"-->
+<!--                                 value="{!wrapper.discount}"/>-->
+
+<!--                <aura:set attribute="else">-->
+<!--                    <lightning:input disabled="true" type="number" name="Amount"-->
+<!--                                     value="{!wrapper.discount}"/>-->
+
+<!--                </aura:set>-->
+<!--            </aura:if>-->
+
+<!--        </td>-->
+<!--        <td data-label="Type">-->
+<!--            <lightning:button onclick="{!c.clickCurrencyButton}"-->
+<!--                              value="{!v.discountAmount}" variant="brand-outline"-->
+<!--                              label="$"/>-->
+<!--            <lightning:button onclick="{!c.clickPercentButton}"-->
+<!--                              value="{!v.discountPercent}" variant="brand-outline"-->
+<!--                              label="%"/>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--</aura:iteration>-->
+<!--</tbody>-->

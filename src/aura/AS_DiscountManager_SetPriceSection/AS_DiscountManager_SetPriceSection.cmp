@@ -1,5 +1,3 @@
-
-
 <aura:component
         description="AS_DiscountManager_SetPriceSection"
         implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
@@ -9,41 +7,51 @@
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
     <aura:attribute name="discountPercent" type="Integer" default="50"/>
     <aura:attribute name="discountAmount" type="String" default="50"/>
-    <aura:attribute name="startDate" type="Date" />
-    <aura:attribute name="endDate" type="Date" />
-    <aura:attribute name="isPercent" type="Boolean" />
+    <aura:attribute name="startDate" type="Date"/>
+    <aura:attribute name="endDate" type="Date"/>
+    <aura:attribute name="isPercent" type="Boolean"/>
+
     <aura:registerEvent name="sendBasicPromotionInfo" type="c:AS_DiscountManager_BasicPromotionEvent"/>
+    <aura:registerEvent name="openModalEvent" type="c:AS_DiscountManager_OpenModal_Event"/>
 
     <lightning:card iconName="standard:account" title="Set Special Offer">
         <lightning:layout class="lightning-main-container">
             <div class="container">
 
 
-    <div class="set-discount-section">
-        <div class="btns-and-title">
-            <h1>Choose discount type</h1>
-            <div class="switchType">
-                <lightning:button onclick="{!c.clickCurrencyButton}" value="{!v.discountAmount}" variant="brand-outline" label="$"/>
-                <lightning:button onclick="{!c.clickPercentButton}" value="{!v.discountPercent}" variant="brand-outline" label="%"/>
-            </div>
-        </div>
-        <div class="setDiscountAmount">
-            <div class="slider" aura:id="slider"> <lightning:slider value="{!v.discountPercent}"/> <p>%</p></div>
-            <div class="amountInput" aura:id="amountInput">  <lightning:input name="input2" label="Amount" type="number" value="{!v.discountAmount}"/></div>
-        </div>
-    </div>
+                <div class="set-discount-section">
+                    <div class="btns-and-title">
+                        <h1>Choose discount type</h1>
+                        <div class="switchType">
+                            <lightning:button onclick="{!c.clickCurrencyButton}" value="{!v.discountAmount}"
+                                              variant="brand-outline" label="$"/>
+                            <lightning:button onclick="{!c.clickPercentButton}" value="{!v.discountPercent}"
+                                              variant="brand-outline" label="%"/>
+                        </div>
+                    </div>
+                    <div class="setDiscountAmount">
+                        <div class="slider" aura:id="slider">
+                            <lightning:slider value="{!v.discountPercent}"/>
+                            <p>%</p></div>
+                        <div class="amountInput" aura:id="amountInput">
+                            <lightning:input name="input2" label="Amount" type="number" value="{!v.discountAmount}"/>
+                        </div>
+                    </div>
+                </div>
 
 
-<div class="set-date">
-    <lightning:input value="{!v.startDate}" type="date" name="input1" label="Start date" />
-    <lightning:input value="{!v.endDate}" type="date" name="input1" label="End date" />
-</div>
-<div class="firstConfirmationBtns">
-    <lightning:button onclick="{!c.setEventWithDiscountInfo}" variant="brand-outline" label="Create Discount"/>
-    <lightning:button  variant="brand-outline" label="Advanced settings"/>
+                <div class="set-date">
+                    <lightning:input value="{!v.startDate}" type="date" name="input1" label="Start date"/>
+                    <lightning:input value="{!v.endDate}" type="date" name="input1" label="End date"/>
+                </div>
+                <div class="firstConfirmationBtns">
+                    <lightning:button onclick="{!c.setEventWithDiscountInfo}" variant="brand-outline"
+                                      label="Create Discount"/>
+                    <lightning:button onclick="{!c.sendHandleModalEvent}" variant="brand-outline"
+                                      label="Advanced settings"/>
 
-</div>
-<div class="set-priceForSingleProduct"></div>
+                </div>
+
 
             </div>
         </lightning:layout>

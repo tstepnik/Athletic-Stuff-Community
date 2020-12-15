@@ -1,0 +1,10 @@
+<!--
+ - Created by tomas on 15.12.2020.
+ -->
+
+<aura:event type="APPLICATION" description="AS_DiscountManager_OpenModal_Event">
+    <aura:attribute type="String" name="discount"/>
+    <aura:attribute type="Date" name="startDate"/>
+    <aura:attribute type="Date" name="endDate"/>
+    <aura:attribute type="Boolean" name="isPercent"/>
+</aura:event>

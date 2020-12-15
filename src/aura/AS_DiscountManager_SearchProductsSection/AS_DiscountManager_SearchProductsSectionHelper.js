@@ -18,26 +18,6 @@
         $A.enqueueAction(action);
     },
 
-    setDatatable: function (component) {
-
-        let actions = [
-            {label: 'Edit', name: 'edit'},
-            {label: 'Delete', name: 'delete'},
-            {label: 'Show Debug', name: 'debug'},
-        ];
-
-        component.set('v.columns', [
-            {
-                label: '',
-                type: 'button',
-                initialWidth: 1,
-                typeAttributes: {label: ' ', name: 'view_details', title: 'Click to View Details'}
-            },
-            {label: 'Product Name', fieldName: 'productName', type: 'text'},
-            {label: 'Price', fieldName: 'price', type: 'text'},
-            {type: 'action', typeAttributes: {rowActions: actions}}
-        ]);
-    },
 
     hidePagination: function (component) {
         let pagination = component.find('pagination-div');
@@ -100,9 +80,7 @@
             let newOffset = parseInt(offset) - parseInt(offsetSize);
             component.set('v.offset', newOffset);
             this.changeData(component, event, newOffset);
-
         }
-
     },
 
     pressNextButton: function (component, event) {
@@ -144,8 +122,8 @@
 
             component.set('v.offset', newOffset);
             this.changeData(component, event, newOffset);
-
         }
+
     },
 
     choosePage: function (component, event) {
@@ -179,6 +157,8 @@
                 this.hideNextPage(component);
             }
         }
+
+
     },
 
     setNumberOfPages: function (component, numberOfRecords, limit) {
@@ -232,6 +212,7 @@
                 component.set("v.productWrappers", productsFromApex);
                 let numberOfRecords = firstQueryInfo.numberOfProducts;
                 this.setRange(component, numberOfRecords, offset, firstQueryInfo.queryLimit);
+
 
             } else if (state === "ERROR") {
                 this.handleErrors(component, event, response);
@@ -392,12 +373,13 @@
     },
 
     createPromotion: function (component, event) {
+        console.log('wchodzi do promotion');
         //todo
         let discount = event.getParam('discount');
         let startDate = event.getParam('startDate');
         let endDate = event.getParam('endDate');
         let isPercent = event.getParam('isPercent');
-        let wrappers = component.find('linesTable').getSelectedRows();
+        let wrappers = component.get('v.chosenProductWrappers');
 
         const action = component.get('c.createDiscountApex');
         action.setParams({
@@ -407,10 +389,13 @@
             endDate: endDate,
             wrappers: wrappers
         });
-
+        console.log('przed callback');
         action.setCallback(this, function (response) {
+            console.log('wchodzi do callback');
             let state = response.getState();
             if (state === "SUCCESS") {
+                console.log('wchodzi do success');
+
                 let responseMessage = 'Discount successfully created.'
                 let sendToast = component.find('toastMaker');
                 sendToast.sendResultToast('Success', responseMessage, 'Success');
@@ -425,6 +410,24 @@
             }
         });
         $A.enqueueAction(action);
+    },
+
+    handleNewRecordModal: function (component, event) {
+        let selectedWrappers = component.get('v.chosenProductWrappers');
+
+        let discount = event.getParam('discount');
+        let startDate = event.getParam('startDate');
+        let endDate = event.getParam('endDate');
+        let isPercent = event.getParam('isPercent');
+        let wrappers = component.get('v.chosenProductWrappers');
+
+        for (let i = 0; i < selectedWrappers.length; i++) {
+            selectedWrappers[i].discount = discount;
+            selectedWrappers[i].isPercent = isPercent;
+        }
+
+        component.set('v.showNewRecordModal', true);
+
     },
 
     fireUpdatePbListEvent: function () {
@@ -461,8 +464,88 @@
 
         if (selectAllBtnIsClicked) {
             $A.util.removeClass(selectAllBtn, 'selectAllRow-btnSelected');
+            this.deselectAllButtons(component, event);
         } else {
             $A.util.toggleClass(selectAllBtn, 'selectAllRow-btnSelected');
+            this.selectAllButtons(component, event);
+        }
+        console.log('SelectAll btn pressed: ');
+        console.log(component.get('v.chosenProductWrappers'));
+    },
+
+    selectAllButtons: function (component, event) {
+        let wrappersList = component.get('v.productWrappers');
+        let chosenProductWrappers = component.get('v.chosenProductWrappers');
+
+        for (let i = 0; i < wrappersList.length; i++) {
+            let buttonAuraId = 'table-selectBtn' + i;
+            let buttonSelect = document.getElementById(buttonAuraId);
+            buttonSelect.classList.add('selectAllRow-btnSelected');
+            chosenProductWrappers.push(wrappersList[i]);
+        }
+
+        component.set('v.chosenProductWrappers', chosenProductWrappers);
+    },
+
+    deselectAllButtons: function (component, event) {
+        let wrappersList = component.get('v.productWrappers');
+        let chosenProductWrappers = component.get('v.chosenProductWrappers');
+
+        for (let i = 0; i < wrappersList.length; i++) {
+            let buttonAuraId = 'table-selectBtn' + i;
+            let buttonSelect = document.getElementById(buttonAuraId);
+            buttonSelect.classList.remove('selectAllRow-btnSelected');
+
+            for (let j = 0; j < chosenProductWrappers.length; j++) {
+                if (chosenProductWrappers[j].productId === wrappersList[i].productId) {
+                    chosenProductWrappers.splice(j, 1);
+                }
+            }
+        }
+        component.set('v.chosenProductWrappers', chosenProductWrappers);
+
+    },
+
+    tableRowClicked: function (component, event) {
+        let wrappersList = component.get('v.productWrappers');
+        let chosenProductWrappers = component.get('v.chosenProductWrappers');
+        let index = event.currentTarget.dataset.index;
+        let wrapper = wrappersList[index];
+        let buttonAuraId = 'table-selectBtn' + index;
+        let buttonSelect = document.getElementById(buttonAuraId);
+        let isInList;
+        for (let i = 0; i < chosenProductWrappers.length; i++) {
+            if (chosenProductWrappers[i].productId === wrapper.productId) {
+                isInList = true;
+                chosenProductWrappers.splice(i, 1);
+                buttonSelect.classList.remove('selectAllRow-btnSelected');
+                break;
+            }
+        }
+        if (!isInList) {
+            chosenProductWrappers.push(wrapper);
+            buttonSelect.classList.add('selectAllRow-btnSelected');
+
+        }
+        component.set('v.chosenProductWrappers', chosenProductWrappers);
+        console.log('Table btn pressed: ');
+        console.log(chosenProductWrappers);
+    },
+
+
+    colorSelectedRows: function (component, event) {
+        let wrappersList = component.get('v.productWrappers');
+        let chosenProductWrappers = component.get('v.chosenProductWrappers');
+
+        for (let i = 0; i < chosenProductWrappers.length; i++) {
+            for (let j = 0; j < wrappersList.length; j++) {
+                if (wrappersList[j].productId === chosenProductWrappers[i].productId) {
+                    console.log('wchodzi do ifa z podwójnej iteracji');
+                    let buttonAuraId = 'table-selectBtn' + j;
+                    let buttonSelect = document.getElementById(buttonAuraId);
+                    buttonSelect.classList.add('selectAllRow-btnSelected');
+                }
+            }
         }
     }
 

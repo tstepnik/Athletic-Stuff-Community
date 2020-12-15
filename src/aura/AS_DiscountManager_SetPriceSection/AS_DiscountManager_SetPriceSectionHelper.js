@@ -7,13 +7,13 @@
     clickCButton: function (component) {
         this.hidePercentSlider(component);
         this.showPriceInput(component);
-        component.set('v.isPercent',false);
+        component.set('v.isPercent', false);
     },
 
     clickPercentButton: function (component) {
         this.hidePriceInput(component);
         this.showPercentSlider(component);
-        component.set('v.isPercent',true);
+        component.set('v.isPercent', true);
     },
 
     showPriceInput: function (component) {
@@ -84,7 +84,31 @@
             "endDate": endDate,
             "isPercent": isPercent
         });
+        console.log('event się wysyła');
+        event.fire();
+        console.log('event się wysyła');
+    },
 
+    sendHandleModalEvent: function (component) {
+        let isPercent = component.get('v.isPercent');
+        let discount;
+        if (isPercent) {
+            discount = component.get('v.discountPercent');
+        } else {
+            discount = component.get('v.discountAmount');
+        }
+        let startDate = component.get('v.startDate');
+        let endDate = component.get('v.endDate');
+        console.log('PRZED WYSLANIEM');
+        console.log(discount);
+        let event = $A.get('e.c:AS_DiscountManager_OpenModal_Event');
+
+        event.setParams({
+            "discount": discount,
+            "startDate": startDate,
+            "endDate": endDate,
+            "isPercent": isPercent
+        });
         event.fire();
     }
 

@@ -11,5 +11,9 @@
     },
     setEventWithDiscountInfo: function (component, event, helper) {
         helper.setEventWithDiscountInfo(component, event);
+    },
+
+    sendHandleModalEvent: function (component, event, helper) {
+        helper.sendHandleModalEvent(component);
     }
 })

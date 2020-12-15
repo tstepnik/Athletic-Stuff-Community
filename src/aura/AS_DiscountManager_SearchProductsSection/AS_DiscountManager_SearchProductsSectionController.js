@@ -6,7 +6,6 @@
 
     doInit: function (component, event, helper) {
         helper.hidePagination(component);
-        helper.setDatatable(component);
     },
 
     pressPreviousButton: function (component, event, helper) {
@@ -37,10 +36,10 @@
     },
 
     handleRowAction: function (component, event, helper) {
-        helper.handleRowAction(component,event);
+        helper.handleRowAction(component, event);
     },
 
-    debugSelectedRows: function (component,event,helper) {
+    debugSelectedRows: function (component, event, helper) {
 
         console.log('//////////////');
         console.log('SELECTED ROWS');
@@ -49,7 +48,27 @@
     },
 
     selectAllBtnClicked: function (component, event, helper) {
-        helper.selectAllBtnClicked(component,event);
+        helper.selectAllBtnClicked(component, event);
+    },
+
+    colorSelectedRows: function (component, event, helper) {
+        helper.colorSelectedRows(component, event);
+    },
+
+    handleNewRecordModal: function (component, event, helper) {
+        helper.handleNewRecordModal(component, event);
+    },
+    closeModal: function (component, event, helper) {
+        component.set('v.showNewRecordModal', false);
+    },
+
+    clickEditBtn: function (component, event, helper) {
+        component.set('v.editBtnClicked', true);
+    },
+
+    clickSaveBtn: function (component, event, helper) {
+        component.set('v.editBtnClicked', false);
+
     }
 
 
