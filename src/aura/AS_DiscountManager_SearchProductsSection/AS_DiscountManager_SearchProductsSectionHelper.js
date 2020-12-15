@@ -27,6 +27,12 @@
         ];
 
         component.set('v.columns', [
+            {
+                label: '',
+                type: 'button',
+                initialWidth: 1,
+                typeAttributes: {label: ' ', name: 'view_details', title: 'Click to View Details'}
+            },
             {label: 'Product Name', fieldName: 'productName', type: 'text'},
             {label: 'Price', fieldName: 'price', type: 'text'},
             {type: 'action', typeAttributes: {rowActions: actions}}
@@ -447,6 +453,18 @@
         let lines = [];
         lines = component.find('linesTable').getSelectedRows();
         console.log(JSON.stringify(lines));
+    },
+
+    selectAllBtnClicked: function (component, event) {
+        let selectAllBtn = component.find('table-selectAllBtn');
+        let selectAllBtnIsClicked = $A.util.hasClass(selectAllBtn, "selectAllRow-btnSelected");
+
+        if (selectAllBtnIsClicked) {
+            $A.util.removeClass(selectAllBtn, 'selectAllRow-btnSelected');
+        } else {
+            $A.util.toggleClass(selectAllBtn, 'selectAllRow-btnSelected');
+        }
     }
+
 
 })

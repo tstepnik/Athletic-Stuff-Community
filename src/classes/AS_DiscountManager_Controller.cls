@@ -27,13 +27,14 @@ public with sharing class AS_DiscountManager_Controller {
 
     @auraenabled
     public static void deletePricebook(String pricebookId) {
+        System.debug('wchodzi do controllera deletePricebook');
         AS_PriceBook_Service.deletePricebook(pricebookId);
     }
 
     @AuraEnabled
     public static List<AS_Product_Service.ProductInfoWrapper> getNextPageOffset(String inpTxt, Integer offset) {
 
-        return AS_Product_Service.productInfoWrappers(inpTxt, offset);
+        return AS_Product_Service.productInfoWrappersStandard(inpTxt, offset);
     }
 
     @AuraEnabled

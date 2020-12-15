@@ -13,6 +13,7 @@ force:appHostable"
     <aura:attribute type="Object[]" name="chosenProductWrappers"/>
     <aura:attribute type="Object" name="productInfoBunch"/>
     <aura:attribute name="columns" type="List"/>
+    <aura:attribute type="List" name="selectedRows"/>
 
     <aura:attribute name="recordsNumber" type="String"/>
     <aura:attribute name="offset" type="Integer"/>
@@ -55,11 +56,15 @@ force:appHostable"
 
                 <div class="result-table">
                     <div class="table">
+                        <lightning:button onclick="{!c.selectAllBtnClicked}" class="selectAllRow-btn" aura:id="table-selectAllBtn"></lightning:button>
                         <lightning:datatable data="{! v.productWrappers }"
                                              columns="{! v.columns }"
                                              keyField="id"
                                              onrowaction="{! c.handleRowAction }"
                                              aura:id="linesTable"
+                                             hideCheckboxColumn="true"
+                                             onsort="{!c.debugSelectedRows}"
+
                         />
                     </div>
 

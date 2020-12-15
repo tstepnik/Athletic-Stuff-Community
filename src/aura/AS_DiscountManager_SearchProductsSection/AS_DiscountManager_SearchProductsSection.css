@@ -116,21 +116,49 @@
     background-color: #29A7FB;
 }
 
-.THIS .result-table{
+.THIS .result-table {
 }
 
 
-.THIS .hideElement{
+.THIS .hideElement {
     display: none;
 }
 
-.THIS .showElement{
+.THIS .showElement {
     display: flex;
 }
 
-.THIS .table{
-width: 98%;
+.THIS .table {
+    position: relative;
+    width: 98%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.THIS .table .slds-truncate button {
+    height: 1rem;
+    width: 1rem;
+    background-color: red;
+    padding: 0;
+    margin-left: 0.5rem;
+}
+
+.THIS .selectAllRow-btn {
+    position: absolute;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 0;
+    height: 1rem;
+    width: 1rem;
+    top: 0%;
+    left: 0%;
+    margin-top: 0.5rem;
+    margin-left: 0.8rem;
+    z-index: 1000;
+}
+
+
+.THIS .selectAllRow-btnSelected{
+    background-color: #5db7f9;
 }

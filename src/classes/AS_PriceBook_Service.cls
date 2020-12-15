@@ -10,7 +10,7 @@ public with sharing class AS_PriceBook_Service {
     }
 
     public static List<Pricebook2> getAllPriceBooks() {
-        return [SELECT Id, IsActive, CreatedById,CreatedBy.Name,Description, IsStandard, Name,StartDate__c,EndDate__c FROM Pricebook2];
+        return [SELECT Id, IsActive, CreatedById,CreatedBy.Name,Description, IsStandard, Name,StartDate__c,EndDate__c FROM Pricebook2 WHERE ( NOT RecordType.Name LIKE 'AS_Community_OrderPricebook')];
     }
 
     public static List<AS_PriceBook_Service.PbEntryWrapper>getPricebookDetails(String pricebookId) {
@@ -191,6 +191,7 @@ public with sharing class AS_PriceBook_Service {
         Order order = AS_Order_Service.getBasketOrder();
         String pricebookName = 'Pricebook for order nr: ' + order.OrderNumber;
         Pricebook2 pricebook = new Pricebook2(Name = pricebookName);
+        pricebook.RecordTypeId = [Select Id,SobjectType,Name From RecordType WHERE Name LIKE 'AS_Community_OrderPricebook' limit 1].Id;
         insert pricebook;
         return pricebook;
     }

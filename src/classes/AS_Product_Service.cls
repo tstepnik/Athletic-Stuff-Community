@@ -33,6 +33,16 @@ public with sharing class AS_Product_Service {
         return returnListWithLimitAndOffset(cheapestInfoWrappers, queryLimit, offset);
     }
 
+    public static List<ProductInfoWrapper> productInfoWrappersStandard(String phrase, Integer offset) {
+        Integer queryLimit = Integer.valueOf(System.Label.AS_Community_SearchLimit);
+        List<PricebookEntry> productsInfo = new List<PricebookEntry>();
+
+        productsInfo = Database.query(pricebookEntryQueryStandardPrice(phrase,queryLimit,offset));
+
+        List<ProductInfoWrapper> cheapestInfoWrappers = convertToInfoWrappers(productsInfo);
+        return returnListWithLimitAndOffset(cheapestInfoWrappers, queryLimit, offset);
+    }
+
 
     public static List<ProductInfoWrapper> returnListWithLimitAndOffset(List<ProductInfoWrapper> wrappers, Integer queryLimit, Integer offset) {
         System.debug('/////////////////////////////////////');
@@ -160,10 +170,10 @@ public with sharing class AS_Product_Service {
         return wrappers;
     }
 
-    public static Map<String, List<PricebookEntry>> groupPbEntryByName(List<PricebookEntry> entries){
+    public static Map<String, List<PricebookEntry>> groupPbEntryByName(List<PricebookEntry> pbEntries){
         Map<String, List<PricebookEntry>> pbMap = new Map<String, List<PricebookEntry>>();
 
-        for (PricebookEntry p : entries) {
+        for (PricebookEntry p : pbEntries) {
             String productName = p.Product2.Name;
 
             if (pbMap.containsKey(productName)) {

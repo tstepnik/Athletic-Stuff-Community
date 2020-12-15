@@ -38,6 +38,18 @@
 
     handleRowAction: function (component, event, helper) {
         helper.handleRowAction(component,event);
+    },
+
+    debugSelectedRows: function (component,event,helper) {
+
+        console.log('//////////////');
+        console.log('SELECTED ROWS');
+        // console.log(component.get('v.selectedRows'));
+        console.log('//////////////');
+    },
+
+    selectAllBtnClicked: function (component, event, helper) {
+        helper.selectAllBtnClicked(component,event);
     }
 
 
