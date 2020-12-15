@@ -16,6 +16,8 @@ force:appHostable"
     <aura:attribute type="Object" name="productInfoBunch"/>
     <aura:attribute name="columns" type="List"/>
     <aura:attribute type="List" name="selectedRows"/>
+    <aura:attribute type="String" name="discountStartDate"/>
+    <aura:attribute type="String" name="discountEndDate"/>
 
     <aura:attribute name="recordsNumber" type="String"/>
     <aura:attribute name="offset" type="Integer"/>
@@ -164,14 +166,16 @@ force:appHostable"
                                     </thead>
                                     <tbody class="table-body">
                                     <aura:iteration items="{!v.chosenProductWrappers}" var="wrapper" indexVar="index">
-                                        <tr aura:id="row" data-id="{!wrapper.id}"
+                                        <tr aura:id="modalRow" data-modalId="{!wrapper.id}"
                                             class="tableModal-td"
-                                            data-index="{!index}">
+                                        >
                                             <td data-label="">
-                                                <aura:if isTrue="{!v.editBtnClicked}">
-                                                    <lightning:button variant="brand-outline" label="Save" onclick="{!c.clickSaveBtn}"/>
+                                                <aura:if isTrue="{!wrapper.editBtnClicked}">
+                                                    <button data-index="{!index}" onclick="{!c.clickSaveBtn}">Save
+                                                    </button>
                                                     <aura:set attribute="else">
-                                                        <lightning:button variant="brand-outline" label="Edit" onclick="{!c.clickEditBtn}"/>
+                                                        <button data-index="{!index}" onclick="{!c.clickEditBtn}">Edit
+                                                        </button>
                                                     </aura:set>
                                                 </aura:if>
                                             </td>
@@ -184,24 +188,22 @@ force:appHostable"
 
                                             </td>
                                             <td data-label="Discount">
-                                                <aura:if isTrue="{!v.editBtnClicked}">
+                                                <aura:if isTrue="{!wrapper.editBtnClicked}">
                                                     <lightning:input type="number" name="Amount"
                                                                      value="{!wrapper.discount}"/>
                                                     <aura:set attribute="else">
                                                         <lightning:input disabled="true" type="number" name="Amount"
                                                                          value="{!wrapper.discount}"/>
-
                                                     </aura:set>
                                                 </aura:if>
 
                                             </td>
                                             <td data-label="Type">
-                                                <lightning:button onclick="{!c.clickCurrencyButton}"
-                                                                  value="{!v.discountAmount}" variant="brand-outline"
-                                                                  label="$" disabled="{!(!wrapper.isPercent)}"/>
-                                                <lightning:button onclick="{!c.clickPercentButton}"
-                                                                  value="{!v.discountPercent}" variant="brand-outline"
-                                                                  label="%" disabled="{!wrapper.isPercent}"/>
+                                                <button data-index="{!index}" onclick="{!c.clickCurrencyButton}"
+                                                                  value="{!v.discountAmount}"
+                                                                   disabled="{!or(!wrapper.isPercent,!wrapper.editBtnClicked)}">$</button>
+                                                <button data-index="{!index}" onclick="{!c.clickPercentButton}"
+                                                                  value="{!v.discountPercent}" disabled="{!or(wrapper.isPercent,!wrapper.editBtnClicked)}">%</button>
                                             </td>
                                         </tr>
                                     </aura:iteration>
@@ -209,7 +211,7 @@ force:appHostable"
                                 </table>
                             </div>
                             <div class="buttons">
-                                <lightning:button variant="brand-outline" label="Create Discount"/>
+                                <lightning:button variant="brand-outline" label="Create Discount" onclick="{!c.createCustomisedPromotion}"/>
                                 <lightning:button variant="brand-outline" label="Cancel" onclick="{!c.closeModal}"/>
                             </div>
                         </div>

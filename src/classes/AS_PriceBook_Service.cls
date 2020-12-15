@@ -10,7 +10,7 @@ public with sharing class AS_PriceBook_Service {
     }
 
     public static List<Pricebook2> getAllPriceBooks() {
-        return [SELECT Id, IsActive, CreatedById,CreatedBy.Name,Description, IsStandard, Name,StartDate__c,EndDate__c FROM Pricebook2 WHERE ( NOT RecordType.Name LIKE 'AS_Community_OrderPricebook')];
+        return [SELECT Id, IsActive, CreatedById,CreatedBy.Name,Description, IsStandard, Name,StartDate__c,EndDate__c FROM Pricebook2 WHERE (NOT RecordType.Name LIKE 'AS_Community_OrderPricebook') ORDER BY CreatedDate DESC];
     }
 
     public static List<AS_PriceBook_Service.PbEntryWrapper>getPricebookDetails(String pricebookId) {
@@ -28,7 +28,6 @@ public with sharing class AS_PriceBook_Service {
     }
 
     public static void createDiscountPricebook(String discount, Boolean isPercent, String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
-        System.debug('PRICEBOOK SERVICE');
         Integer randomNumber = Integer.valueof((Math.random() * 1000));
         Pricebook2 discountPricebook = new Pricebook2(Name = 'Discount Price book nr: ' + randomNumber, IsActive = true);
         discountPricebook.StartDate__c = Date.valueOf(startDate);
@@ -39,17 +38,49 @@ public with sharing class AS_PriceBook_Service {
         for (AS_Product_Service.ProductInfoWrapper wrapper : pWrappers) {
             pbEntries.add(createPbEntry(wrapper, isPercent, discount, discountPricebook.Id));
         }
-        System.debug('PRICEBOOK ENTRY: ');
-        for (PricebookEntry e : pbEntries) {
-            System.debug(e);
-        }
+
         insert pbEntries;
     }
 
 
+    public static void createCustomisedDiscountPricebook( String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
+        System.debug('WCHODZI DO createDiscountPricebook w Pricebook Service');
+        System.debug('start date: ' + startDate);
+        System.debug('end date: ' + endDate);
+        System.debug('wrappers: ');
+        for(AS_Product_Service.ProductInfoWrapper w : wrappers){
+            System.debug(w);
+        }
+        Integer randomNumber = Integer.valueof((Math.random() * 1000));
+        Pricebook2 discountPricebook = new Pricebook2(Name = 'Discount Price book nr: ' + randomNumber, IsActive = true);
+        discountPricebook.StartDate__c = Date.valueOf(startDate);
+        discountPricebook.EndDate__c = Date.valueOf(endDate);
+        insert discountPricebook;
+        List<AS_Product_Service.ProductInfoWrapper> pWrappers = wrappers;
+        List<PricebookEntry> pbEntries = new List<PricebookEntry>();
+        for (AS_Product_Service.ProductInfoWrapper wrapper : pWrappers) {
+            pbEntries.add(createCustomisedPbEntry(wrapper, discountPricebook.Id));
+        }
+
+        insert pbEntries;
+    }
+
     private static PricebookEntry createPbEntry(AS_Product_Service.ProductInfoWrapper wrapper, Boolean isPercent, String discount, String pricebookId) {
         PricebookEntry pricebookEntry = new PricebookEntry();
         Decimal newPrice = countDiscount(isPercent, discount, wrapper.price);
+        pricebookEntry.IsActive = true;
+        pricebookEntry.UseStandardPrice = false;
+        pricebookEntry.Pricebook2Id = pricebookId;
+        pricebookEntry.Product2Id = wrapper.productId;
+        pricebookEntry.UnitPrice = newPrice.setScale(2);
+        pricebookEntry.StandardPrice__c = Decimal.valueOf(wrapper.price);
+
+        return pricebookEntry;
+    }
+
+    private static PricebookEntry createCustomisedPbEntry(AS_Product_Service.ProductInfoWrapper wrapper, String pricebookId) {
+        PricebookEntry pricebookEntry = new PricebookEntry();
+        Decimal newPrice = countDiscount(wrapper.isPercent, wrapper.discount, wrapper.price);
         pricebookEntry.IsActive = true;
         pricebookEntry.UseStandardPrice = false;
         pricebookEntry.Pricebook2Id = pricebookId;
@@ -200,9 +231,9 @@ public with sharing class AS_PriceBook_Service {
         List<PricebookEntry> pbEntries = new List<PricebookEntry>();
         Map<String, PricebookEntry> pbEntriesMap = new Map<String, PricebookEntry>();
         for (AS_Order_Service.OrderItemWrapper wrapper : wrappers) {
-        PricebookEntry pricebookEntry = New PricebookEntry(Product2Id = wrapper.productId, Pricebook2Id = pricebookId, UnitPrice = wrapper.price);
+            PricebookEntry pricebookEntry = New PricebookEntry(Product2Id = wrapper.productId, Pricebook2Id = pricebookId, UnitPrice = wrapper.price);
             pbEntries.add(pricebookEntry);
-            pbEntriesMap.put(wrapper.productName,pricebookEntry);
+            pbEntriesMap.put(wrapper.productName, pricebookEntry);
         }
         insert pbEntries;
         return pbEntriesMap;

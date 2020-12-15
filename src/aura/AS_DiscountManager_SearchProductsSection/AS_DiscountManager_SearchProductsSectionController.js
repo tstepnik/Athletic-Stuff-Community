@@ -30,11 +30,13 @@
     consoleLog: function (component, event, helper) {
         helper.consoleLog(component, event);
     },
-
     createPromotion: function (component, event, helper) {
         helper.createPromotion(component, event);
     },
 
+    createCustomisedPromotion: function (component, event, helper) {
+        helper.createCustomisedPromotion(component, event);
+    },
     handleRowAction: function (component, event, helper) {
         helper.handleRowAction(component, event);
     },
@@ -63,12 +65,21 @@
     },
 
     clickEditBtn: function (component, event, helper) {
-        component.set('v.editBtnClicked', true);
+        helper.clickEditBtn(component, event);
+
     },
 
     clickSaveBtn: function (component, event, helper) {
-        component.set('v.editBtnClicked', false);
+        helper.clickSaveBtn(component, event);
 
+    },
+
+    clickPercentButton: function (component, event, helper) {
+        helper.clickPercentButton(component, event);
+    },
+
+    clickCurrencyButton: function (component, event, helper) {
+        helper.clickCurrencyButton(component, event);
     }
 
 

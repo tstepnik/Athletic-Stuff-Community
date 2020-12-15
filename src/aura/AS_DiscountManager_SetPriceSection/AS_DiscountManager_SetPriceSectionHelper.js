@@ -99,8 +99,9 @@
         }
         let startDate = component.get('v.startDate');
         let endDate = component.get('v.endDate');
-        console.log('PRZED WYSLANIEM');
-        console.log(discount);
+        console.log('PRZED WYSLANIEM OPEN MODAL EVENT');
+        console.log('start date: ' + startDate);
+        console.log('end date: ' + endDate);
         let event = $A.get('e.c:AS_DiscountManager_OpenModal_Event');
 
         event.setParams({

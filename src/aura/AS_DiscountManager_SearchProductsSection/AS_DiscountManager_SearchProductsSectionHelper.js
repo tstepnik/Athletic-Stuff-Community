@@ -412,6 +412,44 @@
         $A.enqueueAction(action);
     },
 
+    createCustomisedPromotion: function (component, event) {
+        console.log('wchodzi do promotion');
+        //todo
+        let startDate = component.get('v.discountStartDate');
+        let endDate = component.get('v.discountEndDate');
+        let wrappers = component.get('v.chosenProductWrappers');
+
+        console.log('start date: ' + startDate);
+        console.log('end date: ' + endDate);
+        const action = component.get('c.createCustomisedDiscountApex');
+        action.setParams({
+            startDate: startDate,
+            endDate: endDate,
+            wrappers: wrappers
+        });
+        console.log('przed callback');
+        action.setCallback(this, function (response) {
+            console.log('wchodzi do callback');
+            let state = response.getState();
+            if (state === "SUCCESS") {
+                console.log('wchodzi do success');
+                let responseMessage = 'Discount successfully created.'
+                let sendToast = component.find('toastMaker');
+                component.set('v.showNewRecordModal', false);
+                sendToast.sendResultToast('Success', responseMessage, 'Success');
+                this.fireUpdatePbListEvent();
+
+            } else {
+                let errors = response.getError();
+                if (errors && Array.isArray(errors) && errors.length > 0) {
+                    console.error(JSON.stringify(errors[0].message));
+                }
+
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
     handleNewRecordModal: function (component, event) {
         let selectedWrappers = component.get('v.chosenProductWrappers');
 
@@ -424,9 +462,12 @@
         for (let i = 0; i < selectedWrappers.length; i++) {
             selectedWrappers[i].discount = discount;
             selectedWrappers[i].isPercent = isPercent;
+            selectedWrappers[i].editBtnClicked = false;
         }
 
         component.set('v.showNewRecordModal', true);
+        component.set('v.discountStartDate', startDate);
+        component.set('v.discountEndDate', endDate);
 
     },
 
@@ -547,7 +588,58 @@
                 }
             }
         }
+    },
+
+    clickEditBtn: function (component, event) {
+        component.set('v.editBtnClicked', true);
+        this.modalTableRowClicked(component,event,true);
+    },
+
+    clickSaveBtn: function (component, event) {
+        component.set('v.editBtnClicked', false);
+        this.modalTableRowClicked(component,event,false);
+    },
+
+    modalTableRowClicked: function (component, event, editBtnClicked) {
+        console.log('Wchodzi do modalTable');
+        let chosenProductWrappers = component.get('v.chosenProductWrappers');
+        console.log('chosenProductWrappers ' + chosenProductWrappers);
+        let index = event.currentTarget.dataset.index;
+        console.log('index ' + index);
+        let wrapper = chosenProductWrappers[index];
+        console.log('Wrapper before: ' + wrapper);
+        wrapper.editBtnClicked = editBtnClicked;
+        console.log('Wrapper after: ' + wrapper);
+        component.set('v.chosenProductWrappers', chosenProductWrappers);
+
+    },
+
+
+    modalTableTypeBtnClicked: function (component, event, isPercentBtn) {
+        let chosenProductWrappers = component.get('v.chosenProductWrappers');
+        console.log('chosenProductWrappers ' + chosenProductWrappers);
+        let index = event.currentTarget.dataset.index;
+        let wrapper = chosenProductWrappers[index];
+
+        if(isPercentBtn){
+            wrapper.isPercent = true;
+        }else {
+            wrapper.isPercent = false;
+        }
+
+        console.log('Wrapper after: ' + wrapper);
+        component.set('v.chosenProductWrappers', chosenProductWrappers);
+
+    },
+
+    clickPercentButton: function (component, event) {
+        this.modalTableTypeBtnClicked(component,event,true);
+    },
+
+    clickCurrencyButton: function (component, event) {
+        this.modalTableTypeBtnClicked(component,event,false);
     }
+
 
 
 })
