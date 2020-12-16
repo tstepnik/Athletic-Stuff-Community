@@ -20,13 +20,24 @@ controller="AS_ProductViewController">
 
     <lightning:layout>
     <ui:button class="product-mini-container" press="{!c.redirect}">
-<!--        <div class="product-mini-background" style="{!'background-image:url(\''+v.product.mainPictureId__c+''}">-->
         <div class="product-mini-background" style="{! v.product.mainPictureId != null ?
                 'background-image:url(\'/as/sfc/servlet.shepherd/version/download/'+v.product.mainPictureId+'\')'
                 : 'background-image:url(\'/resource/1606769344000/AS_Community_DefaultPhoto\')'}">
         </div>
+        <aura:if isTrue="{!v.product.standardPrice != null}">
+            <div class="promotionIcon">
+                <img src="{!$Resource.AS_Community_PromotionIcon}"/>
+            </div>
+        </aura:if>
         <div class="product-mini-desc">
         <p class="product-name">{!v.product.productName}</p>
+            <aura:if isTrue="{!v.product.standardPrice != null}">
+
+                <div class="oldPrice">
+                    <p>{!v.product.standardPrice} $</p>
+                    <div class="score-price-out"></div>
+                </div>
+            </aura:if>
             <p class="product-price">Price: {!v.product.price} $</p>
         </div>
     </ui:button>

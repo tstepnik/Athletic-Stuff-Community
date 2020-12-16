@@ -13,30 +13,31 @@ force:appHostable"
     <aura:attribute type="String" name="inputText"/>
     <aura:attribute type="Object[]" name="productWrappers"/>
     <aura:attribute type="Object[]" name="chosenProductWrappers"/>
+    <aura:attribute type="Object[]" name="uniqueIds"/>
     <aura:attribute type="Object" name="productInfoBunch"/>
-    <aura:attribute name="columns" type="List"/>
-    <aura:attribute type="List" name="selectedRows"/>
+<!--    <aura:attribute name="columns" type="List"/>-->
+<!--    <aura:attribute type="List" name="selectedRows"/>-->
     <aura:attribute type="String" name="discountStartDate"/>
     <aura:attribute type="String" name="discountEndDate"/>
 
-    <aura:attribute name="recordsNumber" type="String"/>
-    <aura:attribute name="offset" type="Integer"/>
-    <aura:attribute name="offsetSize" type="Integer"/>
-    <aura:attribute name="recordsOnPage_start" type="String"/>
-    <aura:attribute name="recordsOnPage_end" type="String"/>
 
     <aura:attribute name="clickedNumber-value" type="String"/>
     <aura:attribute name="clickedNumber-auraId" type="String"/>
     <aura:attribute name="showNewRecordModal" type="Boolean"/>
     <aura:attribute name="editBtnClicked" type="Boolean"/>
 
-    <aura:attribute name="numberOfPages" type="String"/>
-    <aura:attribute name="pageNumber" type="String"/>
-    <aura:attribute name="pn_first" type="String"/>
-    <aura:attribute name="pn_second" type="String"/>
-    <aura:attribute name="pn_third" type="String"/>
-    <aura:attribute name="pn_fourth" type="String"/>
-    <aura:attribute name="pn_fifth" type="String"/>
+    <aura:attribute name="amountRecordPerPage" type="Integer" default="2"/>
+    <aura:attribute name="startPage" type="Integer" default="0"/>
+    <aura:attribute name="endPage" type="Integer"/>
+    <aura:attribute name="totalRecords" type="Integer"/>
+    <aura:attribute name="columns" type="Object[]"/>
+    <aura:attribute name="allData" type="Object[]"/>
+    <aura:attribute name="data" type="Object[]"/>
+    <aura:attribute name="selectedRows" type="List"/>
+    <aura:attribute name="state" type="Object"/>
+
+
+
 
 
     <lightning:card iconName="standard:account" title="Search Products">
@@ -62,75 +63,20 @@ force:appHostable"
 
                 <div class="result-table">
                     <div class="table">
-                        <lightning:button onclick="{!c.selectAllBtnClicked}" class="selectAllRow-btn"
-                                          aura:id="table-selectAllBtn"></lightning:button>
-                        <table class="slds-table slds-table_bordered slds-table_cell-buffer table-main">
-                            <thead>
-                            <tr class="slds-text-title_caps">
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Select"></div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Product Name">Product Name</div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Price">Price</div>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody class="table-body">
-                            <aura:iteration items="{!v.productWrappers}" var="wrapper" indexVar="index">
-                                <tr aura:id="row" data-id="{!wrapper.id}">
-                                    <td data-label="">
-                                        <button data-index="{!index}" class="selectAllRow-btn"
-                                                id="{!'table-selectBtn' + index}"
-                                                onclick="{!c.tableRowClicked}"></button>
-                                    </td>
-                                    <td data-label="Product Name">
-                                            {!wrapper.productName}
-
-                                    </td>
-                                    <td data-label="Price">
-                                            {!wrapper.price}
-
-                                    </td>
-                                </tr>
-                            </aura:iteration>
-                            </tbody>
-                        </table>
+                        <lightning:datatable keyField="Id"
+                                             data="{!v.productWrappers}"
+                                             columns="{!v.columns}"
+                                             onrowselection="{!c.updateSelectedRow}"
+                                             selectedRows="{!v.selectedRows}"
+                        />
                     </div>
 
-                    <div class="pagination" aura:id="pagination-div">
-                        <div class="products-number">
-                            <p>{!v.recordsOnPage_start} - {!v.recordsOnPage_end} z {!v.recordsNumber} ofert</p>
-                        </div>
-                        <div class="change-page-section">
-                            <div class="previous-page" onclick="{!c.pressPreviousButton}" aura:id="previousPage-id">
-                                <p class="arrow">❮</p>
-                                <p class="changePageWord">{!$Label.c.AS_Community_PreviousBtn}</p>
-                            </div>
-                            <div class="page-numbers">
-                                <p class="page-lp" aura:id="pn-m1" id="{!v.pn_first + ' pn-m1'}"
-                                   onclick="{!c.choosePage}">{!v.pn_first}</p>
-                                <p class="page-lp" aura:id="pn-m2" id="{!v.pn_second + ' pn-m2'}"
-                                   onclick="{!c.choosePage}">{!v.pn_second}</p>
-                                <p class="page-lp" aura:id="pn-m3" id="{!v.pn_third + ' pn-m3'}"
-                                   onclick="{!c.choosePage}">{!v.pn_third}</p>
-                                <p class="page-lp" aura:id="pn-m4" id="{!v.pn_fourth + ' pn-m4'}"
-                                   onclick="{!c.choosePage}">{!v.pn_fourth}</p>
-                                <p class="page-lp" aura:id="pn-m5" id="{!v.pn_fifth + ' pn-m5'}"
-                                   onclick="{!c.choosePage}">{!v.pn_fifth}</p>
-                                <p>z</p>
-                                <p class="readonly">{!v.numberOfPages}</p>
-                            </div>
-                            <div class="next-page" onclick="{!c.pressNextButton}" aura:id="nextPage-id">
-                                <p class="changePageWord">{!$Label.c.AS_Community_NextBtn}</p>
-                                <p class="arrow">❯</p>
-                            </div>
 
-                        </div>
-                    </div>
-                    <div class="button"></div>
+                    <lightning:buttonGroup class="button-group">
+                        <lightning:button label="Previous" variant="brand" disabled="{!v.startPage==0}" onclick="{!c.previous}"/>
+                        <lightning:button label="Next" variant="brand" onclick="{!c.next}"
+                                          disabled="{!v.endPage + 1 >= v.totalRecords}"/>
+                    </lightning:buttonGroup>
                 </div>
             </div>
 

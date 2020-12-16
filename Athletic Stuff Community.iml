@@ -557,6 +557,10 @@
                             <option name="name" value="AS_PriceBook_Service" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="PaginationTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
                         </list>
                       </option>
                       <option name="name" value="ApexClass" />
@@ -1063,6 +1067,10 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="AS_DiscountManager_OpenModal_Event" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="paginationTest" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

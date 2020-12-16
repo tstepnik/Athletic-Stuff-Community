@@ -11,14 +11,13 @@ public with sharing class AS_Product_Service {
     }
 
     public static AS_Product_Service.SearchProductsWrapper getSearchProductsWrapperWithStandardPrice(String searchPhrase, Integer offset) {
-        System.debug('WCHODZI DO SERWISU STD');
-
         Integer queryLimit = Integer.valueOf(System.Label.AS_Community_SearchLimit);
 
         List<ProductInfoWrapper> wrappers = productInfoWrappersStandardPrice(searchPhrase, offset);
 
         Integer numberOfProducts = countProducts(searchPhrase);
 
+        System.debug(wrappers);
         return new SearchProductsWrapper(wrappers, numberOfProducts, queryLimit, searchPhrase, offset);
     }
 
@@ -85,7 +84,6 @@ public with sharing class AS_Product_Service {
 
 
     public static List<ProductInfoWrapper> productInfoWrappersStandardPrice(String phrase, Integer offset) {
-        System.debug('WCHODZI DO productInfoWrappersStandardPrice STD');
 
         Integer queryLimit = Integer.valueOf(System.Label.AS_Community_SearchLimit);
         List<PricebookEntry> productsInfo = new List<PricebookEntry>();
@@ -195,13 +193,6 @@ public with sharing class AS_Product_Service {
     }
 
     public static ProductInfoWrapper returnCheapestWrapper(List<PricebookEntry> entries) {
-        System.debug('WCHODZI DO : returnCheapestWrapper');
-        System.debug('LISTA PRODUKTÓW');
-        System.debug('//////////////////');
-        for (PricebookEntry p : entries) {
-            System.debug(p);
-        }
-        System.debug('//////////////////');
         PricebookEntry pbe = entries[0];
         String productId = pbe.Product2Id;
         String pricebookEntryId = pbe.Id;
@@ -291,6 +282,8 @@ public with sharing class AS_Product_Service {
 
     public class ProductInfoWrapper {
         @auraEnabled
+        public String Id { get; set; }
+        @auraEnabled
         public String productId { get; set; }
         @auraEnabled
         public String pricebookEntryId { get; set; }
@@ -320,6 +313,7 @@ public with sharing class AS_Product_Service {
             this.mainPictureId = mainPicId;
             this.productName = productName;
             this.price = price;
+            this.Id = productId;
         }
         public ProductInfoWrapper(String productId, String mainPicId, String productName, String price, String standardPrice) {
             this.productId = productId;
@@ -327,6 +321,8 @@ public with sharing class AS_Product_Service {
             this.productName = productName;
             this.price = price;
             this.standardPrice = standardPrice;
+            this.Id = productId;
+
         }
 
         public ProductInfoWrapper(String productId, String mainPicId, String productName, String price, String standardPrice, String pricebookEntryId) {
@@ -336,6 +332,8 @@ public with sharing class AS_Product_Service {
             this.price = price;
             this.standardPrice = standardPrice;
             this.pricebookEntryId = pricebookEntryId;
+            this.Id = productId;
+
         }
 
     }

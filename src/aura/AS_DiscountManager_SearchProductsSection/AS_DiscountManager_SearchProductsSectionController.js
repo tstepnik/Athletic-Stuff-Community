@@ -1,35 +1,67 @@
 ({
-    getWrappers: function (component, event, helper) {
-        helper.searchOperations(component);
-        helper.showPagination(component);
-    },
-
     doInit: function (component, event, helper) {
-        helper.hidePagination(component);
+        helper.doInit(component, event);
     },
 
-    pressPreviousButton: function (component, event, helper) {
-        helper.pressPreviousButton(component, event, helper);
+    updateSelectedRow: function (component, event, helper) {
+        let selectedRows = event.getParam('selectedRows');
+        if (!$A.util.isEmpty(selectedRows)) {
+            const selectedIds = selectedRows.map(record => {
+                return record.Id;
+            });
+            component.set("v.selectedRows", selectedIds);
+        }
     },
-    pressNextButton: function (component, event, helper) {
-        helper.pressNextButton(component, event, helper);
+    next: function (component, event, helper) {
+        helper.saveToState(component, event);
+        let start = component.get("v.startPage");
+        let total = component.get("v.totalRecords");
+        let data = component.get("v.allData");
+        let size = component.get("v.amountRecordPerPage");
+        let end = start + 2 * size > total ? total - 1 : start + 2 * size;
+        component.set("v.productWrappers", data.slice(start + size, end));
+        component.set("v.startPage", start + size);
+        component.set("v.endPage", end);
+        helper.rerenderFromState(component, event);
+
+    },
+    previous: function (component, event, helper) {
+        helper.saveToState(component);
+        let start = component.get("v.startPage");
+        let data = component.get("v.allData");
+        let size = component.get("v.amountRecordPerPage");
+        let end = start - size <= 0 ? 0 : start - size;
+        component.set("v.productWrappers", data.slice(end, start));
+        component.set("v.startPage", end);
+        component.set("v.endPage", start);
+        helper.rerenderFromState(component, event)
+        this.consoleLog(component,event,helper);
+
     },
 
-    choosePage: function (component, event, helper) {
-        helper.choosePage(component, event);
+    consoleLog:function (component, event, helper) {
+        // let data = component.get("v.uniqueIds");
+        //
+        // console.log('unique ids: ' + data);
+        let data2 = component.get("v.selectedRows");
+
+        for(let i=0; i<data2.length();i++){
+            console.log('dziala');
+        }
     },
 
-    clickTableMainBtn: function (component, event, helper) {
-        helper.clickTableMainBtn(component, event);
+    getWrappers: function (component, event, helper) {
+        console.log('CONTROLLER');
+
+        helper.searchOperations(component, event);
+        // helper.showPagination(component);
+        console.log('CONTROLLER');
+
+        console.log(component.get('v.productWrappers'));
     },
 
-    tableRowClicked: function (component, event, helper) {
-        helper.tableRowClicked(component, event);
-    },
 
-    consoleLog: function (component, event, helper) {
-        helper.consoleLog(component, event);
-    },
+
     createPromotion: function (component, event, helper) {
         helper.createPromotion(component, event);
     },
@@ -81,6 +113,5 @@
     clickCurrencyButton: function (component, event, helper) {
         helper.clickCurrencyButton(component, event);
     }
-
 
 })
