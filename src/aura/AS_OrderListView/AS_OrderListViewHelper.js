@@ -7,18 +7,13 @@
             if (state === "SUCCESS") {
                 orders = response.getReturnValue();
                 component.set('v.orderWrappers', orders);
-            } else if (state === "ERROR") {
-                this.handleErrors(component, response);
+            } else {
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
 
-    },
-
-    handleErrors: function (component, response) {
-        let sendErrorToast = component.find('errorToastMaker');
-        let errors = response.getErrors();
-        sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
     },
 
     tableRowClicked: function (component, event) {

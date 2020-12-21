@@ -1,21 +1,13 @@
-/**
- * Created by tomas on 09.12.2020.
- */
 ({
 
     doInit: function (component, event) {
-        console.log('wchodzi do helpera');
         const action = component.get('c.getPriceBookWrappers');
-        console.log('22');
-        action.setCallback(this, function(response) {
-            console.log('33');
+        action.setCallback(this, function (response) {
             const status = response.getState();
             if (status === 'SUCCESS') {
-                console.log('WCHODZI DO SUCCESS');
                 let priceBookWrappers = response.getReturnValue();
-                component.set('v.PriceBookWrapper',priceBookWrappers);
+                component.set('v.PriceBookWrapper', priceBookWrappers);
             } else {
-                console.log('WCHODZI DO ERROR');
             }
         });
         $A.enqueueAction(action);
@@ -30,13 +22,38 @@
         let eventt = $A.get('e.c:AS_DiscountManager_PriceBook_Event');
         let id = wrapper.id;
         let isActive = wrapper.isActive;
-        let orderNumber = wrapper.orderNumber;
         eventt.setParams({
             "recordId": id,
             "isActive": isActive
         });
 
         eventt.fire();
-        console.log('EVENT się wysyła z id: ' + id);
+    },
+
+
+    sendFirstPbInfo: function (component, event) {
+        let isDelete = event.getParam('isDelete');
+        const action = component.get('c.getPriceBookWrappers');
+        action.setCallback(this, function (response) {
+            const status = response.getState();
+            if (status === 'SUCCESS') {
+                let priceBookWrappers = response.getReturnValue();
+                component.set('v.PriceBookWrapper', priceBookWrappers);
+
+                let wrapper = priceBookWrappers[0];
+                let id = wrapper.id;
+                let isActive = wrapper.isActive;
+                if (!isDelete) {
+                    let eventt = $A.get('e.c:AS_DiscountManager_PriceBook_Event');
+                    eventt.setParams({
+                        "recordId": id,
+                        "isActive": isActive
+                    });
+                    eventt.fire();
+                }
+            } else {
+            }
+        });
+        $A.enqueueAction(action);
     }
 })

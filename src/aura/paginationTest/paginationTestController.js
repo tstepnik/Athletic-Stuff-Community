@@ -10,9 +10,12 @@
             });
             component.set("v.selectedRows", selectedIds);
         }
+        if (selectedRows.length === 0) {
+            component.set("v.selectedRows", []);
+        }
+        helper.saveToState(component, event);
     },
     next: function (component, event, helper) {
-        helper.saveToState(component, event);
         let start = component.get("v.startPage");
         let total = component.get("v.totalRecords");
         let data = component.get("v.allData");
@@ -24,7 +27,6 @@
         helper.rerenderFromState(component, event)
     },
     previous: function (component, event, helper) {
-        helper.saveToState(component);
         let start = component.get("v.startPage");
         let data = component.get("v.allData");
         let size = component.get("v.amountRecordPerPage");

@@ -18,26 +18,28 @@
                 component.set('v.PbEntryWrappers', pbEntryWrappers);
 
             } else if (state === "ERROR") {
-                this.handleErrors(component, response);
+
+                    let sendErrorToast = component.find('errorToastMaker');
+                    sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
 
     },
 
-    setDatatable: function(component){
+    setDatatable: function (component) {
 
         let actions = [
-                { label: 'Edit', name: 'edit' },
-                { label: 'Delete', name: 'delete' }
-            ];
+            {label: 'Edit', name: 'edit'},
+            {label: 'Delete', name: 'delete'}
+        ];
 
         component.set('v.columns', [
             {label: 'Product Name', fieldName: 'name', type: 'text'},
             {label: 'Standard Price', fieldName: 'standardPrice', type: 'text'},
             {label: 'Price', fieldName: 'newPrice', type: 'text'},
             {label: 'Active', fieldName: 'active', type: 'boolean'},
-            {type: 'action', typeAttributes: { rowActions: actions }}
+            {type: 'action', typeAttributes: {rowActions: actions}}
         ]);
     },
 
@@ -59,16 +61,15 @@
         let pricebookId = component.get('v.pricebookId');
         const action = component.get('c.activatePricebook');
         action.setParams({pricebookId: pricebookId});
-        this.apexCallback(component, event, action);
+        this.apexCallback(component, event, action, false);
         component.set('v.isActive', true);
     },
 
     deactivatePb: function (component, event) {
-        console.log('wchodzi do helpera deactivate');
         let pricebookId = component.get('v.pricebookId');
         const action = component.get('c.deactivatePricebook');
         action.setParams({pricebookId: pricebookId});
-        this.apexCallback(component, event, action);
+        this.apexCallback(component, event, action, false);
         component.set('v.isActive', false);
 
     },
@@ -77,33 +78,28 @@
         let pricebookId = component.get('v.pricebookId');
         const action = component.get('c.deletePricebook');
         action.setParams({pricebookId: pricebookId});
-        this.apexCallback(component, event, action);
+        this.apexCallback(component, event, action, true);
+        component.set('v.PbEntryWrappers', null);
 
     },
 
 
-    apexCallback: function (component, event, action) {
-        console.log('wchodzi do apexCallback');
+    apexCallback: function (component, event, action, isDelete) {
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "SUCCESS") {
-                this.fireUpdatePbListEvent();
+                this.fireUpdatePbListEvent(isDelete);
             } else if (state === "ERROR") {
-                this.handleErrors(component, response);
+                    let sendErrorToast = component.find('errorToastMaker');
+                    sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
     },
 
-    handleErrors: function (component, response) {
-        let sendErrorToast = component.find('errorToastMaker');
-        let errors = response.getErrors();
-        sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
-    },
-
-    fireUpdatePbListEvent: function () {
-        console.log('EVENT SIE WYSYLA FIRE UPDATE');
+    fireUpdatePbListEvent: function (isDelete) {
         let eventt = $A.get('e.c:AS_DiscountManager_UpdatePbList_Event');
+        eventt.setParams({"isDelete": isDelete});
         eventt.fire();
     }
 })

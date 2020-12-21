@@ -7,7 +7,7 @@
         component.set("v.columns", columns);
     },
 
-    searchOperations: function (component,event) {
+    searchOperations: function (component, event) {
         let inputText = component.get('v.inputText');
         const action = component.get('c.getSearchProductsWrapper');
         action.setParams({inpTxt: inputText});
@@ -19,7 +19,7 @@
                 component.set('v.productInfoBunch', productsBoundle);
                 component.set("v.allData", data);
                 component.set("v.totalRecords", data.length);
-                component.set('v.productWrappers', data.slice(0,pageSize));
+                component.set('v.productWrappers', data.slice(0, pageSize));
             } else {
                 let error = response.getError();
             }
@@ -35,36 +35,28 @@
 
     saveToState: function (component, event) {
         let selectedRows = component.get("v.selectedRows");
-        let state = component.get("v.state");
-        selectedRows.forEach(record => {
-            state.selectedRows.push(record)
-        });
+            let state = component.get("v.state");
+            selectedRows.forEach(record => {
+                state.selectedRows.push(record)
+            });
+            let stateSet = new Set(state.selectedRows);
 
-        const uniqueIds = state.selectedRows.reduce((unique, item) =>
-            unique.includes(item) ? unique : [...unique, item], []);
-        state.selectedRows = uniqueIds;
-        component.set('v.uniqueIds',uniqueIds);
+            let noSelectedIdsSet = this.notSelectedIds(component);
+            if (noSelectedIdsSet != null) {
+                let noSelectedIds = Array.from(noSelectedIdsSet);
 
-    },
+                noSelectedIds.forEach(id => {
+                    if (stateSet.has(id)) {
+                        stateSet.delete(id);
+                    }
+                });
 
-    prepareListForDiscount: function(component,event){
-        let allData = component.get('v.allData');
-        let allDataMap = new Map();
-        for(let i = 0; i < allData.length; i++){
-            let wrapper = allData[i];
-            allDataMap.set(wrapper.productId,wrapper);
-        }
-
-        let uniqueIds = component.get('v.uniqueIds');
-        let choosesWrappers = new Array();
-        for(let i = 0; i < uniqueIds.length; i++){
-            if(allDataMap.has(uniqueIds[i])){
-                choosesWrappers.push(allDataMap.get(uniqueIds[i]));
+                state.selectedRows = Array.from(stateSet);
+                component.set("v.state", state);
             }
-        }
-        component.set('v.chosenProductWrappers',choosesWrappers);
-        return choosesWrappers;
+
     },
+
 
     rerenderFromState: function (component, event) {
         let newState = component.get("v.state");
@@ -88,8 +80,9 @@
                 this.setRange(component, numberOfRecords, offset, firstQueryInfo.queryLimit);
 
 
-            } else if (state === "ERROR") {
-                this.handleErrors(component, event, response);
+            } else {
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
@@ -111,110 +104,124 @@
     },
 
     createPromotion: function (component, event) {
-        console.log('wchodzi do promotion');
         //todo
         let discount = event.getParam('discount');
         let startDate = event.getParam('startDate');
         let endDate = event.getParam('endDate');
         let isPercent = event.getParam('isPercent');
-        let wrappers = component.get('v.chosenProductWrappers');
+        let wrappers = this.prepareListForDiscount(component, event);
+        const action = component.get('c.createCustomisedDiscountApex');
 
-        const action = component.get('c.createDiscountApex');
+        for (let i = 0; i < wrappers.length; i++) {
+            wrappers[i].discount = discount;
+            wrappers[i].isPercent = isPercent;
+            wrappers[i].editBtnClicked = false;
+        }
+
+        console.log('start date: ' + startDate);
+        console.log('end date: ' + endDate);
+        console.log('wrappers: ' + wrappers);
         action.setParams({
-            discount: discount,
-            isPercent: isPercent,
             startDate: startDate,
             endDate: endDate,
             wrappers: wrappers
         });
-        console.log('przed callback');
         action.setCallback(this, function (response) {
-            console.log('wchodzi do callback');
             let state = response.getState();
             if (state === "SUCCESS") {
-                console.log('wchodzi do success');
-
-                let responseMessage = 'Discount successfully created.'
                 let sendToast = component.find('toastMaker');
-                sendToast.sendResultToast('Success', responseMessage, 'Success');
+                sendToast.sendResultToast('Success', 'Discount successfully created.', 'Success');
                 this.fireUpdatePbListEvent();
+                component.set('v.productWrappers', null);
+                component.set('v.chosenProductWrappers', null);
+                component.set('v.allData', null);
+                component.set('v.data', null);
 
             } else {
-                let errors = response.getError();
-                if (errors && Array.isArray(errors) && errors.length > 0) {
-                    console.error(JSON.stringify(errors[0].message));
-                }
-
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
     },
 
     createCustomisedPromotion: function (component, event) {
-        console.log('wchodzi do promotion');
         //todo
         let startDate = component.get('v.discountStartDate');
         let endDate = component.get('v.discountEndDate');
-        let wrappers = this.prepareListForDiscount(component,event);
+        let wrappers = this.prepareListForDiscount(component, event);
 
-        console.log('createCustomPromotion: ');
-        for(let i = 0; i < wrappers.length; i++){
-            let wrapper = wrappers[i];
-           console.log(wrapper);
-        }
-
-
-        console.log('start date: ' + startDate);
-        console.log('end date: ' + endDate);
         const action = component.get('c.createCustomisedDiscountApex');
         action.setParams({
             startDate: startDate,
             endDate: endDate,
             wrappers: wrappers
         });
-        console.log('przed callback');
         action.setCallback(this, function (response) {
-            console.log('wchodzi do callback');
             let state = response.getState();
             if (state === "SUCCESS") {
-                console.log('wchodzi do success');
                 let responseMessage = 'Discount successfully created.'
                 let sendToast = component.find('toastMaker');
                 component.set('v.showNewRecordModal', false);
                 sendToast.sendResultToast('Success', responseMessage, 'Success');
                 this.fireUpdatePbListEvent();
+                component.set('v.productWrappers', null);
 
             } else {
-                let errors = response.getError();
-                if (errors && Array.isArray(errors) && errors.length > 0) {
-                    console.error(JSON.stringify(errors[0].message));
-                }
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
 
             }
         });
         $A.enqueueAction(action);
     },
 
-    handleNewRecordModal: function (component, event) {
-        this.saveToState(component,event);
-        let selectedWrappers = this.prepareListForDiscount(component,event);
+    prepareListForDiscount: function (component, event) {
+        let allData = component.get('v.allData');
+        if (allData != null && Array.isArray(allData) && allData.length > 0) {
 
-        let discount = event.getParam('discount');
-        let startDate = event.getParam('startDate');
-        let endDate = event.getParam('endDate');
-        let isPercent = event.getParam('isPercent');
-        let wrappers = component.get('v.chosenProductWrappers');
+            let allDataMap = new Map();
+            for (let i = 0; i < allData.length; i++) {
+                let wrapper = allData[i];
+                allDataMap.set(wrapper.productId, wrapper);
+            }
 
-        for (let i = 0; i < selectedWrappers.length; i++) {
-            selectedWrappers[i].discount = discount;
-            selectedWrappers[i].isPercent = isPercent;
-            selectedWrappers[i].editBtnClicked = false;
+            let uniqueIds = component.get('v.state').selectedRows;
+            let choosesWrappers = new Array();
+            for (let i = 0; i < uniqueIds.length; i++) {
+                if (allDataMap.has(uniqueIds[i])) {
+                    choosesWrappers.push(allDataMap.get(uniqueIds[i]));
+                }
+            }
+            component.set('v.chosenProductWrappers', choosesWrappers);
+            return choosesWrappers;
+        } else {
+            component.set('v.chosenProductWrappers', []);
+            return new Array();
         }
+    },
 
-        component.set('v.showNewRecordModal', true);
-        component.set('v.discountStartDate', startDate);
-        component.set('v.discountEndDate', endDate);
+    handleNewRecordModal: function (component, event) {
+        let selectedWrappers = this.prepareListForDiscount(component, event);
+        if (selectedWrappers != null && Array.isArray(selectedWrappers) && selectedWrappers.length > 0) {
+            let discount = event.getParam('discount');
+            let startDate = event.getParam('startDate');
+            let endDate = event.getParam('endDate');
+            let isPercent = event.getParam('isPercent');
 
+            for (let i = 0; i < selectedWrappers.length; i++) {
+                selectedWrappers[i].discount = discount;
+                selectedWrappers[i].isPercent = isPercent;
+                selectedWrappers[i].editBtnClicked = false;
+            }
+
+            component.set('v.showNewRecordModal', true);
+            component.set('v.discountStartDate', startDate);
+            component.set('v.discountEndDate', endDate);
+        } else {
+            let sendToast = component.find('toastMaker');
+            sendToast.sendResultToast('Error', 'You must choose at least one product', 'Error');
+        }
     },
 
     fireUpdatePbListEvent: function () {
@@ -233,22 +240,16 @@
     },
 
     modalTableRowClicked: function (component, event, editBtnClicked) {
-        console.log('Wchodzi do modalTable');
         let chosenProductWrappers = component.get('v.chosenProductWrappers');
-        console.log('chosenProductWrappers ' + chosenProductWrappers);
         let index = event.currentTarget.dataset.index;
-        console.log('index ' + index);
         let wrapper = chosenProductWrappers[index];
-        console.log('Wrapper before: ' + wrapper);
         wrapper.editBtnClicked = editBtnClicked;
-        console.log('Wrapper after: ' + wrapper);
         component.set('v.chosenProductWrappers', chosenProductWrappers);
 
     },
 
     modalTableTypeBtnClicked: function (component, event, isPercentBtn) {
         let chosenProductWrappers = component.get('v.chosenProductWrappers');
-        console.log('chosenProductWrappers ' + chosenProductWrappers);
         let index = event.currentTarget.dataset.index;
         let wrapper = chosenProductWrappers[index];
 
@@ -257,8 +258,6 @@
         } else {
             wrapper.isPercent = false;
         }
-
-        console.log('Wrapper after: ' + wrapper);
         component.set('v.chosenProductWrappers', chosenProductWrappers);
 
     },
@@ -269,6 +268,39 @@
 
     clickCurrencyButton: function (component, event) {
         this.modalTableTypeBtnClicked(component, event, false);
-    }
+    },
 
+    notSelectedIds: function (component) {
+        let allIds = this.allIds(component);
+        if (allIds != null && allIds.length > 0) {
+            let selectedIds = component.get("v.selectedRows");
+            let noSelectedIds = new Set();
+            for (let i = 0; i < allIds.length; i++) {
+                let contains = false;
+                for (let j = 0; j < selectedIds.length; j++) {
+
+                    if (selectedIds[j] === allIds[i]) {
+                        contains = true;
+                    }
+                }
+                if (contains === false) {
+                    let id = allIds[i];
+                    noSelectedIds.add(id);
+                }
+            }
+            return noSelectedIds;
+        }
+    },
+
+    allIds: function (component) {
+        let allData = component.get('v.productWrappers');
+
+        if (allData != null) {
+            const allIds = allData.map(record => {
+                return record.Id;
+            });
+            return allIds;
+        }
+
+    }
 })

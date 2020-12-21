@@ -9,11 +9,8 @@
                 let orderItemWrappers = response.getReturnValue();
                 component.set('v.orderItemWrappers', orderItemWrappers);
             } else {
-                this.handleShowToast(component, event, 'Error', 'error', 'Error while processing loading data');
-                let errors = response.getError();
-                if (errors && Array.isArray(errors) && errors.length > 0) {
-                console.error(JSON.stringify(errors[0].message));
-            }
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
         }
 
         });
@@ -32,8 +29,9 @@
                 if(priceSum <= 0){
                     this.hideButton(component);
                 }
-            }      else if (state === "ERROR") {
-                this.handleErrors(component,response);
+            }   else {
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
@@ -79,7 +77,6 @@
         sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
     },
     completeOrder: function (component, event) {
-        console.log('WCHODZI DO COMPLETE');
         const action = component.get('c.completeTransaction');
         action.setCallback(this, function (response) {
             let state = response.getState();
@@ -87,13 +84,11 @@
                 let mainContainer = component.find('bViewContainer');
                 $A.util.toggleClass(mainContainer, "hideElement");
                 component.set('v.buyBtnPressed',true);
-                console.log('WCHODZI DO SUCCESSS');
             } else if (state === "ERROR") {
                 this.handleErrors(component, response);
             }
         });
         $A.enqueueAction(action);
-        console.log('WYCHODZI DO COMPLETE');
     }
 
 })

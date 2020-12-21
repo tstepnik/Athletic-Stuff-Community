@@ -18,7 +18,8 @@
                 component.set('v.getBasketItemWrappers', getBasketItemWrappers);
 
             } else {
-                this.handleErrors(component,response);
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
             this.hideSpinner(component);
 
@@ -47,8 +48,9 @@
             if (state === "SUCCESS") {
                 let priceSum = response.getReturnValue();
                 component.set('v.priceSum',priceSum);
-            }      else if (state === "ERROR") {
-                this.handleErrors(component,response);
+            }    else {
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
@@ -60,12 +62,5 @@
     },
     hideSpinner: function(component) {
         component.find('spinner').hideSpinner();
-    },
-
-    handleErrors: function (component,response) {
-        let sendErrorToast = component.find('errorToastMaker');
-        let errors = response.getErrors();
-        sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
     }
-
 })

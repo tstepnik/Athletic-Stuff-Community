@@ -89,7 +89,8 @@
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "ERROR") {
-                this.handleErrors(component, response);
+                    let sendErrorToast = component.find('errorToastMaker');
+                    sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
@@ -108,7 +109,8 @@
         action.setCallback(this, function (response) {
             let state = response.getState();
             if (state === "ERROR") {
-                this.handleErrors(component, response);
+                    let sendErrorToast = component.find('errorToastMaker');
+                    sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
@@ -118,13 +120,5 @@
     fireEvent: function () {
         let event = $A.get('e.c:AS_Community_RequestSum_Event');
         event.fire();
-    },
-
-    handleErrors: function (component, response) {
-        let sendErrorToast = component.find('errorToastMaker');
-        let errors = response.getErrors();
-        sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
     }
-
-
 })

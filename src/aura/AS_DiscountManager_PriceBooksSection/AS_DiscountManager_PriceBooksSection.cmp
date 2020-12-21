@@ -6,7 +6,7 @@
                 implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable"
                 controller="AS_DiscountManager_Controller">
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
-    <aura:handler event="c:AS_DiscountManager_UpdatePbList_Event" action="{!c.onInit}"/>
+    <aura:handler event="c:AS_DiscountManager_UpdatePbList_Event" action="{!c.refreshAndDisplayFirstPbInfo}"/>
     <aura:registerEvent name="getOrderIdEvent" type="c:AS_DiscountManager_PriceBook_Event"/>
 
     <aura:attribute name="PriceBookWrapper" type="Object[]"/>
@@ -60,8 +60,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
             </div>
         </lightning:layout>
     </lightning:card>

@@ -250,6 +250,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_ExternalServiceConnetionException" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_HospitalBatch" />
@@ -316,6 +317,7 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_InvalidCredentialsException" />
+                            <option name="selected" value="true" />
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="MH_Log" />
@@ -559,6 +561,10 @@
                           </MetadataEntry>
                           <MetadataEntry>
                             <option name="name" value="PaginationTest" />
+                            <option name="selected" value="true" />
+                          </MetadataEntry>
+                          <MetadataEntry>
+                            <option name="name" value="AS_DiscountManager_Exception" />
                             <option name="selected" value="true" />
                           </MetadataEntry>
                         </list>

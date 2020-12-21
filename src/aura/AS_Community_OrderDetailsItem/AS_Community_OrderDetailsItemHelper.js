@@ -138,10 +138,8 @@
     },
 
     fireEvent: function () {
-        console.log('METODA EVENTU');
         let event = $A.get('e.c:AS_Community_RequestSum_Event');
         event.fire();
-        console.log('EVENT SIĘ ODPALA');
     }
 
 

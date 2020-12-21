@@ -6,12 +6,10 @@
     },
 
     activatePb: function (component, event, helper) {
-        console.log('wchodzi do controllera activate');
         helper.activatePb(component, event);
     },
 
     deactivatePb: function (component, event, helper) {
-        console.log('wchodzi do controllera deactivate');
         helper.deactivatePb(component, event);
     },
 

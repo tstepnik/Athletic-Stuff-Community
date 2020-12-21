@@ -13,8 +13,9 @@
                 orders = response.getReturnValue();
                 component.set('v.orderItemWrappers',orders);
 
-            } else if (state === "ERROR") {
-                this.handleErrors(component, response);
+            } else {
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
@@ -40,17 +41,11 @@
                 let sendToast = component.find('toastMaker');
                 sendToast.sendResultToast('Success', 'Case Successfully Created. Our agent will contact you soon.', 'Success');
             } else {
-                console.log('WCHODZI DO ERROR');
-                this.handleErrors(component,response);
+                let sendErrorToast = component.find('errorToastMaker');
+                sendErrorToast.handleErrors(response.getError());
             }
         });
         $A.enqueueAction(action);
-    },
-
-    handleErrors: function (component,response) {
-        let sendErrorToast = component.find('errorToastMaker');
-        let errors = response.getErrors();
-        sendErrorToast.handleErrors('Error', 'Error while processing loading data', 'Error', errors);
     },
 
     tableRowClicked: function(component, event) {

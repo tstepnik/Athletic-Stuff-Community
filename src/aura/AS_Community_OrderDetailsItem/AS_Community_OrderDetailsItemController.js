@@ -18,7 +18,6 @@
     },
 
     pressBasket: function (component, event, helper) {
-        console.log('pressBasket controller');
         helper.removeProductFromBasket(component,event,helper);
         helper.pressBasket(component,event);
     }

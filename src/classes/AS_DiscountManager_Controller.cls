@@ -47,10 +47,14 @@ public with sharing class AS_DiscountManager_Controller {
         return AS_Product_Service.getSearchProductsWrapperWithStandardPrice(inpTxt, 0);
     }
 
-    @AuraEnabled
-    public static void createDiscountApex(String discount, Boolean isPercent, String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
-        AS_PriceBook_Service.createDiscountPricebook(discount, isPercent, startDate, endDate, wrappers);
-    }
+//    @AuraEnabled
+//    public static void createDiscountApex(String discount, Boolean isPercent, String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
+//        System.debug('DISCOUNT MANG');
+//        System.debug('start date: '+ startDate);
+//        System.debug('end date: '+ endDate);
+//
+//        AS_PriceBook_Service.createDiscountPricebook(discount, isPercent, startDate, endDate, wrappers);
+//    }
 
     @AuraEnabled
     public static void createCustomisedDiscountApex(String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {

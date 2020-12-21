@@ -27,34 +27,65 @@ public with sharing class AS_PriceBook_Service {
         return [SELECT Id,Product2.Name,StandardPrice__c,UnitPrice,IsActive FROM PricebookEntry WHERE Pricebook2Id = :pricebookId];
     }
 
-    public static void createDiscountPricebook(String discount, Boolean isPercent, String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
-        Integer randomNumber = Integer.valueof((Math.random() * 1000));
-        Pricebook2 discountPricebook = new Pricebook2(Name = 'Discount Price book nr: ' + randomNumber, IsActive = true);
-        discountPricebook.StartDate__c = Date.valueOf(startDate);
-        discountPricebook.EndDate__c = Date.valueOf(endDate);
-        insert discountPricebook;
-        List<AS_Product_Service.ProductInfoWrapper> pWrappers = wrappers;
-        List<PricebookEntry> pbEntries = new List<PricebookEntry>();
-        for (AS_Product_Service.ProductInfoWrapper wrapper : pWrappers) {
-            pbEntries.add(createPbEntry(wrapper, isPercent, discount, discountPricebook.Id));
+//    public static void createDiscountPricebook(String discount, Boolean isPercent, String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
+//       if(startDate == null){
+//           throw new AS_DiscountManager_Exception('Start Date field can\'t be empty.');
+//       }else if(Date.valueOf(startDate) < Date.today()){
+//           throw new AS_DiscountManager_Exception('Start Date field can\'t be in the past');
+//       }
+//        if(endDate != null){
+//            if(Date.valueOf(startDate) >= Date.valueOf(endDate)){
+//                throw new AS_DiscountManager_Exception('End Date must be after Start Date');
+//            }
+//        }
+//        Integer randomNumber = Integer.valueof((Math.random() * 1000));
+//        Pricebook2 discountPricebook = new Pricebook2(Name = 'Discount Price book nr: ' + randomNumber, IsActive = true);
+//        if (startDate != null) {
+//            discountPricebook.StartDate__c = Date.valueOf(startDate);
+//
+//        }
+//        if (endDate != null) {
+//            discountPricebook.EndDate__c = Date.valueOf(endDate);
+//
+//        }
+//        insert discountPricebook;
+//        List<AS_Product_Service.ProductInfoWrapper> pWrappers = wrappers;
+//        List<PricebookEntry> pbEntries = new List<PricebookEntry>();
+//        for (AS_Product_Service.ProductInfoWrapper wrapper : pWrappers) {
+//            pbEntries.add(createPbEntry(wrapper, isPercent, discount, discountPricebook.Id));
+//        }
+//
+//        insert pbEntries;
+//    }
+
+
+    public static void createCustomisedDiscountPricebook(String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
+        if(wrappers == null || wrappers.size() <=0){
+            throw new AS_DiscountManager_Exception('You must choose at least one product.');
         }
 
-        insert pbEntries;
-    }
-
-
-    public static void createCustomisedDiscountPricebook( String startDate, String endDate, List<AS_Product_Service.ProductInfoWrapper> wrappers) {
-        System.debug('WCHODZI DO createDiscountPricebook w Pricebook Service');
-        System.debug('start date: ' + startDate);
-        System.debug('end date: ' + endDate);
-        System.debug('wrappers: ');
-        for(AS_Product_Service.ProductInfoWrapper w : wrappers){
-            System.debug(w);
+        if(startDate == null){
+            throw new AS_DiscountManager_Exception('Start Date field can\'t be empty.');
+        }else if(Date.valueOf(startDate) < Date.today()){
+            throw new AS_DiscountManager_Exception('Start Date field can\'t be in the past');
         }
+        if(endDate != null){
+            if(Date.valueOf(startDate) >= Date.valueOf(endDate)){
+                throw new AS_DiscountManager_Exception('End Date must be after Start Date');
+            }
+        }
+
         Integer randomNumber = Integer.valueof((Math.random() * 1000));
         Pricebook2 discountPricebook = new Pricebook2(Name = 'Discount Price book nr: ' + randomNumber, IsActive = true);
-        discountPricebook.StartDate__c = Date.valueOf(startDate);
-        discountPricebook.EndDate__c = Date.valueOf(endDate);
+
+        if (startDate != null) {
+            discountPricebook.StartDate__c = Date.valueOf(startDate);
+
+        }
+        if (endDate != null) {
+            discountPricebook.EndDate__c = Date.valueOf(endDate);
+
+        }
         insert discountPricebook;
         List<AS_Product_Service.ProductInfoWrapper> pWrappers = wrappers;
         List<PricebookEntry> pbEntries = new List<PricebookEntry>();
@@ -80,7 +111,15 @@ public with sharing class AS_PriceBook_Service {
 
     private static PricebookEntry createCustomisedPbEntry(AS_Product_Service.ProductInfoWrapper wrapper, String pricebookId) {
         PricebookEntry pricebookEntry = new PricebookEntry();
+        if(wrapper.isPercent == null){
+            throw new AS_DiscountManager_Exception('Choose discount type');
+
+        }
         Decimal newPrice = countDiscount(wrapper.isPercent, wrapper.discount, wrapper.price);
+        if(newPrice <= 0){
+            throw new AS_DiscountManager_Exception('Discount is larger than price for some products. Please check advanced options and change discount for them.');
+
+        }
         pricebookEntry.IsActive = true;
         pricebookEntry.UseStandardPrice = false;
         pricebookEntry.Pricebook2Id = pricebookId;

@@ -28,7 +28,7 @@
                 <lightning:buttonMenu alternativeText="Show menu" variant="border" class="buttonMenu"
                                       menuAlignment="right">
                     <lightning:menuItem value="MenuItemOne" label="Go to Details Page"/>
-                    <lightning:menuItem value="MenuItemTwo" label="Edit Pricebook"/>
+                    <lightning:menuItem value="MenuItemTwo" label="Edit Date"/>
                     <lightning:menuItem value="MenuItemThree" label="Delete Pricebook" onactive="{!c.deletePb}"/>
                 </lightning:buttonMenu>
             </aura:if>

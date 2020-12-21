@@ -18,7 +18,6 @@
         <lightning:layout class="lightning-main-container">
             <div class="container">
 
-
                 <div class="set-discount-section">
                     <div class="btns-and-title">
                         <h1>Choose discount type</h1>
@@ -31,17 +30,15 @@
                     </div>
                     <div class="setDiscountAmount">
                         <div class="slider" aura:id="slider">
-                            <lightning:slider value="{!v.discountPercent}"/>
+                            <lightning:slider value="{!v.discountPercent}" max="99" min="1"/>
                             <p>%</p></div>
                         <div class="amountInput" aura:id="amountInput">
                             <lightning:input name="input2" label="Amount" type="number" value="{!v.discountAmount}"/>
                         </div>
                     </div>
                 </div>
-
-
                 <div class="set-date">
-                    <lightning:input value="{!v.startDate}" type="date" name="input1" label="Start date"/>
+                    <lightning:input value="{!v.startDate}" required="true" type="date" name="input1" label="Start date"/>
                     <lightning:input value="{!v.endDate}" type="date" name="input1" label="End date"/>
                 </div>
                 <div class="firstConfirmationBtns">

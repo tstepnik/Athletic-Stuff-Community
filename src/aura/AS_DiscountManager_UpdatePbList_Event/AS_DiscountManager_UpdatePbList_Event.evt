@@ -3,4 +3,5 @@
  -->
 
 <aura:event type="APPLICATION" description="AS_DiscountManager_UpdatePbList_Event">
+    <aura:attribute type="Boolean" name="isDelete"/>
 </aura:event>
